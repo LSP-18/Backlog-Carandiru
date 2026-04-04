@@ -3,529 +3,327 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Backlog Semanal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <title>Shopee - Executive Backlog Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --shopee-orange: #ee4d2d;
+      --shopee-orange-hover: #f05d40;
+      --shopee-bg: #f6f6f6;
+      --shopee-card-bg: #ffffff;
+      --shopee-text-primary: #222222;
+      --shopee-text-secondary: #666666;
+      --shopee-border: #e5e5e5;
+      --shopee-success: #26aa99;
+      --shopee-warning: #f5c518;
+      --shopee-info: #0055aa;
+      --shopee-sidebar: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: #0f1117;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--shopee-bg);
+      color: var(--shopee-text-primary);
+      display: flex;
       min-height: 100vh;
+    }
+
+    /* ── SIDEBAR (Simulada para estilo profissional) ── */
+    .sidebar {
+      width: 240px;
+      background: var(--shopee-sidebar);
+      border-right: 1px solid var(--shopee-border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      flex-shrink: 0;
+    }
+    .sidebar-logo {
+      padding: 0 24px 32px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
+      gap: 12px;
     }
-
-    .page {
-      width: 1200px;
-      background: #16181f;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+    .sidebar-logo img { height: 32px; }
+    .sidebar-logo span { font-weight: 700; font-size: 18px; color: var(--shopee-orange); }
+    
+    .nav-item {
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--shopee-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
     }
+    .nav-item.active {
+      color: var(--shopee-orange);
+      background: #fff5f1;
+      border-right: 3px solid var(--shopee-orange);
+    }
+    .nav-item:hover:not(.active) { background: #f9f9f9; }
 
-    /* ── HEADER ── */
-    .header {
-      background: linear-gradient(135deg, #ff8c00 0%, #ff6a00 50%, #e85d00 100%);
+    /* ── MAIN CONTENT ── */
+    .main-content {
+      flex: 1;
       padding: 32px 48px;
+      overflow-y: auto;
+    }
+
+    .header-section {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: relative;
-      overflow: hidden;
+      align-items: flex-end;
+      margin-bottom: 32px;
     }
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 220px; height: 220px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 50%;
-    }
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -80px; left: 40%;
-      width: 300px; height: 300px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 50%;
-    }
-    .header-title {
-      font-size: 36px;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-      position: relative; z-index: 1;
-    }
-    .header-meta {
-      text-align: right;
-      position: relative; z-index: 1;
-    }
-    .header-meta .week-label {
-      font-size: 12px;
+    .header-title h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .header-title p { color: var(--shopee-text-secondary); font-size: 14px; }
+
+    .date-badge {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--shopee-border);
+      font-size: 13px;
       font-weight: 600;
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .header-meta .week-date {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      margin-top: 4px;
-    }
-
-    /* ── BODY ── */
-    .body { padding: 36px 48px 48px; }
-
-    /* ── SECTION LABEL ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #ff8c00;
-      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,140,0,0.4), transparent);
+      gap: 8px;
     }
 
-    /* ── DAILY TABLE ── */
-    .daily-table-wrap {
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 36px;
-    }
-    table.daily {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table.daily thead tr {
-      background: #1e2029;
-    }
-    table.daily thead th {
-      padding: 14px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #aab0c0;
-      text-align: center;
-      border-bottom: 2px solid rgba(255,140,0,0.3);
-    }
-    table.daily thead th:first-child { text-align: left; padding-left: 20px; }
-
-    table.daily tbody tr {
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.15s;
-    }
-    table.daily tbody tr:hover { background: rgba(255,255,255,0.03); }
-    table.daily tbody tr:last-child { border-bottom: none; }
-
-    table.daily tbody td {
-      padding: 12px 10px;
-      font-size: 13px;
-      color: #c8cdd8;
-      text-align: center;
-    }
-    table.daily tbody td:first-child {
-      text-align: left;
-      padding-left: 20px;
-      font-weight: 500;
-      color: #e2e5ed;
-    }
-
-    /* category color dots */
-    .dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    .dot-amarelo    { background: #f5c518; }
-    .dot-erro       { background: #e84040; }
-    .dot-onhold     { background: #4a9eff; }
-    .dot-fleet      { background: #3ecf8e; }
-    .dot-office     { background: #b57bee; }
-
-    /* value chips */
-    .val {
-      display: inline-block;
-      min-width: 48px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      background: rgba(255,255,255,0.05);
-      color: #dde1ea;
-    }
-    .val.empty { color: #3a3e4a; background: transparent; }
-
-    /* total row */
-    tr.total-row {
-      background: rgba(255,140,0,0.08) !important;
-      border-top: 1px solid rgba(255,140,0,0.25) !important;
-    }
-    tr.total-row td {
-      font-weight: 700 !important;
-      color: #ff9f2f !important;
-      font-size: 14px !important;
-    }
-    tr.total-row td .val {
-      background: rgba(255,140,0,0.15);
-      color: #ffb347;
-    }
-
-    /* ── BOTTOM GRID ── */
-    .bottom-grid {
+    /* ── KPI CARDS ── */
+    .kpi-grid {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 28px;
-      align-items: start;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1px solid var(--shopee-border);
+    }
+    .kpi-label { font-size: 13px; color: var(--shopee-text-secondary); font-weight: 500; margin-bottom: 12px; }
+    .kpi-value { font-size: 32px; font-weight: 800; color: var(--shopee-text-primary); }
+    .kpi-trend { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .trend-up { color: var(--shopee-success); }
+    .trend-down { color: var(--shopee-orange); }
+
+    /* ── DASHBOARD GRID ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
     }
 
-    /* ── INDIVIDUAL CARD ── */
-    .individual-card {
-      background: #1a1d26;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      overflow: hidden;
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1px solid var(--shopee-border);
+      padding: 24px;
     }
-    .individual-card .card-header {
-      background: linear-gradient(135deg, #ff8c00, #e85d00);
-      padding: 14px 20px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: #fff;
-    }
-    .individual-card .card-body { padding: 8px 0; }
-    .individual-row {
+    .card-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.15s;
-    }
-    .individual-row:last-child { border-bottom: none; }
-    .individual-row:hover { background: rgba(255,255,255,0.03); }
-    .individual-row .cat-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: #c8cdd8;
-      display: flex;
       align-items: center;
+      margin-bottom: 24px;
     }
-    .individual-row .cat-val {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-    }
+    .card-title { font-size: 18px; font-weight: 700; }
 
-    /* progress bar */
-    .bar-wrap {
-      flex: 1;
-      margin: 0 14px;
-      height: 5px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      border-radius: 99px;
-    }
-
-    /* ── TOTAL CARD ── */
-    .total-card {
-      background: #1a1d26;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .total-card .card-header {
-      background: linear-gradient(135deg, #ff8c00, #e85d00);
-      padding: 14px 28px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: #fff;
-    }
-    .total-card .card-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 28px;
-      position: relative;
-      overflow: hidden;
-    }
-    .total-card .card-body::before {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(255,140,0,0.12) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-    .total-number {
-      font-size: 96px;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: -4px;
-      line-height: 1;
-      position: relative;
-      z-index: 1;
-      text-shadow: 0 0 60px rgba(255,140,0,0.5);
-    }
-    .total-sublabel {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 1px;
-      margin-top: 12px;
-      position: relative; z-index: 1;
-    }
-
-    /* mini stat chips below total */
-    .mini-stats {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 28px;
-      position: relative; z-index: 1;
-    }
-    .mini-chip {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 99px;
-      padding: 5px 14px;
+    /* ── TABLE STYLE ── */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      padding: 12px 16px;
       font-size: 12px;
       font-weight: 600;
-      color: #aab0c0;
-      display: flex;
+      color: var(--shopee-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--shopee-border);
+    }
+    td { padding: 16px; font-size: 14px; border-bottom: 1px solid #f9f9f9; }
+    tr:last-child td { border-bottom: none; }
+    
+    .cat-tag {
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      font-weight: 600;
     }
-    .mini-chip .chip-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    
+    .val-cell { font-weight: 500; color: var(--shopee-text-primary); text-align: center; }
+    .val-empty { color: #ccc; }
+
+    .total-row { background: #fafafa; font-weight: 700; }
+    .total-row td { color: var(--shopee-orange); }
+
+    /* ── CHART STYLE ── */
+    .chart-item { margin-bottom: 20px; }
+    .chart-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+    .chart-bar-bg { height: 10px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+    .chart-bar-fill { height: 100%; border-radius: 5px; transition: width 1s ease-in-out; }
 
     /* ── FOOTER ── */
     .footer {
-      margin-top: 36px;
+      margin-top: 40px;
       padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--shopee-border);
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-    .footer-note {
-      font-size: 11px;
-      color: #4a4f60;
-      letter-spacing: 0.5px;
-    }
-    .footer-badge {
-      background: rgba(255,140,0,0.1);
-      border: 1px solid rgba(255,140,0,0.2);
-      border-radius: 99px;
-      padding: 5px 16px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #ff9f2f;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--shopee-text-secondary);
     }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-title">Backlog Semanal</div>
-    <div class="header-meta">
-      <div class="week-label">Semana de referência</div>
-      <div class="week-date">Semana atual</div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/ca5a1282e30427bc.png" alt="Shopee">
+      <span>Analytics</span>
     </div>
+    <div class="nav-item active">Dashboard Geral</div>
+    <div class="nav-item">Relatórios Semanais</div>
+    <div class="nav-item">Performance Operacional</div>
+    <div class="nav-item">Configurações</div>
   </div>
 
-  <!-- BODY -->
-  <div class="body">
-
-    <!-- DAILY TABLE -->
-    <div class="section-label">Distribuição diária</div>
-    <div class="daily-table-wrap">
-      <table class="daily">
-        <thead>
-          <tr>
-            <th>Categoria</th>
-            <th>Segunda</th>
-            <th>Terça</th>
-            <th>Quarta</th>
-            <th>Quinta</th>
-            <th>Sexta</th>
-            <th>Sábado</th>
-            <th>Domingo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="dot dot-amarelo"></span>Amarelo</td>
-            <td><span class="val">149</span></td>
-            <td><span class="val">51</span></td>
-            <td><span class="val">149</span></td>
-            <td><span class="val">82</span></td>
-            <td><span class="val">209</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-          </tr>
-          <tr>
-            <td><span class="dot dot-erro"></span>Erro operacional</td>
-            <td><span class="val">233</span></td>
-            <td><span class="val">178</span></td>
-            <td><span class="val">230</span></td>
-            <td><span class="val">198</span></td>
-            <td><span class="val">361</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-          </tr>
-          <tr>
-            <td><span class="dot dot-onhold"></span>On hold</td>
-            <td><span class="val">502</span></td>
-            <td><span class="val">252</span></td>
-            <td><span class="val">61</span></td>
-            <td><span class="val">37</span></td>
-            <td><span class="val">2.099</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-          </tr>
-          <tr>
-            <td><span class="dot dot-fleet"></span>Retirada Fleet</td>
-            <td><span class="val">272</span></td>
-            <td><span class="val">109</span></td>
-            <td><span class="val">87</span></td>
-            <td><span class="val">162</span></td>
-            <td><span class="val">187</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-          </tr>
-          <tr>
-            <td><span class="dot dot-office"></span>OFFICE</td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val">3.010</span></td>
-            <td><span class="val empty">—</span></td>
-            <td><span class="val empty">—</span></td>
-          </tr>
-          <tr class="total-row">
-            <td>Total</td>
-            <td><span class="val">1.156</span></td>
-            <td><span class="val">590</span></td>
-            <td><span class="val">527</span></td>
-            <td><span class="val">479</span></td>
-            <td><span class="val">5.866</span></td>
-            <td><span class="val">0</span></td>
-            <td><span class="val">0</span></td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    
+    <div class="header-section">
+      <div class="header-title">
+        <h1>Backlog Semanal - Operações</h1>
+        <p>Visão consolidada de performance e pendências operacionais.</p>
+      </div>
+      <div class="date-badge">
+        📅 Semana 14 • Abr 2026
+      </div>
     </div>
 
-    <!-- BOTTOM GRID -->
-    <div class="bottom-grid">
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Backlog</div>
+        <div class="kpi-value">8.618</div>
+        <div class="kpi-trend trend-down">▼ 12% vs semana anterior</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Pico Diário</div>
+        <div class="kpi-value">5.866</div>
+        <div class="kpi-trend">Sexta-feira</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Maior Categoria</div>
+        <div class="kpi-value">OFFICE</div>
+        <div class="kpi-trend">34.9% do volume total</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">SLA de Resolução</div>
+        <div class="kpi-value">94.2%</div>
+        <div class="kpi-trend trend-up">▲ 2.4% este mês</div>
+      </div>
+    </div>
 
-      <!-- INDIVIDUAL TOTALS -->
-      <div>
-        <div class="section-label">Total individual</div>
-        <div class="individual-card">
-          <div class="card-header">Total Individual por Categoria</div>
-          <div class="card-body">
-
-            <div class="individual-row">
-              <span class="cat-name"><span class="dot dot-amarelo"></span>Amarelo</span>
-              <div class="bar-wrap"><div class="bar-fill" style="width:7.4%;background:#f5c518;"></div></div>
-              <span class="cat-val">640</span>
-            </div>
-
-            <div class="individual-row">
-              <span class="cat-name"><span class="dot dot-erro"></span>Erro operacional</span>
-              <div class="bar-wrap"><div class="bar-fill" style="width:13.9%;background:#e84040;"></div></div>
-              <span class="cat-val">1.200</span>
-            </div>
-
-            <div class="individual-row">
-              <span class="cat-name"><span class="dot dot-onhold"></span>On hold</span>
-              <div class="bar-wrap"><div class="bar-fill" style="width:34.2%;background:#4a9eff;"></div></div>
-              <span class="cat-val">2.951</span>
-            </div>
-
-            <div class="individual-row">
-              <span class="cat-name"><span class="dot dot-fleet"></span>Retirada Fleet</span>
-              <div class="bar-wrap"><div class="bar-fill" style="width:9.5%;background:#3ecf8e;"></div></div>
-              <span class="cat-val">817</span>
-            </div>
-
-            <div class="individual-row">
-              <span class="cat-name"><span class="dot dot-office"></span>OFFICE</span>
-              <div class="bar-wrap"><div class="bar-fill" style="width:34.9%;background:#b57bee;"></div></div>
-              <span class="cat-val">3.010</span>
-            </div>
-
-          </div>
+    <!-- DASHBOARD GRID -->
+    <div class="dashboard-grid">
+      
+      <!-- TABLE CARD -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Distribuição Diária por Categoria</div>
         </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th style="text-align:center">Seg</th>
+              <th style="text-align:center">Ter</th>
+              <th style="text-align:center">Qua</th>
+              <th style="text-align:center">Qui</th>
+              <th style="text-align:center">Sex</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-warning)"></span>Amarelo</div></td>
+              <td class="val-cell">149</td><td class="val-cell">51</td><td class="val-cell">149</td><td class="val-cell">82</td><td class="val-cell">209</td>
+            </tr>
+            <tr>
+              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-orange)"></span>Erro Operacional</div></td>
+              <td class="val-cell">233</td><td class="val-cell">178</td><td class="val-cell">230</td><td class="val-cell">198</td><td class="val-cell">361</td>
+            </tr>
+            <tr>
+              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-info)"></span>On Hold</div></td>
+              <td class="val-cell">502</td><td class="val-cell">252</td><td class="val-cell">61</td><td class="val-cell">37</td><td class="val-cell">2.099</td>
+            </tr>
+            <tr>
+              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-success)"></span>Retirada Fleet</div></td>
+              <td class="val-cell">272</td><td class="val-cell">109</td><td class="val-cell">87</td><td class="val-cell">162</td><td class="val-cell">187</td>
+            </tr>
+            <tr>
+              <td><div class="cat-tag"><span class="dot" style="background:#757575"></span>OFFICE</div></td>
+              <td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell">3.010</td>
+            </tr>
+            <tr class="total-row">
+              <td>TOTAL DIÁRIO</td>
+              <td class="val-cell">1.156</td><td class="val-cell">590</td><td class="val-cell">527</td><td class="val-cell">479</td><td class="val-cell">5.866</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <!-- TOTAL BACKLOG -->
-      <div>
-        <div class="section-label">Total de backlog na semana</div>
-        <div class="total-card">
-          <div class="card-header">Total de Backlog na Semana</div>
-          <div class="card-body">
-            <div class="total-number">8.618</div>
-            <div class="total-sublabel">ocorrências acumuladas na semana</div>
-            <div class="mini-stats">
-              <div class="mini-chip"><span class="chip-dot" style="background:#f5c518;"></span>Amarelo: 640</div>
-              <div class="mini-chip"><span class="chip-dot" style="background:#e84040;"></span>Erro op.: 1.200</div>
-              <div class="mini-chip"><span class="chip-dot" style="background:#4a9eff;"></span>On hold: 2.951</div>
-              <div class="mini-chip"><span class="chip-dot" style="background:#3ecf8e;"></span>Fleet: 817</div>
-              <div class="mini-chip"><span class="chip-dot" style="background:#b57bee;"></span>Office: 3.010</div>
-            </div>
-          </div>
+      <!-- CHART CARD -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Volume por Categoria</div>
         </div>
+        
+        <div class="chart-item">
+          <div class="chart-info"><span>OFFICE</span><span>3.010</span></div>
+          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 100%; background: #757575;"></div></div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-info"><span>On Hold</span><span>2.951</span></div>
+          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 98%; background: var(--shopee-info);"></div></div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-info"><span>Erro Operacional</span><span>1.200</span></div>
+          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 40%; background: var(--shopee-orange);"></div></div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-info"><span>Retirada Fleet</span><span>817</span></div>
+          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 27%; background: var(--shopee-success);"></div></div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-info"><span>Amarelo</span><span>640</span></div>
+          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 21%; background: var(--shopee-warning);"></div></div>
+        </div>
+
       </div>
 
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
-      <span class="footer-note">Gerado automaticamente · Dados referentes à semana corrente</span>
-      <span class="footer-badge">Backlog Report</span>
+      <span>© 2026 Shopee Brasil • Operações Logísticas</span>
+      <span>Confidencial • Apenas para uso interno</span>
     </div>
 
-  </div><!-- /body -->
-</div><!-- /page -->
+  </div>
+
 </body>
 </html>
