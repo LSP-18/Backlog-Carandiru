@@ -2,120 +2,320 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shopee - Executive Backlog Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopee Premium 3D Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --shopee-orange: #ee4d2d;
-      --shopee-orange-hover: #f05d40;
-      --shopee-bg: #f6f6f6;
-      --shopee-card-bg: #ffffff;
-      --shopee-text-primary: #222222;
-      --shopee-text-secondary: #666666;
-      --shopee-border: #e5e5e5;
-      --shopee-success: #26aa99;
-      --shopee-warning: #f5c518;
-      --shopee-info: #0055aa;
-      --shopee-sidebar: #ffffff;
+    /* ========== RESET & BASE ========== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--shopee-bg);
-      color: var(--shopee-text-primary);
-      display: flex;
-      min-height: 100vh;
+      background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f3f4f6 100%);
+      color: #222222;
+      overflow: hidden;
     }
 
-    /* ── SIDEBAR (Simulada para estilo profissional) ── */
+    /* ========== SCROLLBAR ========== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ee4d2d;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d43d1d;
+    }
+
+    /* ========== LAYOUT ========== */
+    .container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      perspective: 1200px;
+    }
+
+    /* ========== SIDEBAR ========== */
     .sidebar {
       width: 240px;
-      background: var(--shopee-sidebar);
-      border-right: 1px solid var(--shopee-border);
+      background: white;
+      border-right: 1px solid #e5e5e5;
       display: flex;
       flex-direction: column;
-      padding: 24px 0;
+      padding: 24px;
       flex-shrink: 0;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+      overflow-y: auto;
     }
+
     .sidebar-logo {
-      padding: 0 24px 32px;
       display: flex;
       align-items: center;
       gap: 12px;
+      margin-bottom: 32px;
+      cursor: pointer;
     }
-    .sidebar-logo img { height: 32px; }
-    .sidebar-logo span { font-weight: 700; font-size: 18px; color: var(--shopee-orange); }
-    
+
+    .sidebar-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ee4d2d 0%, #f05d40 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      transform: translateZ(20px);
+    }
+
+    .sidebar-logo:hover .sidebar-logo-icon {
+      transform: scale(1.1) translateZ(20px);
+      box-shadow: 0 6px 20px rgba(238, 77, 45, 0.4);
+    }
+
+    .sidebar-logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ee4d2d;
+      transition: color 0.3s;
+    }
+
+    .sidebar-logo:hover span {
+      color: #f05d40;
+    }
+
     .nav-item {
-      padding: 12px 24px;
+      padding: 12px 16px;
       font-size: 14px;
       font-weight: 500;
-      color: var(--shopee-text-secondary);
+      color: #666666;
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.2s;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      margin-bottom: 8px;
+      transform: translateX(0);
     }
-    .nav-item.active {
-      color: var(--shopee-orange);
-      background: #fff5f1;
-      border-right: 3px solid var(--shopee-orange);
-    }
-    .nav-item:hover:not(.active) { background: #f9f9f9; }
 
-    /* ── MAIN CONTENT ── */
+    .nav-item:hover {
+      background: #f9f9f9;
+      transform: translateX(4px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-item.active {
+      color: #ee4d2d;
+      background: #fff5f1;
+      border-left: 4px solid #ee4d2d;
+      padding-left: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(238, 77, 45, 0.1);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid #e5e5e5;
+      font-size: 12px;
+      color: #999999;
+    }
+
+    /* ========== MAIN CONTENT ========== */
     .main-content {
       flex: 1;
-      padding: 32px 48px;
       overflow-y: auto;
+      padding: 32px 48px;
+      perspective: 1000px;
     }
 
+    /* ========== MOBILE TOGGLE ========== */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 50;
+      width: 44px;
+      height: 44px;
+      background: #ee4d2d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+      transition: all 0.3s;
+    }
+
+    .mobile-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(238, 77, 45, 0.4);
+    }
+
+    /* ========== HEADER ========== */
     .header-section {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       margin-bottom: 32px;
+      animation: fadeInUp 0.6s ease-out;
     }
-    .header-title h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-    .header-title p { color: var(--shopee-text-secondary); font-size: 14px; }
+
+    .header-title h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #222222 0%, #555555 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-title p {
+      color: #666666;
+      font-size: 14px;
+    }
 
     .date-badge {
       background: white;
-      padding: 8px 16px;
+      padding: 12px 20px;
       border-radius: 8px;
-      border: 1px solid var(--shopee-border);
+      border: 1px solid #e5e5e5;
       font-size: 13px;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 12px rgba(238, 77, 45, 0.08);
+      transition: all 0.3s;
+      animation: fadeInUp 0.6s ease-out 0.1s backwards;
     }
 
-    /* ── KPI CARDS ── */
+    .date-badge:hover {
+      box-shadow: 0 6px 20px rgba(238, 77, 45, 0.15);
+      border-color: #f5e0d8;
+    }
+
+    /* ========== KPI GRID ========== */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       margin-bottom: 32px;
     }
+
     .kpi-card {
       background: white;
       padding: 24px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      border: 1px solid var(--shopee-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e5e5;
+      transform-style: preserve-3d;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+      animation: slideInUp3D 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards;
     }
-    .kpi-label { font-size: 13px; color: var(--shopee-text-secondary); font-weight: 500; margin-bottom: 12px; }
-    .kpi-value { font-size: 32px; font-weight: 800; color: var(--shopee-text-primary); }
-    .kpi-trend { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
-    .trend-up { color: var(--shopee-success); }
-    .trend-down { color: var(--shopee-orange); }
 
-    /* ── DASHBOARD GRID ── */
+    .kpi-card:nth-child(1) {
+      animation-delay: 0ms;
+    }
+
+    .kpi-card:nth-child(2) {
+      animation-delay: 100ms;
+    }
+
+    .kpi-card:nth-child(3) {
+      animation-delay: 200ms;
+    }
+
+    .kpi-card:nth-child(4) {
+      animation-delay: 300ms;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(238, 77, 45, 0.05) 0%, transparent 100%);
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-12px) rotateX(3deg) rotateZ(1deg);
+      box-shadow: 0 20px 50px rgba(238, 77, 45, 0.15);
+      background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    }
+
+    .kpi-card:hover::before {
+      opacity: 1;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: #999999;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: #222222;
+      margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .kpi-trend {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.3s;
+    }
+
+    .trend-up {
+      color: #26aa99;
+    }
+
+    .trend-down {
+      color: #ee4d2d;
+    }
+
+    .trend-neutral {
+      color: #666666;
+    }
+
+    /* ========== DASHBOARD GRID ========== */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -125,205 +325,573 @@
     .card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      border: 1px solid var(--shopee-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border: 1px solid #e5e5e5;
       padding: 24px;
+      transform-style: preserve-3d;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
+
+    .card:hover {
+      transform: translateY(-10px) rotateX(2deg);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+    }
+
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
     }
-    .card-title { font-size: 18px; font-weight: 700; }
 
-    /* ── TABLE STYLE ── */
-    table { width: 100%; border-collapse: collapse; }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #222222;
+    }
+
+    /* ========== TABLE ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     th {
       text-align: left;
       padding: 12px 16px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--shopee-text-secondary);
+      color: #999999;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--shopee-border);
+      border-bottom: 2px solid #e5e5e5;
     }
-    td { padding: 16px; font-size: 14px; border-bottom: 1px solid #f9f9f9; }
-    tr:last-child td { border-bottom: none; }
-    
+
+    td {
+      padding: 16px;
+      font-size: 14px;
+      border-bottom: 1px solid #f9f9f9;
+      transition: all 0.3s;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    tbody tr:hover {
+      background: linear-gradient(90deg, #f9f9f9 0%, #ffffff 100%);
+      transform: translateX(4px);
+      box-shadow: -4px 0 12px rgba(238, 77, 45, 0.08);
+    }
+
     .cat-tag {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-weight: 600;
     }
-    .dot { width: 8px; height: 8px; border-radius: 50%; }
-    
-    .val-cell { font-weight: 500; color: var(--shopee-text-primary); text-align: center; }
-    .val-empty { color: #ccc; }
 
-    .total-row { background: #fafafa; font-weight: 700; }
-    .total-row td { color: var(--shopee-orange); }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-    /* ── CHART STYLE ── */
-    .chart-item { margin-bottom: 20px; }
-    .chart-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
-    .chart-bar-bg { height: 10px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
-    .chart-bar-fill { height: 100%; border-radius: 5px; transition: width 1s ease-in-out; }
+    .val-cell {
+      font-weight: 500;
+      color: #222222;
+      text-align: center;
+    }
 
-    /* ── FOOTER ── */
+    .val-empty {
+      color: #cccccc;
+    }
+
+    .total-row {
+      background: linear-gradient(90deg, #fff5f1 0%, #ffffff 100%);
+      font-weight: 700;
+      border-top: 2px solid #e5e5e5;
+    }
+
+    .total-row td {
+      color: #ee4d2d;
+      font-weight: 700;
+    }
+
+    /* ========== PROGRESS BARS ========== */
+    .chart-item {
+      margin-bottom: 20px;
+      animation: fadeInUp 0.4s ease-out backwards;
+    }
+
+    .chart-item:nth-child(1) {
+      animation-delay: 0ms;
+    }
+
+    .chart-item:nth-child(2) {
+      animation-delay: 80ms;
+    }
+
+    .chart-item:nth-child(3) {
+      animation-delay: 160ms;
+    }
+
+    .chart-item:nth-child(4) {
+      animation-delay: 240ms;
+    }
+
+    .chart-item:nth-child(5) {
+      animation-delay: 320ms;
+    }
+
+    .chart-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .chart-bar-bg {
+      height: 12px;
+      background: linear-gradient(90deg, #f0f0f0 0%, #e8e8e8 100%);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      position: relative;
+    }
+
+    .chart-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+      border-radius: inherit;
+    }
+
+    /* ========== FOOTER ========== */
     .footer {
       margin-top: 40px;
       padding-top: 20px;
-      border-top: 1px solid var(--shopee-border);
+      border-top: 1px solid #e5e5e5;
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      color: var(--shopee-text-secondary);
+      color: #999999;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideInUp3D {
+      from {
+        opacity: 0;
+        transform: translateY(20px) rotateX(-10deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .main-content {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 40;
+        width: 224px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.open {
+        display: flex;
+      }
+
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 30;
+      }
+
+      .sidebar-overlay.open {
+        display: block;
+      }
+
+      .mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-content {
+        padding: 16px;
+        padding-top: 70px;
+      }
+
+      .header-section {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .header-title h1 {
+        font-size: 24px;
+      }
+
+      .header-title p {
+        font-size: 13px;
+      }
+
+      .date-badge {
+        width: 100%;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .kpi-card {
+        padding: 16px;
+      }
+
+      .kpi-label {
+        font-size: 11px;
+      }
+
+      .kpi-value {
+        font-size: 24px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .card-title {
+        font-size: 16px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 12px 8px;
+      }
+
+      .val-cell {
+        font-size: 12px;
+      }
+
+      .chart-info {
+        font-size: 12px;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-title h1 {
+        font-size: 20px;
+      }
+
+      .kpi-card {
+        padding: 12px;
+      }
+
+      .kpi-label {
+        font-size: 10px;
+      }
+
+      .kpi-value {
+        font-size: 20px;
+      }
+
+      table {
+        font-size: 11px;
+      }
+
+      th,
+      td {
+        padding: 10px 6px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">S</div>
+        <span>Analytics</span>
+      </div>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="sidebar-logo">
-      <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/ca5a1282e30427bc.png" alt="Shopee">
-      <span>Analytics</span>
+      <nav>
+        <div class="nav-item active">Dashboard Geral</div>
+        <div class="nav-item">Relatórios Semanais</div>
+        <div class="nav-item">Performance Operacional</div>
+        <div class="nav-item">Configurações</div>
+      </nav>
+
+      <div class="sidebar-footer">© 2026 Shopee Brasil</div>
     </div>
-    <div class="nav-item active">Dashboard Geral</div>
-    <div class="nav-item">Relatórios Semanais</div>
-    <div class="nav-item">Performance Operacional</div>
-    <div class="nav-item">Configurações</div>
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MOBILE TOGGLE -->
+    <button class="mobile-toggle" id="mobileToggle">☰</button>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <!-- HEADER -->
+      <div class="header-section">
+        <div class="header-title">
+          <h1>Backlog Semanal - Operações</h1>
+          <p>Visão consolidada de performance e pendências operacionais.</p>
+        </div>
+        <div class="date-badge">📅 Semana 14 • Abr 2026</div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Backlog</div>
+          <div class="kpi-value">8.618</div>
+          <div class="kpi-trend trend-down">▼ 12% vs semana anterior</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pico Diário</div>
+          <div class="kpi-value">5.866</div>
+          <div class="kpi-trend trend-neutral">Sexta-feira</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Maior Categoria</div>
+          <div class="kpi-value">OFFICE</div>
+          <div class="kpi-trend trend-neutral">34.9% do volume total</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">SLA de Resolução</div>
+          <div class="kpi-value">94.2%</div>
+          <div class="kpi-trend trend-up">▲ 2.4% este mês</div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD GRID -->
+      <div class="dashboard-grid">
+        <!-- TABLE CARD -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Distribuição Diária por Categoria</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                <th style="text-align: center">Seg</th>
+                <th style="text-align: center">Ter</th>
+                <th style="text-align: center">Qua</th>
+                <th style="text-align: center">Qui</th>
+                <th style="text-align: center">Sex</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="cat-tag"><span class="dot" style="background: #f5c518"></span>Amarelo</div></td>
+                <td class="val-cell">149</td>
+                <td class="val-cell">51</td>
+                <td class="val-cell">149</td>
+                <td class="val-cell">82</td>
+                <td class="val-cell">209</td>
+              </tr>
+              <tr>
+                <td><div class="cat-tag"><span class="dot" style="background: #ee4d2d"></span>Erro Operacional</div></td>
+                <td class="val-cell">233</td>
+                <td class="val-cell">178</td>
+                <td class="val-cell">230</td>
+                <td class="val-cell">198</td>
+                <td class="val-cell">361</td>
+              </tr>
+              <tr>
+                <td><div class="cat-tag"><span class="dot" style="background: #0055aa"></span>On Hold</div></td>
+                <td class="val-cell">502</td>
+                <td class="val-cell">252</td>
+                <td class="val-cell">61</td>
+                <td class="val-cell">37</td>
+                <td class="val-cell">2.099</td>
+              </tr>
+              <tr>
+                <td><div class="cat-tag"><span class="dot" style="background: #26aa99"></span>Retirada Fleet</div></td>
+                <td class="val-cell">272</td>
+                <td class="val-cell">109</td>
+                <td class="val-cell">87</td>
+                <td class="val-cell">162</td>
+                <td class="val-cell">187</td>
+              </tr>
+              <tr>
+                <td><div class="cat-tag"><span class="dot" style="background: #757575"></span>OFFICE</div></td>
+                <td class="val-cell val-empty">-</td>
+                <td class="val-cell val-empty">-</td>
+                <td class="val-cell val-empty">-</td>
+                <td class="val-cell val-empty">-</td>
+                <td class="val-cell">3.010</td>
+              </tr>
+              <tr class="total-row">
+                <td>TOTAL DIÁRIO</td>
+                <td class="val-cell">1.156</td>
+                <td class="val-cell">590</td>
+                <td class="val-cell">527</td>
+                <td class="val-cell">479</td>
+                <td class="val-cell">5.866</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- CHART CARD -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Volume por Categoria</div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-info"><span>OFFICE</span><span>3.010</span></div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 100%; background: linear-gradient(90deg, #757575 0%, #8a8a8a 100%)"></div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-info"><span>On Hold</span><span>2.951</span></div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 98%; background: linear-gradient(90deg, #0055aa 0%, #0066dd 100%)"></div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-info"><span>Erro Operacional</span><span>1.200</span></div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 40%; background: linear-gradient(90deg, #ee4d2d 0%, #f05d40 100%)"></div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-info"><span>Retirada Fleet</span><span>817</span></div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 27%; background: linear-gradient(90deg, #26aa99 0%, #3bbbaa 100%)"></div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-info"><span>Amarelo</span><span>640</span></div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 21%; background: linear-gradient(90deg, #f5c518 0%, #f5d540 100%)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <span>© 2026 Shopee Brasil • Operações Logísticas</span>
+        <span>Confidencial • Apenas para uso interno</span>
+      </div>
+    </div>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-    
-    <div class="header-section">
-      <div class="header-title">
-        <h1>Backlog Semanal - Operações</h1>
-        <p>Visão consolidada de performance e pendências operacionais.</p>
-      </div>
-      <div class="date-badge">
-        📅 Semana 14 • Abr 2026
-      </div>
-    </div>
+  <script>
+    // Mobile sidebar toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    <!-- KPI CARDS -->
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Total Backlog</div>
-        <div class="kpi-value">8.618</div>
-        <div class="kpi-trend trend-down">▼ 12% vs semana anterior</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Pico Diário</div>
-        <div class="kpi-value">5.866</div>
-        <div class="kpi-trend">Sexta-feira</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Maior Categoria</div>
-        <div class="kpi-value">OFFICE</div>
-        <div class="kpi-trend">34.9% do volume total</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">SLA de Resolução</div>
-        <div class="kpi-value">94.2%</div>
-        <div class="kpi-trend trend-up">▲ 2.4% este mês</div>
-      </div>
-    </div>
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('open');
+    }
 
-    <!-- DASHBOARD GRID -->
-    <div class="dashboard-grid">
-      
-      <!-- TABLE CARD -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Distribuição Diária por Categoria</div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Categoria</th>
-              <th style="text-align:center">Seg</th>
-              <th style="text-align:center">Ter</th>
-              <th style="text-align:center">Qua</th>
-              <th style="text-align:center">Qui</th>
-              <th style="text-align:center">Sex</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-warning)"></span>Amarelo</div></td>
-              <td class="val-cell">149</td><td class="val-cell">51</td><td class="val-cell">149</td><td class="val-cell">82</td><td class="val-cell">209</td>
-            </tr>
-            <tr>
-              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-orange)"></span>Erro Operacional</div></td>
-              <td class="val-cell">233</td><td class="val-cell">178</td><td class="val-cell">230</td><td class="val-cell">198</td><td class="val-cell">361</td>
-            </tr>
-            <tr>
-              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-info)"></span>On Hold</div></td>
-              <td class="val-cell">502</td><td class="val-cell">252</td><td class="val-cell">61</td><td class="val-cell">37</td><td class="val-cell">2.099</td>
-            </tr>
-            <tr>
-              <td><div class="cat-tag"><span class="dot" style="background:var(--shopee-success)"></span>Retirada Fleet</div></td>
-              <td class="val-cell">272</td><td class="val-cell">109</td><td class="val-cell">87</td><td class="val-cell">162</td><td class="val-cell">187</td>
-            </tr>
-            <tr>
-              <td><div class="cat-tag"><span class="dot" style="background:#757575"></span>OFFICE</div></td>
-              <td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell val-empty">-</td><td class="val-cell">3.010</td>
-            </tr>
-            <tr class="total-row">
-              <td>TOTAL DIÁRIO</td>
-              <td class="val-cell">1.156</td><td class="val-cell">590</td><td class="val-cell">527</td><td class="val-cell">479</td><td class="val-cell">5.866</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    mobileToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
 
-      <!-- CHART CARD -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Volume por Categoria</div>
-        </div>
-        
-        <div class="chart-item">
-          <div class="chart-info"><span>OFFICE</span><span>3.010</span></div>
-          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 100%; background: #757575;"></div></div>
-        </div>
+    // Close sidebar when clicking on a nav item
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('open');
+          sidebarOverlay.classList.remove('open');
+        }
+      });
+    });
 
-        <div class="chart-item">
-          <div class="chart-info"><span>On Hold</span><span>2.951</span></div>
-          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 98%; background: var(--shopee-info);"></div></div>
-        </div>
-
-        <div class="chart-item">
-          <div class="chart-info"><span>Erro Operacional</span><span>1.200</span></div>
-          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 40%; background: var(--shopee-orange);"></div></div>
-        </div>
-
-        <div class="chart-item">
-          <div class="chart-info"><span>Retirada Fleet</span><span>817</span></div>
-          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 27%; background: var(--shopee-success);"></div></div>
-        </div>
-
-        <div class="chart-item">
-          <div class="chart-info"><span>Amarelo</span><span>640</span></div>
-          <div class="chart-bar-bg"><div class="chart-bar-fill" style="width: 21%; background: var(--shopee-warning);"></div></div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="footer">
-      <span>© 2026 Shopee Brasil • Operações Logísticas</span>
-      <span>Confidencial • Apenas para uso interno</span>
-    </div>
-
-  </div>
-
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('open');
+      }
+    });
+  </script>
 </body>
 </html>
