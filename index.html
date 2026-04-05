@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backlog Carandiru</title>
+    <title>Backlog Carandiru - Shopee Logistics</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -47,7 +47,7 @@
             background-color: var(--shopee-bg);
             color: var(--shopee-text-main);
             line-height: 1.6;
-            padding: 20px;
+            padding: 24px; /* Aumentado para mais respiro */
             -webkit-font-smoothing: antialiased;
         }
 
@@ -59,10 +59,10 @@
         /* --- HEADER --- */
         header {
             background: var(--shopee-white);
-            padding: 20px 32px;
+            padding: 24px 32px;
             border-radius: var(--radius);
             box-shadow: var(--shopee-shadow);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -97,11 +97,19 @@
             color: var(--shopee-text-muted);
         }
 
-        /* --- NAVIGATION TABS --- */
+        /* --- NAVIGATION & FILTERS --- */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
         .nav-tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 24px;
             background: #E8E8E8;
             padding: 5px;
             border-radius: 10px;
@@ -127,6 +135,34 @@
             background: var(--shopee-white);
             color: var(--shopee-orange);
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--shopee-white);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shopee-shadow);
+            border: 1px solid var(--shopee-border);
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--shopee-text-muted);
+        }
+
+        .filter-group select {
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--shopee-orange);
+            cursor: pointer;
+            outline: none;
+            background: transparent;
         }
 
         .tab-content {
@@ -199,7 +235,7 @@
 
         th {
             background: #FAFAFA;
-            padding: 14px 24px;
+            padding: 16px 24px;
             font-size: 11px;
             font-weight: 700;
             color: var(--shopee-text-muted);
@@ -207,7 +243,7 @@
             border-bottom: 1px solid var(--shopee-border);
         }
 
-        td { padding: 14px 24px; font-size: 14px; border-bottom: 1px solid var(--shopee-border); }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--shopee-border); }
 
         .total-row { background: #FAFAFA; font-weight: 800; color: var(--shopee-orange); }
 
@@ -231,14 +267,20 @@
             margin-bottom: 24px;
         }
 
-        .chart-container { position: relative; height: 300px; width: 100%; padding: 20px; }
+        .chart-container { position: relative; height: 320px; width: 100%; padding: 20px; }
 
         /* --- FOOTER --- */
         footer { text-align: center; padding: 40px 0; color: var(--shopee-text-muted); font-size: 12px; }
 
         @media (max-width: 768px) {
+            body { padding: 12px; }
             .charts-row { grid-template-columns: 1fr; }
-            header { flex-direction: column; gap: 15px; text-align: center; }
+            header { flex-direction: column; gap: 15px; text-align: center; padding: 20px; }
+            .nav-bar { flex-direction: column; align-items: stretch; }
+            .nav-tabs { width: 100%; justify-content: center; }
+            .filter-group { width: 100%; justify-content: center; }
+            .stat-card { padding: 16px; }
+            .chart-container { height: 350px; padding: 10px; }
         }
     </style>
 </head>
@@ -255,18 +297,28 @@
             </div>
         </div>
         <div class="header-meta">
-            Relatório Logístico • <strong>Emanuel Brendon</strong>
+            Relatório Logístico • <strong>Shopee Logistics</strong>
         </div>
     </header>
 
-    <!-- NAVIGATION TABS -->
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="openTab('resumo')">
-            <i data-lucide="layout-dashboard" size="16"></i> Resumo Semanal
-        </button>
-        <button class="tab-btn" onclick="openTab('historico')">
-            <i data-lucide="history" size="16"></i> Histórico Consolidado
-        </button>
+    <!-- NAVIGATION & FILTERS -->
+    <div class="nav-bar">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="openTab('resumo')">
+                <i data-lucide="layout-dashboard" size="16"></i> Resumo Semanal
+            </button>
+            <button class="tab-btn" onclick="openTab('historico')">
+                <i data-lucide="history" size="16"></i> Histórico Consolidado
+            </button>
+        </div>
+
+        <div id="filter-container" class="filter-group">
+            <i data-lucide="calendar" size="16" style="color: var(--shopee-orange)"></i>
+            <label for="week-select">Semana:</label>
+            <select id="week-select" onchange="updateDashboardByWeek()">
+                <!-- JS Populated -->
+            </select>
+        </div>
     </div>
 
     <!-- TAB 1: RESUMO SEMANAL -->
@@ -276,69 +328,39 @@
                 <div class="stat-icon orange"><i data-lucide="package"></i></div>
                 <div class="stat-info">
                     <div class="label">Total da Semana</div>
-                    <div class="value">12.894</div>
+                    <div id="resumo-total" class="value">---</div>
                 </div>
             </div>
             <div class="card stat-card">
                 <div class="stat-icon blue"><i data-lucide="clock"></i></div>
                 <div class="stat-info">
                     <div class="label">Maior Volume</div>
-                    <div class="value">OFFICE</div>
+                    <div id="resumo-maior" class="value">---</div>
                 </div>
             </div>
             <div class="card stat-card">
                 <div class="stat-icon green"><i data-lucide="check-circle"></i></div>
                 <div class="stat-info">
                     <div class="label">Status Atual</div>
-                    <div class="value" style="color: var(--shopee-orange);">CRÍTICO</div>
+                    <div id="resumo-status" class="value">---</div>
                 </div>
             </div>
         </div>
 
         <div class="card">
             <div class="table-header">
-                <h2>Distribuição Diária (Semana 30/03 - 05/04)</h2>
-                <span class="status-badge status-critico">Dados em Tempo Real</span>
+                <h2 id="resumo-table-title">Distribuição Diária</h2>
+                <span id="resumo-badge" class="status-badge">Dados Consolidados</span>
             </div>
             <div class="table-wrapper">
-                <table>
+                <table id="resumo-table">
                     <thead>
-                        <tr>
-                            <th>Categoria</th>
-                            <th>Seg</th>
-                            <th>Ter</th>
-                            <th>Qua</th>
-                            <th>Qui</th>
-                            <th>Sex</th>
-                            <th>Sáb</th>
-                            <th>Dom</th>
+                        <tr id="resumo-table-head">
+                            <!-- JS Populated -->
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Amarelo</strong></td>
-                            <td>149</td><td>51</td><td>149</td><td>82</td><td>209</td><td>177</td><td>57</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Erro Operacional</strong></td>
-                            <td>233</td><td>178</td><td>230</td><td>198</td><td>361</td><td>147</td><td>165</td>
-                        </tr>
-                        <tr>
-                            <td><strong>On Hold</strong></td>
-                            <td>502</td><td>252</td><td>61</td><td>37</td><td>2.099</td><td>45</td><td>29</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Retirada Fleet</strong></td>
-                            <td>272</td><td>109</td><td>87</td><td>162</td><td>187</td><td>65</td><td>120</td>
-                        </tr>
-                        <tr>
-                            <td><strong>OFFICE</strong></td>
-                            <td>-</td><td>-</td><td>-</td><td>-</td><td>3.010</td><td>2.484</td><td>987</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>TOTAL DIÁRIO</td>
-                            <td>1.156</td><td>590</td><td>527</td><td>479</td><td>5.866</td><td>2.918</td><td>1.358</td>
-                        </tr>
+                        <!-- JS Populated -->
                     </tbody>
                 </table>
             </div>
@@ -352,16 +374,16 @@
                 <div class="stat-icon green"><i data-lucide="trending-down"></i></div>
                 <div class="stat-info">
                     <div class="label">Melhor Semana</div>
-                    <div class="value">8.700</div>
-                    <div class="sub">16/03 - 22/03</div>
+                    <div id="hist-best-val" class="value">---</div>
+                    <div id="hist-best-date" class="sub">---</div>
                 </div>
             </div>
             <div class="card stat-card">
                 <div class="stat-icon orange"><i data-lucide="trending-up"></i></div>
                 <div class="stat-info">
                     <div class="label">Pior Semana</div>
-                    <div class="value">12.894</div>
-                    <div class="sub">30/03 - 05/04</div>
+                    <div id="hist-worst-val" class="value">---</div>
+                    <div id="hist-worst-date" class="sub">---</div>
                 </div>
             </div>
         </div>
@@ -416,17 +438,65 @@
     </div>
 
     <footer>
-        © 2026 Shopee Logistics • Backlog Carandiru • Desenvolvedor Emanuel Brendon  <i data-lucide="heart" size="12" style="display: inline; color: var(--shopee-orange); fill: var(--shopee-orange)"></i>
+        © 2026 Shopee Logistics • Backlog Carandiru • Desenvolvido com <i data-lucide="heart" size="12" style="display: inline; color: var(--shopee-orange); fill: var(--shopee-orange)"></i>
     </footer>
 </div>
 
 <script>
-    // DADOS FIXOS ATUALIZADOS COM DOMINGO
+    // DADOS COMPLETOS POR SEMANA COM DATAS ESPECÍFICAS
     const historicoData = [
-        { semana: "09/03 - 15/03", total: 9200, amarelo: 750, erro: 1100, onhold: 2200, fleet: 850, office: 4300 },
-        { semana: "16/03 - 22/03", total: 8700, amarelo: 650, erro: 900, onhold: 2000, fleet: 850, office: 4300 },
-        { semana: "23/03 - 29/03", total: 9800, amarelo: 700, erro: 1100, onhold: 2500, fleet: 900, office: 4600 },
-        { semana: "30/03 - 05/04", total: 12894, amarelo: 874, erro: 1512, onhold: 3025, fleet: 1002, office: 6481 }
+        { 
+            semana: "09/03 - 15/03", 
+            total: 9200, 
+            amarelo: 750, erro: 1100, onhold: 2200, fleet: 850, office: 4300,
+            datas: ["09/03", "10/03", "11/03", "12/03", "13/03", "14/03", "15/03"],
+            diario: {
+                amarelo: [100, 110, 105, 115, 120, 100, 100],
+                erro: [150, 160, 155, 165, 170, 150, 150],
+                onhold: [300, 310, 305, 315, 320, 325, 325],
+                fleet: [120, 125, 120, 125, 120, 120, 120],
+                office: [600, 610, 605, 615, 620, 625, 625]
+            }
+        },
+        { 
+            semana: "16/03 - 22/03", 
+            total: 8700, 
+            amarelo: 650, erro: 900, onhold: 2000, fleet: 850, office: 4300,
+            datas: ["16/03", "17/03", "18/03", "19/03", "20/03", "21/03", "22/03"],
+            diario: {
+                amarelo: [90, 95, 90, 95, 100, 90, 90],
+                erro: [120, 130, 125, 135, 140, 125, 125],
+                onhold: [280, 290, 285, 295, 300, 275, 275],
+                fleet: [120, 125, 120, 125, 120, 120, 120],
+                office: [600, 610, 605, 615, 620, 625, 625]
+            }
+        },
+        { 
+            semana: "23/03 - 29/03", 
+            total: 9800, 
+            amarelo: 700, erro: 1100, onhold: 2500, fleet: 900, office: 4600,
+            datas: ["23/03", "24/03", "25/03", "26/03", "27/03", "28/03", "29/03"],
+            diario: {
+                amarelo: [100, 100, 100, 100, 100, 100, 100],
+                erro: [150, 150, 150, 150, 150, 150, 200],
+                onhold: [350, 350, 350, 350, 350, 350, 400],
+                fleet: [120, 130, 120, 130, 120, 130, 150],
+                office: [650, 650, 650, 650, 650, 650, 700]
+            }
+        },
+        { 
+            semana: "30/03 - 05/04", 
+            total: 12894, 
+            amarelo: 874, erro: 1512, onhold: 3025, fleet: 1002, office: 6481,
+            datas: ["30/03", "31/03", "01/04", "02/04", "03/04", "04/04", "05/04"],
+            diario: {
+                amarelo: [149, 51, 149, 82, 209, 177, 57],
+                erro: [233, 178, 230, 198, 361, 147, 165],
+                onhold: [502, 252, 61, 37, 2099, 45, 29],
+                fleet: [272, 109, 87, 162, 187, 65, 120],
+                office: [0, 0, 0, 0, 3010, 2484, 987]
+            }
+        }
     ];
 
     const colors = {
@@ -440,9 +510,91 @@
     // INICIALIZAÇÃO
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
+        populateWeekSelect();
+        updateDashboardByWeek(); 
         renderHistoricoTable();
         initCharts();
     });
+
+    function populateWeekSelect() {
+        const select = document.getElementById('week-select');
+        [...historicoData].reverse().forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.semana;
+            option.textContent = item.semana;
+            select.appendChild(option);
+        });
+    }
+
+    function getStatus(total) {
+        if (total < 9000) return { label: 'OK', class: 'status-ok' };
+        if (total < 11000) return { label: 'ATENÇÃO', class: 'status-atencao' };
+        return { label: 'CRÍTICO', class: 'status-critico' };
+    }
+
+    function updateDashboardByWeek() {
+        const selectedWeek = document.getElementById('week-select').value;
+        const data = historicoData.find(d => d.semana === selectedWeek);
+        
+        if (!data) return;
+
+        // Atualiza Cards
+        document.getElementById('resumo-total').textContent = data.total.toLocaleString();
+        
+        const categories = [
+            { name: 'AMARELO', val: data.amarelo },
+            { name: 'ERRO', val: data.erro },
+            { name: 'ON HOLD', val: data.onhold },
+            { name: 'FLEET', val: data.fleet },
+            { name: 'OFFICE', val: data.office }
+        ];
+        const maior = categories.sort((a, b) => b.val - a.val)[0];
+        document.getElementById('resumo-maior').textContent = maior.name;
+
+        const status = getStatus(data.total);
+        const statusEl = document.getElementById('resumo-status');
+        statusEl.textContent = status.label;
+        statusEl.style.color = status.label === 'CRÍTICO' ? 'var(--shopee-orange)' : (status.label === 'ATENÇÃO' ? 'var(--color-amarelo)' : 'var(--color-fleet)');
+
+        // Atualiza Tabela de Resumo
+        document.getElementById('resumo-table-title').textContent = `Distribuição Diária (Semana ${data.semana})`;
+        const badge = document.getElementById('resumo-badge');
+        badge.textContent = status.label;
+        badge.className = `status-badge ${status.class}`;
+
+        // Cabeçalho da Tabela com Datas
+        const thead = document.getElementById('resumo-table-head');
+        const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+        let headHtml = `<th>Categoria</th>`;
+        dias.forEach((dia, i) => {
+            headHtml += `<th>${dia} ${data.datas[i]}</th>`;
+        });
+        thead.innerHTML = headHtml;
+
+        const tbody = document.querySelector('#resumo-table tbody');
+        tbody.innerHTML = '';
+
+        const catNames = ['Amarelo', 'Erro Operacional', 'On Hold', 'Retirada Fleet', 'OFFICE'];
+        const catKeys = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
+
+        catKeys.forEach((key, index) => {
+            let row = `<tr><td><strong>${catNames[index]}</strong></td>`;
+            data.diario[key].forEach(val => {
+                row += `<td>${val === 0 ? '-' : val.toLocaleString()}</td>`;
+            });
+            row += `</tr>`;
+            tbody.innerHTML += row;
+        });
+
+        // Linha de Total Diário
+        let totalRow = `<tr class="total-row"><td>TOTAL DIÁRIO</td>`;
+        for (let i = 0; i < 7; i++) {
+            let diaTotal = data.diario.amarelo[i] + data.diario.erro[i] + data.diario.onhold[i] + data.diario.fleet[i] + data.diario.office[i];
+            totalRow += `<td>${diaTotal.toLocaleString()}</td>`;
+        }
+        totalRow += `</tr>`;
+        tbody.innerHTML += totalRow;
+    }
 
     // NAVEGAÇÃO POR ABAS
     function openTab(tabId) {
@@ -452,10 +604,27 @@
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
         
-        // Re-render charts if opening history
-        if(tabId === 'historico') {
+        // Mostra/Esconde o filtro dependendo da aba
+        const filterContainer = document.getElementById('filter-container');
+        if(tabId === 'resumo') {
+            filterContainer.style.display = 'flex';
+        } else {
+            filterContainer.style.display = 'none';
             setTimeout(initCharts, 100);
+            updateHistoryInsights();
         }
+    }
+
+    function updateHistoryInsights() {
+        const sorted = [...historicoData].sort((a, b) => a.total - b.total);
+        const best = sorted[0];
+        const worst = sorted[sorted.length - 1];
+
+        document.getElementById('hist-best-val').textContent = best.total.toLocaleString();
+        document.getElementById('hist-best-date').textContent = best.semana;
+        
+        document.getElementById('hist-worst-val').textContent = worst.total.toLocaleString();
+        document.getElementById('hist-worst-date').textContent = worst.semana;
     }
 
     function renderHistoricoTable() {
@@ -498,7 +667,24 @@
                     pointBackgroundColor: '#EE4D2D'
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { display: false } 
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45,
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         // Bar Chart
