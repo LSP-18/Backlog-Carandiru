@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backlog Carandiru - Shopee </title>
+    <title>Backlog Carandiru - Shopee Logistics</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -47,7 +47,7 @@
             background-color: var(--shopee-bg);
             color: var(--shopee-text-main);
             line-height: 1.6;
-            padding: 24px; /* Aumentado para mais respiro */
+            padding: 24px;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -137,6 +137,52 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
+        .action-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--shopee-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--shopee-orange-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--shopee-orange);
+            border: 1px solid var(--shopee-orange);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background: var(--shopee-orange-soft);
+        }
+
         .filter-group {
             display: flex;
             align-items: center;
@@ -165,18 +211,75 @@
             background: transparent;
         }
 
-        .tab-content {
+        /* --- MODAL --- */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: modalIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 { font-size: 20px; font-weight: 800; color: var(--shopee-orange); }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--shopee-text-muted); }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--shopee-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus { border-color: var(--shopee-orange); }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-secondary {
+            background: #E8E8E8;
+            color: var(--shopee-text-main);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
         }
 
         /* --- CARDS & STATS --- */
@@ -278,6 +381,7 @@
             header { flex-direction: column; gap: 15px; text-align: center; padding: 20px; }
             .nav-bar { flex-direction: column; align-items: stretch; }
             .nav-tabs { width: 100%; justify-content: center; }
+            .action-group { width: 100%; justify-content: center; }
             .filter-group { width: 100%; justify-content: center; }
             .stat-card { padding: 16px; }
             .chart-container { height: 350px; padding: 10px; }
@@ -297,7 +401,7 @@
             </div>
         </div>
         <div class="header-meta">
-            Relatório Logístico • <strong>Emanuel Brendon</strong>
+            Relatório Logístico • <strong>Shopee Logistics</strong>
         </div>
     </header>
 
@@ -312,12 +416,21 @@
             </button>
         </div>
 
-        <div id="filter-container" class="filter-group">
-            <i data-lucide="calendar" size="16" style="color: var(--shopee-orange)"></i>
-            <label for="week-select">Semana:</label>
-            <select id="week-select" onchange="updateDashboardByWeek()">
-                <!-- JS Populated -->
-            </select>
+        <div class="action-group">
+            <button class="btn-outline" onclick="checkAuth('week')">
+                <i data-lucide="calendar-plus" size="18"></i> Nova Semana
+            </button>
+            <button class="btn-primary" onclick="checkAuth('data')">
+                <i data-lucide="plus-circle" size="18"></i> Lançar Dados
+            </button>
+            
+            <div id="filter-container" class="filter-group">
+                <i data-lucide="calendar" size="16" style="color: var(--shopee-orange)"></i>
+                <label for="week-select">Semana:</label>
+                <select id="week-select" onchange="updateDashboardByWeek()">
+                    <!-- JS Populated -->
+                </select>
+            </div>
         </div>
     </div>
 
@@ -437,14 +550,108 @@
         </div>
     </div>
 
+    <!-- MODAL DE AUTENTICAÇÃO -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Acesso Restrito</h2>
+                <button onclick="closeModal('authModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
+            </div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label>Digite a senha para editar:</label>
+                    <input type="password" id="auth-password" placeholder="Senha de acesso" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('authModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="flex:2">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE LANÇAMENTO DE DADOS -->
+    <div id="dataModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Lançar Dados</h2>
+                <button onclick="closeModal('dataModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
+            </div>
+            <form id="dataForm">
+                <div class="form-group">
+                    <label>Semana</label>
+                    <select id="form-semana" required>
+                        <!-- JS Populated -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dia da Semana</label>
+                    <select id="form-dia" required>
+                        <option value="0">Segunda</option>
+                        <option value="1">Terça</option>
+                        <option value="2">Quarta</option>
+                        <option value="3">Quinta</option>
+                        <option value="4">Sexta</option>
+                        <option value="5">Sábado</option>
+                        <option value="6">Domingo</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group"><label>Amarelo</label><input type="number" id="form-amarelo" value="0"></div>
+                    <div class="form-group"><label>Erro Operacional</label><input type="number" id="form-erro" value="0"></div>
+                    <div class="form-group"><label>On Hold</label><input type="number" id="form-onhold" value="0"></div>
+                    <div class="form-group"><label>Retirada Fleet</label><input type="number" id="form-fleet" value="0"></div>
+                </div>
+                <div class="form-group"><label>OFFICE</label><input type="number" id="form-office" value="0"></div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('dataModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="flex:2">Salvar Dados</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE NOVA SEMANA -->
+    <div id="weekModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nova Semana</h2>
+                <button onclick="closeModal('weekModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
+            </div>
+            <form id="weekForm">
+                <div class="form-group">
+                    <label>Identificação da Semana (ex: 06/04 - 12/04)</label>
+                    <input type="text" id="new-week-name" placeholder="DD/MM - DD/MM" required>
+                </div>
+                <div class="form-group">
+                    <label>Datas dos Dias (separadas por vírgula)</label>
+                    <input type="text" id="new-week-dates" placeholder="06/04, 07/04, 08/04, 09/04, 10/04, 11/04, 12/04" required>
+                </div>
+                <p style="font-size: 11px; color: var(--shopee-text-muted); margin-bottom: 16px;">
+                    * Insira exatamente 7 datas separadas por vírgula para preencher a semana.
+                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('weekModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="flex:2">Criar Semana</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
-        © 2026 Shopee • Backlog Carandiru • Desenvolvedor Emanuel Brendon <i data-lucide="heart" size="12" style="display: inline; color: var(--shopee-orange); fill: var(--shopee-orange)"></i>
+        © 2026 Shopee Logistics • Backlog Carandiru • Desenvolvido com <i data-lucide="heart" size="12" style="display: inline; color: var(--shopee-orange); fill: var(--shopee-orange)"></i>
     </footer>
 </div>
 
 <script>
-    // DADOS COMPLETOS POR SEMANA COM DATAS ESPECÍFICAS
-    const historicoData = [
+    // CONFIGURAÇÃO DE SEGURANÇA
+    const ADMIN_PASSWORD = "admin123"; // Você pode alterar esta senha aqui
+    let isAuthenticated = false;
+    let pendingAction = null;
+
+    // DADOS INICIAIS (BASE)
+    const initialData = [
         { 
             semana: "09/03 - 15/03", 
             total: 9200, 
@@ -499,6 +706,22 @@
         }
     ];
 
+    let historicoData = [];
+
+    // CARREGAR DADOS DO LOCALSTORAGE OU USAR INICIAIS
+    function loadData() {
+        const saved = localStorage.getItem('backlog_data_v3');
+        if (saved) {
+            historicoData = JSON.parse(saved);
+        } else {
+            historicoData = JSON.parse(JSON.stringify(initialData));
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('backlog_data_v3', JSON.stringify(historicoData));
+    }
+
     const colors = {
         amarelo: '#F5C518',
         erro: '#EE4D2D',
@@ -509,21 +732,66 @@
 
     // INICIALIZAÇÃO
     document.addEventListener('DOMContentLoaded', () => {
+        loadData();
         lucide.createIcons();
         populateWeekSelect();
         updateDashboardByWeek(); 
         renderHistoricoTable();
         initCharts();
+        
+        // Form submits
+        document.getElementById('authForm').addEventListener('submit', handleAuthSubmit);
+        document.getElementById('dataForm').addEventListener('submit', handleDataFormSubmit);
+        document.getElementById('weekForm').addEventListener('submit', handleWeekFormSubmit);
     });
+
+    // AUTH FUNCTIONS
+    function checkAuth(action) {
+        if (isAuthenticated) {
+            if (action === 'data') openModal('dataModal');
+            if (action === 'week') openModal('weekModal');
+        } else {
+            pendingAction = action;
+            openModal('authModal');
+        }
+    }
+
+    function handleAuthSubmit(e) {
+        e.preventDefault();
+        const pass = document.getElementById('auth-password').value;
+        if (pass === ADMIN_PASSWORD) {
+            isAuthenticated = true;
+            closeModal('authModal');
+            if (pendingAction === 'data') openModal('dataModal');
+            if (pendingAction === 'week') openModal('weekModal');
+            pendingAction = null;
+            document.getElementById('auth-password').value = '';
+        } else {
+            alert('Senha incorreta!');
+        }
+    }
 
     function populateWeekSelect() {
         const select = document.getElementById('week-select');
+        const formSelect = document.getElementById('form-semana');
+        const currentVal = select.value;
+        
+        select.innerHTML = '';
+        formSelect.innerHTML = '';
+        
         [...historicoData].reverse().forEach(item => {
             const option = document.createElement('option');
             option.value = item.semana;
             option.textContent = item.semana;
             select.appendChild(option);
+            
+            const formOption = option.cloneNode(true);
+            formSelect.appendChild(formOption);
         });
+
+        if (currentVal && historicoData.find(d => d.semana === currentVal)) {
+            select.value = currentVal;
+        }
     }
 
     function getStatus(total) {
@@ -537,6 +805,14 @@
         const data = historicoData.find(d => d.semana === selectedWeek);
         
         if (!data) return;
+
+        // Recalcular totais da semana
+        data.amarelo = data.diario.amarelo.reduce((a, b) => a + b, 0);
+        data.erro = data.diario.erro.reduce((a, b) => a + b, 0);
+        data.onhold = data.diario.onhold.reduce((a, b) => a + b, 0);
+        data.fleet = data.diario.fleet.reduce((a, b) => a + b, 0);
+        data.office = data.diario.office.reduce((a, b) => a + b, 0);
+        data.total = data.amarelo + data.erro + data.onhold + data.fleet + data.office;
 
         // Atualiza Cards
         document.getElementById('resumo-total').textContent = data.total.toLocaleString();
@@ -567,7 +843,7 @@
         const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
         let headHtml = `<th>Categoria</th>`;
         dias.forEach((dia, i) => {
-            headHtml += `<th>${dia} ${data.datas[i]}</th>`;
+            headHtml += `<th>${dia} ${data.datas[i] || '--/--'}</th>`;
         });
         thead.innerHTML = headHtml;
 
@@ -596,6 +872,68 @@
         tbody.innerHTML += totalRow;
     }
 
+    // MODAL FUNCTIONS
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function handleDataFormSubmit(e) {
+        e.preventDefault();
+        const semana = document.getElementById('form-semana').value;
+        const diaIdx = parseInt(document.getElementById('form-dia').value);
+        
+        const data = historicoData.find(d => d.semana === semana);
+        if (data) {
+            data.diario.amarelo[diaIdx] = parseInt(document.getElementById('form-amarelo').value) || 0;
+            data.diario.erro[diaIdx] = parseInt(document.getElementById('form-erro').value) || 0;
+            data.diario.onhold[diaIdx] = parseInt(document.getElementById('form-onhold').value) || 0;
+            data.diario.fleet[diaIdx] = parseInt(document.getElementById('form-fleet').value) || 0;
+            data.diario.office[diaIdx] = parseInt(document.getElementById('form-office').value) || 0;
+            
+            saveData();
+            updateDashboardByWeek();
+            renderHistoricoTable();
+            initCharts();
+            closeModal('dataModal');
+            alert('Dados salvos com sucesso!');
+        }
+    }
+
+    function handleWeekFormSubmit(e) {
+        e.preventDefault();
+        const name = document.getElementById('new-week-name').value;
+        const datesStr = document.getElementById('new-week-dates').value;
+        const dates = datesStr.split(',').map(d => d.trim());
+
+        if (dates.length !== 7) {
+            alert('Por favor, insira exatamente 7 datas separadas por vírgula.');
+            return;
+        }
+
+        const newWeek = {
+            semana: name,
+            total: 0, amarelo: 0, erro: 0, onhold: 0, fleet: 0, office: 0,
+            datas: dates,
+            diario: {
+                amarelo: [0,0,0,0,0,0,0],
+                erro: [0,0,0,0,0,0,0],
+                onhold: [0,0,0,0,0,0,0],
+                fleet: [0,0,0,0,0,0,0],
+                office: [0,0,0,0,0,0,0]
+            }
+        };
+
+        historicoData.push(newWeek);
+        saveData();
+        populateWeekSelect();
+        document.getElementById('week-select').value = name;
+        updateDashboardByWeek();
+        renderHistoricoTable();
+        initCharts();
+        closeModal('weekModal');
+        document.getElementById('weekForm').reset();
+        alert('Nova semana criada com sucesso!');
+    }
+
     // NAVEGAÇÃO POR ABAS
     function openTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -604,7 +942,6 @@
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
         
-        // Mostra/Esconde o filtro dependendo da aba
         const filterContainer = document.getElementById('filter-container');
         if(tabId === 'resumo') {
             filterContainer.style.display = 'flex';
@@ -670,20 +1007,8 @@
             options: { 
                 responsive: true, 
                 maintainAspectRatio: false, 
-                plugins: { 
-                    legend: { display: false } 
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45,
-                            font: {
-                                size: 10
-                            }
-                        }
-                    }
-                }
+                plugins: { legend: { display: false } },
+                scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } } }
             }
         });
 
