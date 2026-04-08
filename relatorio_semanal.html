@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Semanal de Backlog - Shopee Logistics</title>
+    <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --shopee-orange: #EE4D2D;
+            --shopee-bg: #F6F6F6;
+            --shopee-white: #FFFFFF;
+            --shopee-text: #222222;
+            --shopee-muted: #757575;
+            --shopee-border: #E8E8E8;
+            --radius: 12px;
+            --color-amarelo: #F5C518;
+            --color-erro: #EE4D2D;
+            --color-onhold: #0055AA;
+            --color-fleet: #26AA99;
+            --color-office: #64748B;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--shopee-bg); color: var(--shopee-text); padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { background: var(--shopee-white); padding: 24px; border-radius: var(--radius); box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 24px; border-bottom: 4px solid var(--shopee-orange); display: flex; justify-content: space-between; align-items: center; }
+        .header-info h1 { font-size: 20px; font-weight: 800; color: var(--shopee-orange); }
+        .header-info p { font-size: 14px; color: var(--shopee-muted); }
+        .shopee-logo { height: 28px; }
+        
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .summary-card { background: var(--shopee-white); padding: 16px; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; }
+        .summary-card .label { font-size: 12px; color: var(--shopee-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .summary-card .value { font-size: 24px; font-weight: 800; color: var(--shopee-orange); }
+
+        .section-title { font-size: 16px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        
+        .daily-list { display: flex; flex-direction: column; gap: 12px; }
+        .day-row { background: var(--shopee-white); border-radius: var(--radius); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid var(--shopee-border); }
+        .day-row.active { border-left-color: var(--shopee-orange); }
+        .day-info { display: flex; flex-direction: column; }
+        .day-info .date { font-size: 16px; font-weight: 800; }
+        .day-info .weekday { font-size: 12px; color: var(--shopee-muted); font-weight: 600; }
+        
+        .categories { display: flex; gap: 20px; flex-wrap: wrap; }
+        .cat-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .cat-val { font-family: monospace; font-size: 14px; }
+        .total-val { font-size: 18px; font-weight: 800; color: var(--shopee-orange); min-width: 60px; text-align: right; }
+
+        footer { text-align: center; padding: 32px 0; color: var(--shopee-muted); font-size: 11px; }
+        
+        @media (max-width: 768px) {
+            .day-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .categories { gap: 10px; }
+            .total-val { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-info">
+                <h1>Relatório Semanal de Backlog</h1>
+                <p>Período: 06/04 a 12/04 • Emanuel Brendon</p>
+            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee" class="shopee-logo">
+        </header>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="label">Total da Semana</div>
+                <div class="value" id="week-total">0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Média Diária</div>
+                <div class="value" id="week-avg">0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Maior Volume</div>
+                <div class="value" id="week-max">0</div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <i data-lucide="calendar-days" size="18" style="color: var(--shopee-orange)"></i>
+            Detalhamento Diário
+        </div>
+
+        <div class="daily-list" id="daily-list">
+            <!-- Rows will be injected here -->
+        </div>
+
+        <footer>© 2026 Shopee Logistics • Gestão de Backlog • Carandiru</footer>
+    </div>
+
+    <script>
+        const weekData = [
+            { "data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "total": 671 },
+            { "data": "07/04", "dia": "Terça", "amarelo": 157, "erro": 162, "onhold": 104, "fleet": 9, "office": 0, "total": 432 },
+            { "data": "08/04", "dia": "Quarta", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 },
+            { "data": "09/04", "dia": "Quinta", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 },
+            { "data": "10/04", "dia": "Sexta", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 },
+            { "data": "11/04", "dia": "Sábado", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 },
+            { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
+        ];
+
+        const list = document.getElementById('daily-list');
+        let totalSum = 0;
+        let maxVal = 0;
+        let daysWithData = 0;
+
+        weekData.forEach(day => {
+            totalSum += day.total;
+            if (day.total > maxVal) maxVal = day.total;
+            if (day.total > 0) daysWithData++;
+
+            const row = document.createElement('div');
+            row.className = `day-row ${day.total > 0 ? 'active' : ''}`;
+            row.innerHTML = `
+                <div class="day-info">
+                    <span class="date">${day.data}</span>
+                    <span class="weekday">${day.dia}</span>
+                </div>
+                <div class="categories">
+                    <div class="cat-item"><div class="dot" style="background:var(--color-amarelo)"></div> Amarelo: <span class="cat-val">${day.amarelo || '-'}</span></div>
+                    <div class="cat-item"><div class="dot" style="background:var(--color-erro)"></div> Erro: <span class="cat-val">${day.erro || '-'}</span></div>
+                    <div class="cat-item"><div class="dot" style="background:var(--color-onhold)"></div> On Hold: <span class="cat-val">${day.onhold || '-'}</span></div>
+                    <div class="cat-item"><div class="dot" style="background:var(--color-fleet)"></div> Fleet: <span class="cat-val">${day.fleet || '-'}</span></div>
+                    <div class="cat-item"><div class="dot" style="background:var(--color-office)"></div> Office: <span class="cat-val">${day.office || '-'}</span></div>
+                </div>
+                <div class="total-val">${day.total.toLocaleString()}</div>
+            `;
+            list.appendChild(row);
+        });
+
+        document.getElementById('week-total').innerText = totalSum.toLocaleString();
+        document.getElementById('week-avg').innerText = daysWithData > 0 ? Math.round(totalSum / daysWithData).toLocaleString() : '0';
+        document.getElementById('week-max').innerText = maxVal.toLocaleString();
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
