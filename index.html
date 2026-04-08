@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Completo de Backlog - Shopee Logistics</title>
+    <title>DashboardBacklog Carandiru </title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -269,8 +269,8 @@
 <div class="container">
     <header>
         <div class="header-info">
-            <h1>Dashboard Completo de Backlog</h1>
-            <p><i data-lucide="map-pin" size="16"></i> Shopee Logistics • Carandiru • 30/03 a 12/04</p>
+            <h1>Dashboard Backlog Carandiru - Emanuel Brendon</h1>
+            <p><i data-lucide="map-pin" size="16"></i> Shopee • Carandiru • 30/03 a 12/04</p>
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee" class="shopee-logo">
     </header>
@@ -279,7 +279,7 @@
         <div class="welcome-icon"><i data-lucide="info" size="32"></i></div>
         <div class="welcome-text">
             <h2>Bem-vindo ao Centro de Inteligência</h2>
-            <p>Este painel integra análise profissional de backlog com guias educativos. Navegue pelas abas para explorar dados, comparações e definições.</p>
+            <p>Este painel integra análise do backlog dque ficou no piso. Navegue pelas abas para explorar dados, comparações e definições.</p>
         </div>
     </div>
 
@@ -306,7 +306,7 @@
             <div class="kpi-card">
                 <div class="kpi-label"><i data-lucide="trending-down" size="16"></i> Variação Semanal</div>
                 <div id="kpi-trend" class="kpi-value">0%</div>
-                <div class="kpi-desc">Comparação entre a Semana 1 e a Semana 2.</div>
+                <div class="kpi-desc">Comparação entre o dia 30/03 a 12/04.</div>
             </div>
         </div>
 
@@ -355,35 +355,35 @@
                 <div class="glossary-dot" style="background: var(--color-amarelo)"></div>
                 <div class="glossary-info">
                     <h3>Amarelo</h3>
-                    <p>Itens que requerem atenção imediata devido ao tempo de espera ou prioridade de entrega definida pelo sistema. Geralmente, são pacotes que estão próximos do prazo limite.</p>
+                    <p>A maioria dos pacotes que aparecem em amarelo são do tipo return, ou seja, insucessos que não entram no auto add. A outra parte corresponde a pacotes que, por algum motivo, também não foram incluídos no auto add.</p>
                 </div>
             </div>
             <div class="glossary-item">
                 <div class="glossary-dot" style="background: var(--color-erro)"></div>
                 <div class="glossary-info">
                     <h3>Erro Operacional</h3>
-                    <p>Pendências geradas por falhas no processo de triagem, bipagem ou problemas físicos com o pacote. Requerem investigação e correção manual.</p>
+                    <p>São pacotes com falhas operacionais, como erro de etiqueta, erro de sorteio e erro na expedição — ou seja, todos são erros da operação.</p>
                 </div>
             </div>
             <div class="glossary-item">
                 <div class="glossary-dot" style="background: var(--color-onhold)"></div>
                 <div class="glossary-info">
                     <h3>On Hold</h3>
-                    <p>Pacotes retidos aguardando uma ação externa, como confirmação do cliente, liberação fiscal ou resolução de documentação. Fora do controle imediato da operação.</p>
+                    <p>São pacotes que não entram no auto add por não possuírem rota disponível ou por serem insucessos, que também não são incluídos no auto add.</p>
                 </div>
             </div>
             <div class="glossary-item">
                 <div class="glossary-dot" style="background: var(--color-fleet)"></div>
                 <div class="glossary-info">
                     <h3>Retirada Fleet</h3>
-                    <p>Volume destinado à frota própria da Shopee que ainda não foi coletado para a última milha. Aguarda agendamento de coleta.</p>
+                    <p>São pacotes retirados pelo time de fleet por falta de espaço no veículo do motorista e que não foram reatribuídos para outra rota.</p>
                 </div>
             </div>
             <div class="glossary-item">
                 <div class="glossary-dot" style="background: var(--color-office)"></div>
                 <div class="glossary-info">
                     <h3>Office</h3>
-                    <p>Backlog administrativo ou de suporte que não envolve diretamente a movimentação física imediata. Inclui tarefas de gestão e documentação.</p>
+                    <p>São pacotes de comércios que não operam aos sábados, domingos e feriados; por isso, não são roteirizados nesses dias e permanecem no piso para saída em um dia útil.</p>
                 </div>
             </div>
         </div>
@@ -482,11 +482,11 @@
             </div>
             <div class="cat-stats">
                 <div class="cat-stat-row">
-                    <span class="cat-stat-label">Semana 1</span>
+                    <span class="cat-stat-label">Semana  30/03 a 05/04</span>
                     <span class="cat-stat-val">${w1.toLocaleString()}</span>
                 </div>
                 <div class="cat-stat-row">
-                    <span class="cat-stat-label">Semana 2</span>
+                    <span class="cat-stat-label">Semana 06/04 a 12/04</span>
                     <span class="cat-stat-val">${w2.toLocaleString()}</span>
                 </div>
                 <div class="cat-divider"></div>
@@ -539,8 +539,8 @@
         data: {
             labels: catLabels,
             datasets: [
-                { label: 'Semana 1', data: week1Totals, backgroundColor: '#e0e0e0', borderRadius: 6 },
-                { label: 'Semana 2', data: week2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 }
+                { label: 'Semana 30/03 a 05/04', data: week1Totals, backgroundColor: '#e0e0e0', borderRadius: 6 },
+                { label: 'Semana 06/04 a 12/04', data: week2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 }
             ]
         },
         options: {
