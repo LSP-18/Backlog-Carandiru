@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Profissional de Backlog - Shopee Logistics</title>
+    <title>Centro de Inteligência de Backlog - Shopee Logistics</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -81,6 +81,23 @@
 
         .shopee-logo { height: 36px; }
 
+        /* --- WELCOME BANNER --- */
+        .welcome-banner {
+            background: linear-gradient(135deg, #EE4D2D 0%, #FF7337 100%);
+            color: white;
+            padding: 24px 32px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .welcome-icon { background: rgba(255,255,255,0.2); padding: 16px; border-radius: 12px; }
+        .welcome-text h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .welcome-text p { font-size: 14px; opacity: 0.9; font-weight: 500; }
+
         /* --- NAVIGATION --- */
         .nav-tabs {
             display: flex;
@@ -146,9 +163,29 @@
 
         .kpi-label { font-size: 13px; color: var(--shopee-text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .kpi-value { font-size: 32px; font-weight: 800; color: var(--shopee-text-main); margin-bottom: 8px; }
-        .kpi-trend { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .trend-up { color: #d32f2f; }
-        .trend-down { color: #2e7d32; }
+        .kpi-desc { font-size: 12px; color: var(--shopee-text-muted); font-weight: 500; }
+
+        /* --- GLOSSARY SECTION --- */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .glossary-item {
+            background: var(--shopee-white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .glossary-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .glossary-info h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+        .glossary-info p { font-size: 13px; color: var(--shopee-text-muted); line-height: 1.5; }
 
         /* --- COMPARISON SECTION --- */
         .comparison-grid {
@@ -165,30 +202,8 @@
             box-shadow: var(--shopee-shadow);
         }
 
-        .card-title { font-size: 18px; font-weight: 800; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-
-        /* --- CATEGORY CARDS --- */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .cat-card {
-            background: var(--shopee-white);
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: var(--shopee-shadow);
-            border-top: 4px solid var(--shopee-border);
-        }
-
-        .cat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .cat-name { font-weight: 800; font-size: 14px; }
-        .cat-stats { display: flex; flex-direction: column; gap: 8px; }
-        .cat-stat-row { display: flex; justify-content: space-between; font-size: 13px; }
-        .cat-stat-label { color: var(--shopee-text-muted); font-weight: 600; }
-        .cat-stat-val { font-weight: 700; font-family: monospace; }
+        .card-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+        .card-subtitle { font-size: 13px; color: var(--shopee-text-muted); margin-bottom: 24px; font-weight: 500; }
 
         /* --- TABLE --- */
         .table-container {
@@ -205,11 +220,6 @@
         .td-bold { font-weight: 700; }
         .td-total { font-weight: 800; color: var(--shopee-orange); background: var(--shopee-orange-light); }
 
-        /* --- UTILS --- */
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-        .badge-week1 { background: #E3F2FD; color: #1565C0; }
-        .badge-week2 { background: #FFF3E0; color: #E65100; }
-
         footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
 
         @media (max-width: 1024px) {
@@ -222,47 +232,57 @@
 <div class="container">
     <header>
         <div class="header-info">
-            <h1>Dashboard Executivo de Backlog</h1>
+            <h1>Centro de Inteligência de Backlog</h1>
             <p><i data-lucide="map-pin" size="16"></i> Shopee Logistics • Carandiru • 30/03 a 12/04</p>
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee" class="shopee-logo">
     </header>
 
+    <div class="welcome-banner">
+        <div class="welcome-icon"><i data-lucide="info" size="32"></i></div>
+        <div class="welcome-text">
+            <h2>Bem-vindo ao Dashboard de Gestão</h2>
+            <p>Este painel foi projetado para ser autoexplicativo. Se você é novo aqui, comece pela aba "Guia de Termos" para entender o que cada dado representa.</p>
+        </div>
+    </div>
+
     <div class="nav-tabs">
         <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard"></i> Visão Executiva</button>
-        <button class="nav-btn" onclick="openTab('categories')"><i data-lucide="layers"></i> Análise por Categoria</button>
-        <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar-range"></i> Detalhamento Diário</button>
+        <button class="nav-btn" onclick="openTab('guide')"><i data-lucide="book-open"></i> Guia de Termos</button>
+        <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar-range"></i> Tabela de Dados</button>
     </div>
 
     <!-- TAB: OVERVIEW -->
     <div id="overview" class="tab-content active">
         <div class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-label"><i data-lucide="package" size="16"></i> Total Acumulado</div>
+                <div class="kpi-label"><i data-lucide="package" size="16"></i> Volume Total</div>
                 <div id="kpi-total" class="kpi-value">0</div>
-                <div class="kpi-trend trend-down"><i data-lucide="arrow-down-right" size="14"></i> -42% vs Semana Anterior</div>
+                <div class="kpi-desc">Soma de todos os itens pendentes no período.</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label"><i data-lucide="activity" size="16"></i> Média Diária</div>
                 <div id="kpi-avg" class="kpi-value">0</div>
-                <div class="kpi-trend"><i data-lucide="info" size="14"></i> Base: 14 dias</div>
+                <div class="kpi-desc">Volume médio processado por dia útil.</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label"><i data-lucide="zap" size="16"></i> Pico de Volume</div>
-                <div id="kpi-peak" class="kpi-value">0</div>
-                <div class="kpi-trend"><i data-lucide="calendar" size="14"></i> Atingido em 03/04</div>
+                <div class="kpi-label"><i data-lucide="trending-down" size="16"></i> Variação Semanal</div>
+                <div id="kpi-trend" class="kpi-value">0%</div>
+                <div class="kpi-desc">Comparação entre a Semana 1 e a Semana 2.</div>
             </div>
         </div>
 
         <div class="comparison-grid">
             <div class="card-main">
-                <div class="card-title"><i data-lucide="bar-chart-horizontal" size="20" style="color: var(--shopee-orange)"></i> Comparativo Semanal: Semana 1 vs Semana 2</div>
+                <div class="card-title"><i data-lucide="bar-chart-horizontal" size="20" style="color: var(--shopee-orange)"></i> Comparativo Semanal por Categoria</div>
+                <div class="card-subtitle">Analise como cada tipo de backlog evoluiu entre a primeira e a segunda semana.</div>
                 <div style="height: 350px;">
                     <canvas id="comparisonChart"></canvas>
                 </div>
             </div>
             <div class="card-main">
-                <div class="card-title"><i data-lucide="pie-chart" size="20" style="color: var(--shopee-orange)"></i> Share por Categoria</div>
+                <div class="card-title"><i data-lucide="pie-chart" size="20" style="color: var(--shopee-orange)"></i> Composição do Backlog</div>
+                <div class="card-subtitle">Entenda quais categorias representam a maior parte do volume total.</div>
                 <div style="height: 350px;">
                     <canvas id="shareChart"></canvas>
                 </div>
@@ -270,17 +290,45 @@
         </div>
     </div>
 
-    <!-- TAB: CATEGORIES -->
-    <div id="categories" class="tab-content">
-        <div class="card-main" style="margin-bottom: 32px;">
-            <div class="card-title"><i data-lucide="trending-up" size="20" style="color: var(--shopee-orange)"></i> Evolução por Categoria (Visão Comparativa)</div>
-            <div style="height: 400px;">
-                <canvas id="categoryEvolutionChart"></canvas>
+    <!-- TAB: GUIDE -->
+    <div id="guide" class="tab-content">
+        <div class="card-title" style="margin-bottom: 24px;"><i data-lucide="help-circle" size="20" style="color: var(--shopee-orange)"></i> O que significam estas categorias?</div>
+        <div class="glossary-grid">
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-amarelo)"></div>
+                <div class="glossary-info">
+                    <h3>Amarelo</h3>
+                    <p>Itens que requerem atenção imediata devido ao tempo de espera ou prioridade de entrega definida pelo sistema.</p>
+                </div>
             </div>
-        </div>
-        
-        <div id="category-cards" class="category-grid">
-            <!-- Cards will be injected here -->
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-erro)"></div>
+                <div class="glossary-info">
+                    <h3>Erro Operacional</h3>
+                    <p>Pendências geradas por falhas no processo de triagem, bipagem ou problemas físicos com o pacote.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-onhold)"></div>
+                <div class="glossary-info">
+                    <h3>On Hold</h3>
+                    <p>Pacotes retidos aguardando uma ação externa, como confirmação do cliente ou liberação fiscal.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-fleet)"></div>
+                <div class="glossary-info">
+                    <h3>Retirada Fleet</h3>
+                    <p>Volume destinado à frota própria da Shopee que ainda não foi coletado para a última milha.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-office)"></div>
+                <div class="glossary-info">
+                    <h3>Office</h3>
+                    <p>Backlog administrativo ou de suporte que não envolve diretamente a movimentação física imediata.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -307,7 +355,7 @@
         </div>
     </div>
 
-    <footer>© 2026 Shopee Logistics • Gestão de Backlog Profissional • Emanuel Brendon</footer>
+    <footer>© 2026 Shopee Logistics • Gestão de Backlog Inteligente • Emanuel Brendon</footer>
 </div>
 
 <script>
@@ -343,46 +391,14 @@
     // --- CALCULATIONS ---
     const totalAll = data.reduce((a, b) => a + b.total, 0);
     const avgAll = Math.round(totalAll / data.filter(d => d.total > 0).length);
-    const peakAll = Math.max(...data.map(d => d.total));
+    
+    const w1Total = week1.reduce((a, b) => a + b.total, 0);
+    const w2Total = week2.reduce((a, b) => a + b.total, 0);
+    const trend = w1Total > 0 ? Math.round(((w2Total - w1Total) / w1Total) * 100) : 0;
 
     document.getElementById('kpi-total').innerText = totalAll.toLocaleString();
     document.getElementById('kpi-avg').innerText = avgAll.toLocaleString();
-    document.getElementById('kpi-peak').innerText = peakAll.toLocaleString();
-
-    // --- CATEGORY TOTALS PER WEEK ---
-    const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
-    const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office'];
-    const catColors = ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'];
-
-    const week1Totals = cats.map(c => week1.reduce((a, b) => a + b[c], 0));
-    const week2Totals = cats.map(c => week2.reduce((a, b) => a + b[c], 0));
-
-    // --- RENDER CATEGORY CARDS ---
-    const catCardsContainer = document.getElementById('category-cards');
-    cats.forEach((c, i) => {
-        const w1 = week1Totals[i];
-        const w2 = week2Totals[i];
-        const diff = w1 > 0 ? Math.round(((w2 - w1) / w1) * 100) : 0;
-        
-        const card = document.createElement('div');
-        card.className = 'cat-card';
-        card.style.borderTopColor = catColors[i];
-        card.innerHTML = `
-            <div class="cat-card-header">
-                <span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span>
-                <i data-lucide="box" size="16" style="color:var(--shopee-text-muted)"></i>
-            </div>
-            <div class="cat-stats">
-                <div class="cat-stat-row"><span class="cat-stat-label">Semana 1</span><span class="cat-stat-val">${w1.toLocaleString()}</span></div>
-                <div class="cat-stat-row"><span class="cat-stat-label">Semana 2</span><span class="cat-stat-val">${w2.toLocaleString()}</span></div>
-                <div class="cat-stat-row" style="margin-top:8px; padding-top:8px; border-top:1px dashed #eee">
-                    <span class="cat-stat-label">Variação</span>
-                    <span class="cat-stat-val ${diff <= 0 ? 'trend-down' : 'trend-up'}">${diff > 0 ? '+' : ''}${diff}%</span>
-                </div>
-            </div>
-        `;
-        catCardsContainer.appendChild(card);
-    });
+    document.getElementById('kpi-trend').innerText = (trend > 0 ? '+' : '') + trend + '%';
 
     // --- RENDER DAILY TABLE ---
     const tableBody = document.getElementById('daily-table-body');
@@ -402,20 +418,13 @@
     });
 
     // --- CHARTS ---
-    const commonOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false },
-            datalabels: {
-                anchor: 'end', align: 'top',
-                font: { weight: 'bold', size: 10 },
-                formatter: (v) => v > 0 ? v.toLocaleString() : ''
-            }
-        }
-    };
+    const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
+    const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office'];
+    const catColors = ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'];
 
-    // Comparison Chart (Week 1 vs Week 2)
+    const week1Totals = cats.map(c => week1.reduce((a, b) => a + b[c], 0));
+    const week2Totals = cats.map(c => week2.reduce((a, b) => a + b[c], 0));
+
     new Chart(document.getElementById('comparisonChart'), {
         type: 'bar',
         data: {
@@ -426,12 +435,12 @@
             ]
         },
         options: {
-            ...commonOptions,
-            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' } }
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' }, datalabels: { anchor: 'end', align: 'top', font: { weight: 'bold' }, formatter: (v) => v > 0 ? v.toLocaleString() : '' } }
         }
     });
 
-    // Share Chart (Doughnut)
     new Chart(document.getElementById('shareChart'), {
         type: 'doughnut',
         data: {
@@ -443,28 +452,9 @@
             }]
         },
         options: {
-            ...commonOptions,
-            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'right' }, datalabels: { display: false } }
-        }
-    });
-
-    // Category Evolution (Line)
-    new Chart(document.getElementById('categoryEvolutionChart'), {
-        type: 'line',
-        data: {
-            labels: data.map(d => d.data),
-            datasets: cats.map((c, i) => ({
-                label: catLabels[i],
-                data: data.map(d => d[c]),
-                borderColor: catColors[i],
-                backgroundColor: catColors[i],
-                tension: 0.3,
-                pointRadius: 3
-            }))
-        },
-        options: {
-            ...commonOptions,
-            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' }, datalabels: { display: false } }
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'right' }, datalabels: { display: false } }
         }
     });
 
