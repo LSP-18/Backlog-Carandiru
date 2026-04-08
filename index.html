@@ -15,10 +15,6 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
     <style>
         :root {
             --shopee-orange: #EE4D2D;
@@ -168,25 +164,6 @@
             transform: translateY(-1px);
         }
 
-        .btn-outline {
-            background: white;
-            color: var(--shopee-orange);
-            border: 1px solid var(--shopee-orange);
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-outline:hover {
-            background: var(--shopee-orange-soft);
-        }
-
         .filter-group {
             display: flex;
             align-items: center;
@@ -238,8 +215,6 @@
             max-width: 500px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             animation: modalIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         @keyframes modalIn {
@@ -347,134 +322,113 @@
             font-weight: 700;
             color: var(--shopee-text-muted);
             text-transform: uppercase;
-            text-align: left;
             border-bottom: 1px solid var(--shopee-border);
         }
 
-        td {
-            padding: 16px 24px;
-            font-size: 14px;
-            border-bottom: 1px solid var(--shopee-border);
-        }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--shopee-border); }
 
-        tr:last-child td { border-bottom: none; }
+        .total-row { background: #FAFAFA; font-weight: 800; color: var(--shopee-orange); }
 
-        .total-row { background: #FFF5F1; font-weight: 800; color: var(--shopee-orange); }
-
-        /* --- STATUS BADGES --- */
         .status-badge {
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-        .status-ok { background: #E6F7F4; color: var(--color-fleet); }
-        .status-atencao { background: #FFF9E6; color: var(--color-amarelo); }
-        .status-critico { background: #FFF5F1; color: var(--shopee-orange); }
+
+        .status-ok { background: #E6F7F4; color: #26AA99; }
+        .status-atencao { background: #FFFBEB; color: #F5C518; }
+        .status-critico { background: #FFF1F0; color: #EE4D2D; }
 
         /* --- CHARTS --- */
-        .chart-container { padding: 24px; height: 300px; position: relative; }
-        .charts-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 24px; }
-
-        /* --- TABS --- */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            color: var(--shopee-text-muted);
-            font-size: 13px;
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
         }
+
+        .chart-container { position: relative; height: 320px; width: 100%; padding: 20px; }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; padding: 40px 0; color: var(--shopee-text-muted); font-size: 12px; }
 
         @media (max-width: 768px) {
-            .nav-bar { flex-direction: column; align-items: stretch; }
+            body { padding: 12px; }
             .charts-row { grid-template-columns: 1fr; }
-            header { flex-direction: column; text-align: center; gap: 16px; }
-            .header-meta { text-align: center; }
+            header { flex-direction: column; gap: 15px; text-align: center; padding: 20px; }
+            .nav-bar { flex-direction: column; align-items: stretch; }
+            .nav-tabs { width: 100%; justify-content: center; }
+            .action-group { width: 100%; justify-content: center; }
+            .filter-group { width: 100%; justify-content: center; }
+            .stat-card { padding: 16px; }
+            .chart-container { height: 350px; padding: 10px; }
         }
-
-        /* Loading Overlay */
-        #loading-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid var(--shopee-orange-soft);
-            border-top: 4px solid var(--shopee-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div id="loading-overlay">
-    <div class="spinner"></div>
-    <p>Carregando dados do Firebase...</p>
-</div>
-
 <div class="container">
+    <!-- HEADER -->
     <header>
         <div class="brand">
-            <img src="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png" alt="Shopee Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee">
             <div class="brand-divider"></div>
             <div class="brand-text">
                 <h1>Backlog Carandiru</h1>
             </div>
         </div>
         <div class="header-meta">
-            <p>Relatório Logístico • <strong>Shopee Logistics</strong></p>
+            Relatório Logístico • <strong>Shopee Logistics</strong>
         </div>
     </header>
 
+    <!-- NAVIGATION & FILTERS -->
     <div class="nav-bar">
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="openTab('resumo')"><i data-lucide="layout-grid" size="18"></i> Resumo Semanal</button>
-            <button class="tab-btn" onclick="openTab('historico')"><i data-lucide="history" size="18"></i> Histórico Consolidado</button>
+            <button class="tab-btn active" onclick="openTab('resumo')">
+                <i data-lucide="layout-dashboard" size="16"></i> Resumo Semanal
+            </button>
+            <button class="tab-btn" onclick="openTab('historico')">
+                <i data-lucide="history" size="16"></i> Histórico Consolidado
+            </button>
         </div>
 
         <div class="action-group">
-            <div class="filter-group" id="filter-container">
+            <button class="btn-primary" onclick="openModal()">
+                <i data-lucide="plus-circle" size="18"></i> Lançar Dados
+            </button>
+            
+            <div id="filter-container" class="filter-group">
                 <i data-lucide="calendar" size="16" style="color: var(--shopee-orange)"></i>
-                <label>Semana:</label>
+                <label for="week-select">Semana:</label>
                 <select id="week-select" onchange="updateDashboardByWeek()">
                     <!-- JS Populated -->
                 </select>
             </div>
-            <button class="btn-outline" onclick="checkAuth('week')"><i data-lucide="calendar-plus" size="18"></i> Nova Semana</button>
-            <button class="btn-primary" onclick="checkAuth('data')"><i data-lucide="plus-circle" size="18"></i> Lançar Dados</button>
         </div>
     </div>
 
-    <!-- ABA RESUMO -->
+    <!-- TAB 1: RESUMO SEMANAL -->
     <div id="resumo" class="tab-content active">
         <div class="stats-grid">
             <div class="card stat-card">
-                <div class="stat-icon orange"><i data-lucide="package" size="24"></i></div>
+                <div class="stat-icon orange"><i data-lucide="package"></i></div>
                 <div class="stat-info">
                     <div class="label">Total da Semana</div>
-                    <div id="resumo-total" class="value">0</div>
+                    <div id="resumo-total" class="value">---</div>
                 </div>
             </div>
             <div class="card stat-card">
-                <div class="stat-icon blue"><i data-lucide="clock" size="24"></i></div>
+                <div class="stat-icon blue"><i data-lucide="clock"></i></div>
                 <div class="stat-info">
                     <div class="label">Maior Volume</div>
                     <div id="resumo-maior" class="value">---</div>
                 </div>
             </div>
             <div class="card stat-card">
-                <div class="stat-icon green"><i data-lucide="check-circle" size="24"></i></div>
+                <div class="stat-icon green"><i data-lucide="check-circle"></i></div>
                 <div class="stat-info">
                     <div class="label">Status Atual</div>
                     <div id="resumo-status" class="value">---</div>
@@ -485,12 +439,14 @@
         <div class="card">
             <div class="table-header">
                 <h2 id="resumo-table-title">Distribuição Diária</h2>
-                <span id="resumo-badge" class="status-badge">---</span>
+                <span id="resumo-badge" class="status-badge">Dados Consolidados</span>
             </div>
             <div class="table-wrapper">
                 <table id="resumo-table">
-                    <thead id="resumo-table-head">
-                        <!-- JS Populated -->
+                    <thead>
+                        <tr id="resumo-table-head">
+                            <!-- JS Populated -->
+                        </tr>
                     </thead>
                     <tbody>
                         <!-- JS Populated -->
@@ -500,23 +456,23 @@
         </div>
     </div>
 
-    <!-- ABA HISTÓRICO -->
+    <!-- TAB 2: HISTÓRICO CONSOLIDADO -->
     <div id="historico" class="tab-content">
         <div class="stats-grid">
             <div class="card stat-card">
-                <div class="stat-icon green"><i data-lucide="trending-down" size="24"></i></div>
+                <div class="stat-icon green"><i data-lucide="trending-down"></i></div>
                 <div class="stat-info">
                     <div class="label">Melhor Semana</div>
                     <div id="hist-best-val" class="value">---</div>
-                    <div id="hist-best-date" class="sub" style="font-size: 12px; color: var(--shopee-text-muted)">---</div>
+                    <div id="hist-best-date" class="sub">---</div>
                 </div>
             </div>
             <div class="card stat-card">
-                <div class="stat-icon orange"><i data-lucide="trending-up" size="24"></i></div>
+                <div class="stat-icon orange"><i data-lucide="trending-up"></i></div>
                 <div class="stat-info">
                     <div class="label">Pior Semana</div>
                     <div id="hist-worst-val" class="value">---</div>
-                    <div id="hist-worst-date" class="sub" style="font-size: 12px; color: var(--shopee-text-muted)">---</div>
+                    <div id="hist-worst-date" class="sub">---</div>
                 </div>
             </div>
         </div>
@@ -570,32 +526,12 @@
         </div>
     </div>
 
-    <!-- MODAL DE AUTENTICAÇÃO -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Acesso Restrito</h2>
-                <button onclick="closeModal('authModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
-            </div>
-            <form id="authForm">
-                <div class="form-group">
-                    <label>Digite a senha para editar:</label>
-                    <input type="password" id="auth-password" placeholder="Senha de acesso" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeModal('authModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary" style="flex:2">Entrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL DE LANÇAMENTO DE DADOS -->
+    <!-- MODAL DE LANÇAMENTO -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Lançar Dados</h2>
-                <button onclick="closeModal('dataModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
+                <button onclick="closeModal()" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
             </div>
             <form id="dataForm">
                 <div class="form-group">
@@ -625,35 +561,8 @@
                 <div class="form-group"><label>OFFICE</label><input type="number" id="form-office" value="0"></div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeModal('dataModal')">Cancelar</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
                     <button type="submit" class="btn-primary" style="flex:2">Salvar Dados</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL DE NOVA SEMANA -->
-    <div id="weekModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Nova Semana</h2>
-                <button onclick="closeModal('weekModal')" style="background:none; border:none; cursor:pointer;"><i data-lucide="x" size="24"></i></button>
-            </div>
-            <form id="weekForm">
-                <div class="form-group">
-                    <label>Identificação da Semana (ex: 06/04 - 12/04)</label>
-                    <input type="text" id="new-week-name" placeholder="DD/MM - DD/MM" required>
-                </div>
-                <div class="form-group">
-                    <label>Datas dos Dias (separadas por vírgula)</label>
-                    <input type="text" id="new-week-dates" placeholder="06/04, 07/04, 08/04, 09/04, 10/04, 11/04, 12/04" required>
-                </div>
-                <p style="font-size: 11px; color: var(--shopee-text-muted); margin-bottom: 16px;">
-                    * Insira exatamente 7 datas separadas por vírgula para preencher a semana.
-                </p>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeModal('weekModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary" style="flex:2">Criar Semana</button>
                 </div>
             </form>
         </div>
@@ -665,27 +574,7 @@
 </div>
 
 <script>
-    // CONFIGURAÇÃO FIREBASE
-   const firebaseConfig = {
-  apiKey: "AIzaSyA8E7tfuFXNLHwQRDNNGryoOfyOIPgPQfY",
-  authDomain: "backlog-carandiru.firebaseapp.com",
-  projectId: "backlog-carandiru",
-  storageBucket: "backlog-carandiru.firebasestorage.app",
-  messagingSenderId: "929145422510",
-  appId: "1:929145422510:web:80cc019e72a0c2b141233f",
-  measurementId: "G-KND7QF2BRF"
-};
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // CONFIGURAÇÃO DE SEGURANÇA
-    const ADMIN_PASSWORD = "admin123"; 
-    let isAuthenticated = false;
-    let pendingAction = null;
-
-    // DADOS INICIAIS (BASE) - Usados apenas se o Firestore estiver vazio
+    // DADOS INICIAIS (BASE)
     const initialData = [
         { 
             semana: "09/03 - 15/03", 
@@ -698,8 +587,7 @@
                 onhold: [300, 310, 305, 315, 320, 325, 325],
                 fleet: [120, 125, 120, 125, 120, 120, 120],
                 office: [600, 610, 605, 615, 620, 625, 625]
-            },
-            timestamp: new Date("2026-03-09").getTime()
+            }
         },
         { 
             semana: "16/03 - 22/03", 
@@ -712,8 +600,7 @@
                 onhold: [280, 290, 285, 295, 300, 275, 275],
                 fleet: [120, 125, 120, 125, 120, 120, 120],
                 office: [600, 610, 605, 615, 620, 625, 625]
-            },
-            timestamp: new Date("2026-03-16").getTime()
+            }
         },
         { 
             semana: "23/03 - 29/03", 
@@ -726,8 +613,7 @@
                 onhold: [350, 350, 350, 350, 350, 350, 400],
                 fleet: [120, 130, 120, 130, 120, 130, 150],
                 office: [650, 650, 650, 650, 650, 650, 700]
-            },
-            timestamp: new Date("2026-03-23").getTime()
+            }
         },
         { 
             semana: "30/03 - 05/04", 
@@ -740,48 +626,24 @@
                 onhold: [502, 252, 61, 37, 2099, 45, 29],
                 fleet: [272, 109, 87, 162, 187, 65, 120],
                 office: [0, 0, 0, 0, 3010, 2484, 987]
-            },
-            timestamp: new Date("2026-03-30").getTime()
+            }
         }
     ];
 
     let historicoData = [];
 
-    // CARREGAR DADOS DO FIRESTORE
-    async function loadData() {
-        try {
-            const snapshot = await db.collection('backlog').orderBy('timestamp', 'asc').get();
-            if (snapshot.empty) {
-                console.log('Banco vazio. Inicializando com dados base...');
-                for (const item of initialData) {
-                    await db.collection('backlog').doc(item.semana.replace(/\//g, '-')).set(item);
-                }
-                historicoData = JSON.parse(JSON.stringify(initialData));
-            } else {
-                historicoData = [];
-                snapshot.forEach(doc => {
-                    historicoData.push(doc.data());
-                });
-            }
-            
-            // Esconder loading e inicializar UI
-            document.getElementById('loading-overlay').style.display = 'none';
-            initUI();
-        } catch (error) {
-            console.error("Erro ao carregar dados:", error);
-            alert("Erro ao conectar com o Firebase. Verifique as regras de segurança.");
+    // CARREGAR DADOS DO LOCALSTORAGE OU USAR INICIAIS
+    function loadData() {
+        const saved = localStorage.getItem('backlog_data');
+        if (saved) {
+            historicoData = JSON.parse(saved);
+        } else {
+            historicoData = JSON.parse(JSON.stringify(initialData));
         }
     }
 
-    // SALVAR DADOS NO FIRESTORE
-    async function saveWeekToFirebase(weekData) {
-        try {
-            const docId = weekData.semana.replace(/\//g, '-');
-            await db.collection('backlog').doc(docId).set(weekData);
-        } catch (error) {
-            console.error("Erro ao salvar:", error);
-            alert("Erro ao salvar no Firebase.");
-        }
+    function saveData() {
+        localStorage.setItem('backlog_data', JSON.stringify(historicoData));
     }
 
     const colors = {
@@ -792,53 +654,22 @@
         office: '#64748B'
     };
 
-    // INICIALIZAÇÃO DA UI
-    function initUI() {
+    // INICIALIZAÇÃO
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
         lucide.createIcons();
         populateWeekSelect();
         updateDashboardByWeek(); 
         renderHistoricoTable();
         initCharts();
         
-        // Form submits
-        document.getElementById('authForm').addEventListener('submit', handleAuthSubmit);
-        document.getElementById('dataForm').addEventListener('submit', handleDataFormSubmit);
-        document.getElementById('weekForm').addEventListener('submit', handleWeekFormSubmit);
-    }
-
-    document.addEventListener('DOMContentLoaded', loadData);
-
-    // AUTH FUNCTIONS
-    function checkAuth(action) {
-        if (isAuthenticated) {
-            if (action === 'data') openModal('dataModal');
-            if (action === 'week') openModal('weekModal');
-        } else {
-            pendingAction = action;
-            openModal('authModal');
-        }
-    }
-
-    function handleAuthSubmit(e) {
-        e.preventDefault();
-        const pass = document.getElementById('auth-password').value;
-        if (pass === ADMIN_PASSWORD) {
-            isAuthenticated = true;
-            closeModal('authModal');
-            if (pendingAction === 'data') openModal('dataModal');
-            if (pendingAction === 'week') openModal('weekModal');
-            pendingAction = null;
-            document.getElementById('auth-password').value = '';
-        } else {
-            alert('Senha incorreta!');
-        }
-    }
+        // Form submit
+        document.getElementById('dataForm').addEventListener('submit', handleFormSubmit);
+    });
 
     function populateWeekSelect() {
         const select = document.getElementById('week-select');
         const formSelect = document.getElementById('form-semana');
-        const currentVal = select.value;
-        
         select.innerHTML = '';
         formSelect.innerHTML = '';
         
@@ -851,10 +682,6 @@
             const formOption = option.cloneNode(true);
             formSelect.appendChild(formOption);
         });
-
-        if (currentVal && historicoData.find(d => d.semana === currentVal)) {
-            select.value = currentVal;
-        }
     }
 
     function getStatus(total) {
@@ -869,7 +696,7 @@
         
         if (!data) return;
 
-        // Recalcular totais da semana
+        // Recalcular totais da semana caso tenham mudado
         data.amarelo = data.diario.amarelo.reduce((a, b) => a + b, 0);
         data.erro = data.diario.erro.reduce((a, b) => a + b, 0);
         data.onhold = data.diario.onhold.reduce((a, b) => a + b, 0);
@@ -906,7 +733,7 @@
         const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
         let headHtml = `<th>Categoria</th>`;
         dias.forEach((dia, i) => {
-            headHtml += `<th>${dia} ${data.datas[i] || '--/--'}</th>`;
+            headHtml += `<th>${dia} ${data.datas[i]}</th>`;
         });
         thead.innerHTML = headHtml;
 
@@ -936,10 +763,10 @@
     }
 
     // MODAL FUNCTIONS
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openModal() { document.getElementById('dataModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('dataModal').style.display = 'none'; }
 
-    async function handleDataFormSubmit(e) {
+    function handleFormSubmit(e) {
         e.preventDefault();
         const semana = document.getElementById('form-semana').value;
         const diaIdx = parseInt(document.getElementById('form-dia').value);
@@ -952,58 +779,13 @@
             data.diario.fleet[diaIdx] = parseInt(document.getElementById('form-fleet').value) || 0;
             data.diario.office[diaIdx] = parseInt(document.getElementById('form-office').value) || 0;
             
-            // Recalcular totais antes de salvar
-            data.amarelo = data.diario.amarelo.reduce((a, b) => a + b, 0);
-            data.erro = data.diario.erro.reduce((a, b) => a + b, 0);
-            data.onhold = data.diario.onhold.reduce((a, b) => a + b, 0);
-            data.fleet = data.diario.fleet.reduce((a, b) => a + b, 0);
-            data.office = data.diario.office.reduce((a, b) => a + b, 0);
-            data.total = data.amarelo + data.erro + data.onhold + data.fleet + data.office;
-
-            await saveWeekToFirebase(data);
+            saveData();
             updateDashboardByWeek();
             renderHistoricoTable();
             initCharts();
-            closeModal('dataModal');
-            alert('Dados salvos no Firebase com sucesso!');
+            closeModal();
+            alert('Dados salvos com sucesso!');
         }
-    }
-
-    async function handleWeekFormSubmit(e) {
-        e.preventDefault();
-        const name = document.getElementById('new-week-name').value;
-        const datesStr = document.getElementById('new-week-dates').value;
-        const dates = datesStr.split(',').map(d => d.trim());
-
-        if (dates.length !== 7) {
-            alert('Por favor, insira exatamente 7 datas separadas por vírgula.');
-            return;
-        }
-
-        const newWeek = {
-            semana: name,
-            total: 0, amarelo: 0, erro: 0, onhold: 0, fleet: 0, office: 0,
-            datas: dates,
-            diario: {
-                amarelo: [0,0,0,0,0,0,0],
-                erro: [0,0,0,0,0,0,0],
-                onhold: [0,0,0,0,0,0,0],
-                fleet: [0,0,0,0,0,0,0],
-                office: [0,0,0,0,0,0,0]
-            },
-            timestamp: Date.now()
-        };
-
-        historicoData.push(newWeek);
-        await saveWeekToFirebase(newWeek);
-        populateWeekSelect();
-        document.getElementById('week-select').value = name;
-        updateDashboardByWeek();
-        renderHistoricoTable();
-        initCharts();
-        closeModal('weekModal');
-        document.getElementById('weekForm').reset();
-        alert('Nova semana criada no Firebase!');
     }
 
     // NAVEGAÇÃO POR ABAS
@@ -1025,7 +807,6 @@
     }
 
     function updateHistoryInsights() {
-        if (historicoData.length === 0) return;
         const sorted = [...historicoData].sort((a, b) => a.total - b.total);
         const best = sorted[0];
         const worst = sorted[sorted.length - 1];
@@ -1058,7 +839,6 @@
     let charts = {};
 
     function initCharts() {
-        if (historicoData.length === 0) return;
         const last = historicoData[historicoData.length - 1];
 
         // Line Chart
