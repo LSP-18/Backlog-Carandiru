@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Backlog - Shopee Logistics</title>
+    <title>Dashboard Profissional de Backlog - Shopee Logistics</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -19,14 +19,14 @@
     <style>
         :root {
             --shopee-orange: #EE4D2D;
-            --shopee-orange-hover: #D73211;
+            --shopee-orange-light: #FFF5F1;
             --shopee-bg: #F6F6F6;
             --shopee-white: #FFFFFF;
             --shopee-text-main: #222222;
             --shopee-text-muted: #757575;
             --shopee-border: #E8E8E8;
-            --shopee-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
+            --shopee-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
             
             /* Category Colors */
             --color-amarelo: #F5C518;
@@ -43,56 +43,58 @@
             background-color: var(--shopee-bg);
             color: var(--shopee-text-main);
             line-height: 1.6;
-            padding: 20px;
+            padding: 24px;
             -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1300px; margin: 0 auto; }
 
         /* --- HEADER --- */
         header {
             background: var(--shopee-white);
-            padding: 24px 32px;
+            padding: 32px;
             border-radius: var(--radius);
             box-shadow: var(--shopee-shadow);
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--shopee-orange);
+            border-left: 8px solid var(--shopee-orange);
         }
 
         .header-info h1 {
-            font-size: 22px;
+            font-size: 26px;
             font-weight: 800;
-            color: var(--shopee-orange);
+            color: var(--shopee-text-main);
             letter-spacing: -0.5px;
+            margin-bottom: 4px;
         }
 
         .header-info p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--shopee-text-muted);
             font-weight: 500;
-        }
-
-        .shopee-logo { height: 32px; }
-
-        /* --- TABS --- */
-        .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            background: #e0e0e0;
-            padding: 5px;
-            border-radius: 10px;
-            width: fit-content;
+            align-items: center;
+            gap: 8px;
         }
 
-        .tab-btn {
-            padding: 10px 24px;
+        .shopee-logo { height: 36px; }
+
+        /* --- NAVIGATION --- */
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
             border: none;
-            background: transparent;
-            border-radius: 8px;
+            background: var(--shopee-white);
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 700;
             font-size: 14px;
@@ -100,113 +102,118 @@
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: var(--shopee-shadow);
+            white-space: nowrap;
         }
 
-        .tab-btn.active {
-            background: var(--shopee-white);
-            color: var(--shopee-orange);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        .nav-btn.active {
+            background: var(--shopee-orange);
+            color: var(--shopee-white);
         }
 
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
         .tab-content.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- SUMMARY CARDS --- */
-        .summary-grid {
+        /* --- KPI CARDS --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: var(--shopee-white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--shopee-orange);
+        }
+
+        .kpi-label { font-size: 13px; color: var(--shopee-text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .kpi-value { font-size: 32px; font-weight: 800; color: var(--shopee-text-main); margin-bottom: 8px; }
+        .kpi-trend { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        .trend-up { color: #d32f2f; }
+        .trend-down { color: #2e7d32; }
+
+        /* --- COMPARISON SECTION --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card-main {
+            background: var(--shopee-white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .card-title { font-size: 18px; font-weight: 800; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+
+        /* --- CATEGORY CARDS --- */
+        .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 32px;
         }
 
-        .summary-card {
+        .cat-card {
             background: var(--shopee-white);
-            padding: 24px;
-            border-radius: var(--radius);
-            box-shadow: var(--shopee-shadow);
-            text-align: center;
-            border-top: 4px solid var(--shopee-orange);
-        }
-
-        .summary-card .label { font-size: 12px; color: var(--shopee-text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .summary-card .value { font-size: 28px; font-weight: 800; color: var(--shopee-orange); }
-
-        /* --- CHARTS --- */
-        .charts-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .chart-card {
-            background: var(--shopee-white);
-            border-radius: var(--radius);
-            box-shadow: var(--shopee-shadow);
-            padding: 24px;
-        }
-
-        .chart-header { margin-bottom: 20px; }
-        .chart-header h2 { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        .canvas-wrapper { position: relative; height: 300px; width: 100%; }
-
-        /* --- DAILY CARDS --- */
-        .daily-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .day-card {
-            background: var(--shopee-white);
-            border-radius: var(--radius);
-            box-shadow: var(--shopee-shadow);
             padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
             border-top: 4px solid var(--shopee-border);
-            transition: transform 0.2s ease;
         }
 
-        .day-card.has-data { border-top-color: var(--shopee-orange); }
-        .day-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-
-        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--shopee-border); padding-bottom: 10px; }
-        .day-info .date { font-size: 18px; font-weight: 800; }
-        .day-info .weekday { font-size: 12px; font-weight: 600; color: var(--shopee-text-muted); text-transform: uppercase; }
-        .day-total .value { font-size: 20px; font-weight: 800; color: var(--shopee-orange); }
-
-        .category-list { display: flex; flex-direction: column; gap: 8px; }
-        .category-item { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        .cat-label { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .cat-value { font-weight: 700; font-family: monospace; font-size: 14px; }
-        .val-zero { color: #D1D1D1; }
+        .cat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .cat-name { font-weight: 800; font-size: 14px; }
+        .cat-stats { display: flex; flex-direction: column; gap: 8px; }
+        .cat-stat-row { display: flex; justify-content: space-between; font-size: 13px; }
+        .cat-stat-label { color: var(--shopee-text-muted); font-weight: 600; }
+        .cat-stat-val { font-weight: 700; font-family: monospace; }
 
         /* --- TABLE --- */
-        .card-table {
+        .table-container {
             background: var(--shopee-white);
             border-radius: var(--radius);
             box-shadow: var(--shopee-shadow);
             overflow: hidden;
-            margin-bottom: 40px;
         }
 
         .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background: #FAFAFA; padding: 16px 20px; font-size: 11px; font-weight: 700; color: var(--shopee-text-muted); text-transform: uppercase; border-bottom: 1px solid var(--shopee-border); }
-        td { padding: 14px 20px; font-size: 13px; border-bottom: 1px solid var(--shopee-border); }
-        .td-date-col { font-weight: 700; }
-        .td-total-col { font-weight: 800; color: var(--shopee-orange); background: #FFF5F1; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #F9FAFB; padding: 18px 24px; font-size: 12px; font-weight: 800; color: var(--shopee-text-muted); text-transform: uppercase; text-align: left; border-bottom: 2px solid var(--shopee-border); }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--shopee-border); }
+        .td-bold { font-weight: 700; }
+        .td-total { font-weight: 800; color: var(--shopee-orange); background: var(--shopee-orange-light); }
 
-        .section-title { font-size: 18px; font-weight: 800; margin: 32px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        /* --- UTILS --- */
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .badge-week1 { background: #E3F2FD; color: #1565C0; }
+        .badge-week2 { background: #FFF3E0; color: #E65100; }
 
-        footer { text-align: center; padding: 40px 0; color: var(--shopee-text-muted); font-size: 12px; }
+        footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
 
-        @media (max-width: 992px) {
-            .charts-container { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .comparison-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -215,71 +222,71 @@
 <div class="container">
     <header>
         <div class="header-info">
-            <h1>Visão Diária de Backlog - Emanuel Brendon</h1>
-            <p>Análise Detalhada • Carandiru • 30/03 a 12/04</p>
+            <h1>Dashboard Executivo de Backlog</h1>
+            <p><i data-lucide="map-pin" size="16"></i> Shopee Logistics • Carandiru • 30/03 a 12/04</p>
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee" class="shopee-logo">
     </header>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('weekly')">
-            <i data-lucide="calendar"></i> Esta Semana (06/04 - 12/04)
-        </button>
-        <button class="tab-btn" onclick="openTab('biweekly')">
-            <i data-lucide="bar-chart-3"></i> Visão Quinzenal (30/03 - 12/04)
-        </button>
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard"></i> Visão Executiva</button>
+        <button class="nav-btn" onclick="openTab('categories')"><i data-lucide="layers"></i> Análise por Categoria</button>
+        <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar-range"></i> Detalhamento Diário</button>
     </div>
 
-    <!-- WEEKLY VIEW -->
-    <div id="weekly" class="tab-content active">
-        <div class="summary-grid">
-            <div class="summary-card">
-                <div class="label">Total da Semana</div>
-                <div id="week-total-val" class="value">0</div>
+    <!-- TAB: OVERVIEW -->
+    <div id="overview" class="tab-content active">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="package" size="16"></i> Total Acumulado</div>
+                <div id="kpi-total" class="kpi-value">0</div>
+                <div class="kpi-trend trend-down"><i data-lucide="arrow-down-right" size="14"></i> -42% vs Semana Anterior</div>
             </div>
-            <div class="summary-card">
-                <div class="label">Média Diária</div>
-                <div id="week-avg-val" class="value">0</div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="activity" size="16"></i> Média Diária</div>
+                <div id="kpi-avg" class="kpi-value">0</div>
+                <div class="kpi-trend"><i data-lucide="info" size="14"></i> Base: 14 dias</div>
             </div>
-            <div class="summary-card">
-                <div class="label">Pico de Volume</div>
-                <div id="week-max-val" class="value">0</div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="zap" size="16"></i> Pico de Volume</div>
+                <div id="kpi-peak" class="kpi-value">0</div>
+                <div class="kpi-trend"><i data-lucide="calendar" size="14"></i> Atingido em 03/04</div>
             </div>
         </div>
 
-        <div class="section-title">
-            <i data-lucide="layout-grid" size="20" style="color: var(--shopee-orange)"></i>
-            Detalhamento Diário (Cards)
+        <div class="comparison-grid">
+            <div class="card-main">
+                <div class="card-title"><i data-lucide="bar-chart-horizontal" size="20" style="color: var(--shopee-orange)"></i> Comparativo Semanal: Semana 1 vs Semana 2</div>
+                <div style="height: 350px;">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            <div class="card-main">
+                <div class="card-title"><i data-lucide="pie-chart" size="20" style="color: var(--shopee-orange)"></i> Share por Categoria</div>
+                <div style="height: 350px;">
+                    <canvas id="shareChart"></canvas>
+                </div>
+            </div>
         </div>
-        <div id="weekly-cards" class="daily-grid"></div>
     </div>
 
-    <!-- BI-WEEKLY VIEW -->
-    <div id="biweekly" class="tab-content">
-        <div class="charts-container">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h2><i data-lucide="trending-up" size="18" style="color: var(--shopee-orange)"></i> Evolução do Backlog</h2>
-                </div>
-                <div class="canvas-wrapper">
-                    <canvas id="evolutionChart"></canvas>
-                </div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h2><i data-lucide="pie-chart" size="18" style="color: var(--shopee-orange)"></i> Distribuição por Categoria</h2>
-                </div>
-                <div class="canvas-wrapper">
-                    <canvas id="distributionChart"></canvas>
-                </div>
+    <!-- TAB: CATEGORIES -->
+    <div id="categories" class="tab-content">
+        <div class="card-main" style="margin-bottom: 32px;">
+            <div class="card-title"><i data-lucide="trending-up" size="20" style="color: var(--shopee-orange)"></i> Evolução por Categoria (Visão Comparativa)</div>
+            <div style="height: 400px;">
+                <canvas id="categoryEvolutionChart"></canvas>
             </div>
         </div>
+        
+        <div id="category-cards" class="category-grid">
+            <!-- Cards will be injected here -->
+        </div>
+    </div>
 
-        <div class="section-title">
-            <i data-lucide="list" size="20" style="color: var(--shopee-orange)"></i>
-            Tabela Completa do Período
-        </div>
-        <div class="card-table">
+    <!-- TAB: DAILY -->
+    <div id="daily" class="tab-content">
+        <div class="table-container">
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -291,22 +298,22 @@
                             <th>On Hold</th>
                             <th>Ret. Fleet</th>
                             <th>Office</th>
-                            <th>Total</th>
+                            <th>Total Diário</th>
                         </tr>
                     </thead>
-                    <tbody id="full-table-body"></tbody>
+                    <tbody id="daily-table-body"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <footer>© 2026 Shopee Logistics • Gestão de Backlog • Carandiru</footer>
+    <footer>© 2026 Shopee Logistics • Gestão de Backlog Profissional • Emanuel Brendon</footer>
 </div>
 
 <script>
     Chart.register(ChartDataLabels);
 
-    const timeline = [
+    const data = [
       { "data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "total": 1156 },
       { "data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "total": 590 },
       { "data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "total": 527 },
@@ -323,117 +330,142 @@
       { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
     ];
 
-    function formatVal(v) { return v === 0 ? '<span class="val-zero">-</span>' : v.toLocaleString(); }
+    const week1 = data.slice(0, 7);
+    const week2 = data.slice(7, 14);
 
     function openTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
     }
 
-    // Render Weekly Cards & Stats
-    const weeklyData = timeline.slice(7);
-    const weeklyCards = document.getElementById('weekly-cards');
-    let weekTotal = 0, weekMax = 0, weekDays = 0;
+    // --- CALCULATIONS ---
+    const totalAll = data.reduce((a, b) => a + b.total, 0);
+    const avgAll = Math.round(totalAll / data.filter(d => d.total > 0).length);
+    const peakAll = Math.max(...data.map(d => d.total));
 
-    weeklyData.forEach(day => {
-        weekTotal += day.total;
-        if(day.total > weekMax) weekMax = day.total;
-        if(day.total > 0) weekDays++;
+    document.getElementById('kpi-total').innerText = totalAll.toLocaleString();
+    document.getElementById('kpi-avg').innerText = avgAll.toLocaleString();
+    document.getElementById('kpi-peak').innerText = peakAll.toLocaleString();
 
+    // --- CATEGORY TOTALS PER WEEK ---
+    const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
+    const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office'];
+    const catColors = ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'];
+
+    const week1Totals = cats.map(c => week1.reduce((a, b) => a + b[c], 0));
+    const week2Totals = cats.map(c => week2.reduce((a, b) => a + b[c], 0));
+
+    // --- RENDER CATEGORY CARDS ---
+    const catCardsContainer = document.getElementById('category-cards');
+    cats.forEach((c, i) => {
+        const w1 = week1Totals[i];
+        const w2 = week2Totals[i];
+        const diff = w1 > 0 ? Math.round(((w2 - w1) / w1) * 100) : 0;
+        
         const card = document.createElement('div');
-        card.className = `day-card ${day.total > 0 ? 'has-data' : ''}`;
+        card.className = 'cat-card';
+        card.style.borderTopColor = catColors[i];
         card.innerHTML = `
-            <div class="day-header">
-                <div class="day-info">
-                    <div class="date">${day.data}</div>
-                    <div class="weekday">${day.dia}</div>
-                </div>
-                <div class="day-total"><span class="value">${day.total.toLocaleString()}</span></div>
+            <div class="cat-card-header">
+                <span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span>
+                <i data-lucide="box" size="16" style="color:var(--shopee-text-muted)"></i>
             </div>
-            <div class="category-list">
-                <div class="category-item"><div class="cat-label"><div class="dot" style="background:var(--color-amarelo)"></div> Amarelo</div><div class="cat-value">${formatVal(day.amarelo)}</div></div>
-                <div class="category-item"><div class="cat-label"><div class="dot" style="background:var(--color-erro)"></div> Erro Op.</div><div class="cat-value">${formatVal(day.erro)}</div></div>
-                <div class="category-item"><div class="cat-label"><div class="dot" style="background:var(--color-onhold)"></div> On Hold</div><div class="cat-value">${formatVal(day.onhold)}</div></div>
-                <div class="category-item"><div class="cat-label"><div class="dot" style="background:var(--color-fleet)"></div> Ret. Fleet</div><div class="cat-value">${formatVal(day.fleet)}</div></div>
-                <div class="category-item"><div class="cat-label"><div class="dot" style="background:var(--color-office)"></div> Office</div><div class="cat-value">${formatVal(day.office)}</div></div>
+            <div class="cat-stats">
+                <div class="cat-stat-row"><span class="cat-stat-label">Semana 1</span><span class="cat-stat-val">${w1.toLocaleString()}</span></div>
+                <div class="cat-stat-row"><span class="cat-stat-label">Semana 2</span><span class="cat-stat-val">${w2.toLocaleString()}</span></div>
+                <div class="cat-stat-row" style="margin-top:8px; padding-top:8px; border-top:1px dashed #eee">
+                    <span class="cat-stat-label">Variação</span>
+                    <span class="cat-stat-val ${diff <= 0 ? 'trend-down' : 'trend-up'}">${diff > 0 ? '+' : ''}${diff}%</span>
+                </div>
             </div>
         `;
-        weeklyCards.appendChild(card);
+        catCardsContainer.appendChild(card);
     });
 
-    document.getElementById('week-total-val').innerText = weekTotal.toLocaleString();
-    document.getElementById('week-avg-val').innerText = weekDays > 0 ? Math.round(weekTotal/weekDays).toLocaleString() : '0';
-    document.getElementById('week-max-val').innerText = weekMax.toLocaleString();
-
-    // Render Full Table
-    const tableBody = document.getElementById('full-table-body');
-    timeline.forEach(day => {
+    // --- RENDER DAILY TABLE ---
+    const tableBody = document.getElementById('daily-table-body');
+    data.forEach(day => {
         tableBody.innerHTML += `
             <tr>
-                <td class="td-date-col">${day.data}</td>
+                <td class="td-bold">${day.data}</td>
                 <td>${day.dia}</td>
-                <td>${formatVal(day.amarelo)}</td>
-                <td>${formatVal(day.erro)}</td>
-                <td>${formatVal(day.onhold)}</td>
-                <td>${formatVal(day.fleet)}</td>
-                <td>${formatVal(day.office)}</td>
-                <td class="td-total-col">${day.total.toLocaleString()}</td>
+                <td>${day.amarelo || '-'}</td>
+                <td>${day.erro || '-'}</td>
+                <td>${day.onhold || '-'}</td>
+                <td>${day.fleet || '-'}</td>
+                <td>${day.office || '-'}</td>
+                <td class="td-total">${day.total.toLocaleString()}</td>
             </tr>
         `;
     });
 
-    // Charts
-    const chartOptions = {
+    // --- CHARTS ---
+    const commonOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: { display: false },
             datalabels: {
-                align: 'top', anchor: 'end',
+                anchor: 'end', align: 'top',
                 font: { weight: 'bold', size: 10 },
-                formatter: (v) => v > 0 ? v.toLocaleString() : '',
-                color: '#222'
+                formatter: (v) => v > 0 ? v.toLocaleString() : ''
             }
-        },
-        scales: {
-            y: { beginAtZero: true, grid: { color: '#F0F0F0' } },
-            x: { grid: { display: false } }
         }
     };
 
-    new Chart(document.getElementById('evolutionChart'), {
-        type: 'line',
-        data: {
-            labels: timeline.map(d => d.data),
-            datasets: [{
-                data: timeline.map(d => d.total),
-                borderColor: '#EE4D2D',
-                backgroundColor: 'rgba(238, 77, 45, 0.1)',
-                fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: '#EE4D2D'
-            }]
-        },
-        options: chartOptions
-    });
-
-    new Chart(document.getElementById('distributionChart'), {
+    // Comparison Chart (Week 1 vs Week 2)
+    new Chart(document.getElementById('comparisonChart'), {
         type: 'bar',
         data: {
-            labels: ['Amarelo', 'Erro', 'On Hold', 'Fleet', 'Office'],
+            labels: catLabels,
+            datasets: [
+                { label: 'Semana 1', data: week1Totals, backgroundColor: '#e0e0e0', borderRadius: 6 },
+                { label: 'Semana 2', data: week2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 }
+            ]
+        },
+        options: {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' } }
+        }
+    });
+
+    // Share Chart (Doughnut)
+    new Chart(document.getElementById('shareChart'), {
+        type: 'doughnut',
+        data: {
+            labels: catLabels,
             datasets: [{
-                data: [
-                    timeline.reduce((a, b) => a + b.amarelo, 0),
-                    timeline.reduce((a, b) => a + b.erro, 0),
-                    timeline.reduce((a, b) => a + b.onhold, 0),
-                    timeline.reduce((a, b) => a + b.fleet, 0),
-                    timeline.reduce((a, b) => a + b.office, 0)
-                ],
-                backgroundColor: ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'],
-                borderRadius: 6
+                data: cats.map(c => data.reduce((a, b) => a + b[c], 0)),
+                backgroundColor: catColors,
+                borderWidth: 0
             }]
         },
-        options: chartOptions
+        options: {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'right' }, datalabels: { display: false } }
+        }
+    });
+
+    // Category Evolution (Line)
+    new Chart(document.getElementById('categoryEvolutionChart'), {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.data),
+            datasets: cats.map((c, i) => ({
+                label: catLabels[i],
+                data: data.map(d => d[c]),
+                borderColor: catColors[i],
+                backgroundColor: catColors[i],
+                tension: 0.3,
+                pointRadius: 3
+            }))
+        },
+        options: {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' }, datalabels: { display: false } }
+        }
     });
 
     lucide.createIcons();
