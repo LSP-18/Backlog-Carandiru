@@ -304,27 +304,36 @@
             font-weight: 800;
             text-transform: uppercase;
         }
-
-        .badge-spx { background: #E0F2FE; color: #0369A1; }
-        .badge-gnx { background: #FEF3C7; color: #92400E; }
-        .badge-other { background: #F3F4F6; color: #374151; }
         
-        .reason-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-right: 4px;
-            margin-bottom: 4px;
+        .history-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 600px;
         }
 
-        .reason-falta { background: #FEE2E2; color: #B91C1C; }
-        .reason-atestado { background: #DCFCE7; color: #15803D; }
-        .reason-suspensão { background: #FEF3C7; color: #92400E; }
-        .reason-afastamento { background: #E0F2FE; color: #0369A1; }
-        .reason-férias { background: #F3E8FF; color: #7E22CE; }
-        .reason-outros { background: #F3F4F6; color: #4B5563; }
+        .history-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 50px;
+            border: 1px solid var(--shopee-border);
+        }
+
+        .history-date { color: var(--shopee-text-muted); font-size: 9px; margin-bottom: 2px; }
+
+        .reason-falta { background: #FEE2E2; color: #B91C1C; border-color: #FCA5A5; }
+        .reason-atestado { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+        .reason-suspensão { background: #FEF3C7; color: #92400E; border-color: #FCD34D; }
+        .reason-afastamento { background: #E0F2FE; color: #0369A1; border-color: #7DD3FC; }
+        .reason-férias { background: #F3E8FF; color: #7E22CE; border-color: #D8B4FE; }
+        .reason-outros { background: #F3F4F6; color: #4B5563; border-color: #D1D5DB; }
+        .reason-diferença? { background: #F1F5F9; color: #475569; border-color: #CBD5E1; }
+        .reason-desvio? { background: #FFF7ED; color: #C2410C; border-color: #FDBA74; }
 
         footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
 
@@ -417,18 +426,9 @@
         </div>
     </div>
 
-    <!-- TAB: ABS TAB (NEW) -->
+    <!-- TAB: ABS TAB (UPDATED) -->
     <div id="abs-tab" class="tab-content">
         <div class="filter-bar">
-            <div class="filter-item">
-                <label for="unit-filter">Unidade (BPO)</label>
-                <select id="unit-filter" onchange="filterAbs()">
-                    <option value="all">Todas as Unidades</option>
-                    <option value="SPX">SPX</option>
-                    <option value="GNX">GNX</option>
-                    <option value="GI GROUP">GI GROUP</option>
-                </select>
-            </div>
             <div class="filter-item">
                 <label for="reason-filter">Motivo do AB</label>
                 <select id="reason-filter" onchange="filterAbs()">
@@ -439,6 +439,8 @@
                     <option value="Afastamento">Afastamento</option>
                     <option value="Férias">Férias</option>
                     <option value="Banco de Horas">Banco de Horas</option>
+                    <option value="Diferença?">Diferença?</option>
+                    <option value="Desvio?">Desvio?</option>
                 </select>
             </div>
             <div class="filter-item">
@@ -453,10 +455,8 @@
                     <thead>
                         <tr>
                             <th>Colaborador</th>
-                            <th>Unidade</th>
-                            <th>Motivo(s)</th>
+                            <th>Histórico Diário (Data/Motivo)</th>
                             <th>Total</th>
-                            <th>Última Data</th>
                         </tr>
                     </thead>
                     <tbody id="abs-table-body">
@@ -555,47 +555,43 @@
       { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
     ];
 
-    // Dados Reais dos ABs (Processados do arquivo enviado)
+    // Dados Reais dos ABs (V3)
     const absData = [
-        { "nome": "SARA SIANY DO NASCIMENTO SPXBR14455", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Afastamento"], "total": 29, "ultima": "30/04" },
-        { "nome": "VICTORIA FEU FELIZARDO DA ROCHA GN21843", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 26, "ultima": "30/04" },
-        { "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 2, "ultima": "05/04" },
-        { "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "04/04" },
-        { "nome": "HUGO SILVA PEREIRA GN28739", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "02/04" },
-        { "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Férias"], "total": 24, "ultima": "30/04" },
-        { "nome": "ANTONIO CELSO SANTANA SPXBR28227", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 5, "ultima": "10/04" },
-        { "nome": "JAQUELINE PEREIRA ADELINO SPXBR17931", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" },
-        { "nome": "GUILHERME DIAS DE SOUZA SPXBR8802", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "07/04" },
-        { "nome": "SARA CRISTINA CANDIDO ALVES PEREIRA SPXBR25284", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "08/04" },
-        { "nome": "ISABEL CRISTINA DE NORONHA SOUZA SPXBR24110", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Férias"], "total": 13, "ultima": "14/04" },
-        { "nome": "RENAN GABRIEL SANTANA FERREIRA GN21557", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 4, "ultima": "09/04" },
-        { "nome": "ALINE MATIAS HILARIO SPXBR25282", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 3, "ultima": "09/04" },
-        { "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 2, "ultima": "09/04" },
-        { "nome": "BRUNO DO CARMO PIZZOLITTO GN23467", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 3, "ultima": "07/04" },
-        { "nome": "GABRIEL KUVALELA JOMBA SPXBR22306", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta", "Férias"], "total": 5, "ultima": "07/04" },
-        { "nome": "SAMUEL ALEXANDRO LARGHY ISSA SPXBR12401", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "05/04" },
-        { "nome": "CAMILA DOS SANTOS ROCHA GN33940", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" },
-        { "nome": "EDUARDO NORTON RODRIGUES GN37495", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "RAFAEL FELIPE LIMA GN41710", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 2, "ultima": "07/04" },
-        { "nome": "KAUA FRANCA DA SILVA GN36990", "unidade": "GNX", "cargo": "FISCAL DE PATIO", "motivos": ["Falta"], "total": 1, "ultima": "04/04" },
-        { "nome": "MESSIAS PEREIRA DOS SANTOS SPXBR33776", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "LIRISMAR BORGES LIMA SPXBR15152", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Afastamento"], "total": 29, "ultima": "30/04" },
-        { "nome": "ALINE AQUINO OLIVEIRA SPXBR22191", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Banco de Horas", "Férias"], "total": 25, "ultima": "30/04" },
-        { "nome": "MARIA EDUARDA DOS SANTOS FERREIRA SPXBR30804", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "DANIEL FRANCISCO FERREIRA DA COSTA BENEVIDES SPXBR34049", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "NELSON SENA SILVA JUNIOR SPXBR32847", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "KLEBER JACOB SALES SPXBR21886", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "06/04" },
-        { "nome": "LUCAS MASCARENHAS PORTELA SPXBR24109", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado", "Suspensão"], "total": 2, "ultima": "09/04" },
-        { "nome": "DEBORAH SILVA DO NASCIMENTO GN28811", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "08/04" },
-        { "nome": "JOYCE TORRES DE ALMEIDA SPXBR32852", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 5, "ultima": "11/04" },
-        { "nome": "CARLOS HENRIQUE QUEIROZ DA SILVA GN33635", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "09/04" },
-        { "nome": "VANESSA GANDUR NASCIMENTO GUILHEM SPXBR30838", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "YNGRID DOS SANTOS SILVA GN26448", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "RAYSSA CAMPOS DA SILVA GN35673", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "08/04" },
-        { "nome": "EDUARDO ARAUJO RODRIGUES GN33917", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "08/04" },
-        { "nome": "MARTA PAULINA DINIZ GOMES SPXBR29786", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
-        { "nome": "RAFAELA SILVA DOS SANTOS GN38884", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado", "Suspensão"], "total": 2, "ultima": "08/04" },
-        { "nome": "ROSILENE ALVES DE SOUZA GN36997", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" }
+        { "nome": "SARA SIANY DO NASCIMENTO SPXBR14455", "unidade": "SPX", "cargo": "T3_A_5X2_2_0200_17", "motivos": ["Afastamento"], "total": 29, "historico": [{"data": "02/04", "motivo": "Afastamento"}, {"data": "03/04", "motivo": "Afastamento"}, {"data": "04/04", "motivo": "Afastamento"}, {"data": "05/04", "motivo": "Afastamento"}, {"data": "06/04", "motivo": "Afastamento"}, {"data": "07/04", "motivo": "Afastamento"}, {"data": "08/04", "motivo": "Afastamento"}, {"data": "09/04", "motivo": "Afastamento"}, {"data": "10/04", "motivo": "Afastamento"}, {"data": "11/04", "motivo": "Afastamento"}, {"data": "12/04", "motivo": "Afastamento"}, {"data": "13/04", "motivo": "Afastamento"}, {"data": "14/04", "motivo": "Afastamento"}, {"data": "15/04", "motivo": "Afastamento"}, {"data": "16/04", "motivo": "Afastamento"}, {"data": "17/04", "motivo": "Afastamento"}, {"data": "18/04", "motivo": "Afastamento"}, {"data": "19/04", "motivo": "Afastamento"}, {"data": "20/04", "motivo": "Afastamento"}, {"data": "21/04", "motivo": "Afastamento"}, {"data": "22/04", "motivo": "Afastamento"}, {"data": "23/04", "motivo": "Afastamento"}, {"data": "24/04", "motivo": "Afastamento"}, {"data": "25/04", "motivo": "Afastamento"}, {"data": "26/04", "motivo": "Afastamento"}, {"data": "27/04", "motivo": "Afastamento"}, {"data": "28/04", "motivo": "Afastamento"}, {"data": "29/04", "motivo": "Afastamento"}, {"data": "30/04", "motivo": "Afastamento"}] },
+        { "nome": "VICTORIA FEU FELIZARDO DA ROCHA GN21843", "unidade": "GNX", "cargo": "T3_A_5X2_1_2100_67", "motivos": ["Desvio?", "Atestado"], "total": 26, "historico": [{"data": "02/04", "motivo": "Atestado"}, {"data": "06/04", "motivo": "Desvio?"}, {"data": "07/04", "motivo": "Desvio?"}, {"data": "08/04", "motivo": "Desvio?"}, {"data": "09/04", "motivo": "Desvio?"}, {"data": "10/04", "motivo": "Desvio?"}, {"data": "11/04", "motivo": "Desvio?"}, {"data": "12/04", "motivo": "Desvio?"}, {"data": "13/04", "motivo": "Desvio?"}, {"data": "14/04", "motivo": "Desvio?"}, {"data": "15/04", "motivo": "Desvio?"}, {"data": "16/04", "motivo": "Desvio?"}, {"data": "17/04", "motivo": "Desvio?"}, {"data": "18/04", "motivo": "Desvio?"}, {"data": "19/04", "motivo": "Desvio?"}, {"data": "20/04", "motivo": "Desvio?"}, {"data": "21/04", "motivo": "Desvio?"}, {"data": "22/04", "motivo": "Desvio?"}, {"data": "23/04", "motivo": "Desvio?"}, {"data": "24/04", "motivo": "Desvio?"}, {"data": "25/04", "motivo": "Desvio?"}, {"data": "26/04", "motivo": "Desvio?"}, {"data": "27/04", "motivo": "Desvio?"}, {"data": "28/04", "motivo": "Desvio?"}, {"data": "29/04", "motivo": "Desvio?"}, {"data": "30/04", "motivo": "Desvio?"}] },
+        { "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286", "unidade": "SPX", "cargo": "T3_A_5X2_3_0200_12", "motivos": ["Falta"], "total": 2, "historico": [{"data": "04/04", "motivo": "Falta"}, {"data": "05/04", "motivo": "Falta"}] },
+        { "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922", "unidade": "GNX", "cargo": "T3_A_5X2_3_0200_12", "motivos": ["Atestado"], "total": 1, "historico": [{"data": "04/04", "motivo": "Atestado"}] },
+        { "nome": "JANAINA FERREIRA COSTA GN29799", "unidade": "GNX", "cargo": "T3_A_5X2_3_0200_12", "motivos": ["Diferença?"], "total": 28, "historico": [{"data": "03/04", "motivo": "Diferença?"}, {"data": "04/04", "motivo": "Diferença?"}, {"data": "05/04", "motivo": "Diferença?"}, {"data": "06/04", "motivo": "Diferença?"}, {"data": "07/04", "motivo": "Diferença?"}, {"data": "08/04", "motivo": "Diferença?"}, {"data": "09/04", "motivo": "Diferença?"}, {"data": "10/04", "motivo": "Diferença?"}, {"data": "11/04", "motivo": "Diferença?"}, {"data": "12/04", "motivo": "Diferença?"}, {"data": "13/04", "motivo": "Diferença?"}, {"data": "14/04", "motivo": "Diferença?"}, {"data": "15/04", "motivo": "Diferença?"}, {"data": "16/04", "motivo": "Diferença?"}, {"data": "17/04", "motivo": "Diferença?"}, {"data": "18/04", "motivo": "Diferença?"}, {"data": "19/04", "motivo": "Diferença?"}, {"data": "20/04", "motivo": "Diferença?"}, {"data": "21/04", "motivo": "Diferença?"}, {"data": "22/04", "motivo": "Diferença?"}, {"data": "23/04", "motivo": "Diferença?"}, {"data": "24/04", "motivo": "Diferença?"}, {"data": "25/04", "motivo": "Diferença?"}, {"data": "26/04", "motivo": "Diferença?"}, {"data": "27/04", "motivo": "Diferença?"}, {"data": "28/04", "motivo": "Diferença?"}, {"data": "29/04", "motivo": "Diferença?"}, {"data": "30/04", "motivo": "Diferença?"}] },
+        { "nome": "HUGO SILVA PEREIRA GN28739", "unidade": "GNX", "cargo": "T3_A_5X2_3_0200_12", "motivos": ["Atestado"], "total": 1, "historico": [{"data": "02/04", "motivo": "Atestado"}] },
+        { "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Férias"], "total": 24, "historico": [{"data": "07/04", "motivo": "Férias"}, {"data": "08/04", "motivo": "Férias"}, {"data": "09/04", "motivo": "Férias"}, {"data": "10/04", "motivo": "Férias"}, {"data": "11/04", "motivo": "Férias"}, {"data": "12/04", "motivo": "Férias"}, {"data": "13/04", "motivo": "Férias"}, {"data": "14/04", "motivo": "Férias"}, {"data": "15/04", "motivo": "Férias"}, {"data": "16/04", "motivo": "Férias"}, {"data": "17/04", "motivo": "Férias"}, {"data": "18/04", "motivo": "Férias"}, {"data": "19/04", "motivo": "Férias"}, {"data": "20/04", "motivo": "Férias"}, {"data": "21/04", "motivo": "Férias"}, {"data": "22/04", "motivo": "Férias"}, {"data": "23/04", "motivo": "Férias"}, {"data": "24/04", "motivo": "Férias"}, {"data": "25/04", "motivo": "Férias"}, {"data": "26/04", "motivo": "Férias"}, {"data": "27/04", "motivo": "Férias"}, {"data": "28/04", "motivo": "Férias"}, {"data": "29/04", "motivo": "Férias"}, {"data": "30/04", "motivo": "Férias"}] },
+        { "nome": "ANTONIO CELSO SANTANA SPXBR28227", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Atestado"], "total": 5, "historico": [{"data": "06/04", "motivo": "Atestado"}, {"data": "07/04", "motivo": "Atestado"}, {"data": "08/04", "motivo": "Atestado"}, {"data": "09/04", "motivo": "Atestado"}, {"data": "10/04", "motivo": "Atestado"}] },
+        { "nome": "JAQUELINE PEREIRA ADELINO SPXBR17931", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Atestado"], "total": 1, "historico": [{"data": "07/04", "motivo": "Atestado"}] },
+        { "nome": "GUILHERME DIAS DE SOUZA SPXBR8802", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Falta"], "total": 2, "historico": [{"data": "07/04", "motivo": "Falta"}, {"data": "10/04", "motivo": "Falta"}] },
+        { "nome": "SARA CRISTINA CANDIDO ALVES PEREIRA SPXBR25284", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Falta"], "total": 1, "historico": [{"data": "08/04", "motivo": "Falta"}] },
+        { "nome": "ISABEL CRISTINA DE NORONHA SOUZA SPXBR24110", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Férias"], "total": 12, "historico": [{"data": "01/04", "motivo": "Férias"}, {"data": "02/04", "motivo": "Férias"}, {"data": "03/04", "motivo": "Férias"}, {"data": "04/04", "motivo": "Férias"}, {"data": "05/04", "motivo": "Férias"}, {"data": "06/04", "motivo": "Férias"}, {"data": "07/04", "motivo": "Férias"}, {"data": "08/04", "motivo": "Férias"}, {"data": "09/04", "motivo": "Férias"}, {"data": "10/04", "motivo": "Férias"}, {"data": "11/04", "motivo": "Férias"}, {"data": "12/04", "motivo": "Férias"}] },
+        { "nome": "SUELEN FERNANDA TRIGNANI NASCIMENTO SPXBR25288", "unidade": "SPX", "cargo": "T3_A_5X2_1_0100_67", "motivos": ["Atestado"], "total": 1, "historico": [{"data": "10/04", "motivo": "Atestado"}] },
+        { "nome": "RENAN GABRIEL SANTANA FERREIRA GN21557", "unidade": "GNX", "cargo": "T3_A_5X2_1_2100_67", "motivos": ["Suspensão", "Falta"], "total": 4, "historico": [{"data": "02/04", "motivo": "Falta"}, {"data": "07/04", "motivo": "Suspensão"}, {"data": "08/04", "motivo": "Falta"}, {"data": "09/04", "motivo": "Falta"}] },
+        { "nome": "ALINE MATIAS HILARIO SPXBR25282", "unidade": "SPX", "cargo": "T3_A_5X2_4_0200_23", "motivos": ["Atestado"], "total": 3, "historico": [{"data": "07/04", "motivo": "Atestado"}, {"data": "08/04", "motivo": "Atestado"}, {"data": "09/04", "motivo": "Atestado"}] },
+        { "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863", "unidade": "SPX", "cargo": "T3_A_5X2_4_0200_23", "motivos": ["Falta"], "total": 2, "historico": [{"data": "06/04", "motivo": "Falta"}, {"data": "09/04", "motivo": "Falta"}] },
+        { "nome": "PATRICK DE SOUZA RODRIGUES SPXBR25283", "unidade": "SPX", "cargo": "T3_A_5X2_4_0200_23", "motivos": ["Falta"], "total": 1, "historico": [{"data": "01/04", "motivo": "Falta"}] },
+        { "nome": "BRUNO DO CARMO PIZZOLITTO GN23467", "unidade": "GNX", "cargo": "T3_A_5X2_1_2100_67", "motivos": ["Suspensão", "Falta"], "total": 3, "historico": [{"data": "05/04", "motivo": "Suspensão"}, {"data": "06/04", "motivo": "Falta"}, {"data": "07/04", "motivo": "Suspensão"}] },
+        { "nome": "GABRIEL KUVALELA JOMBA SPXBR22306", "unidade": "SPX", "cargo": "T3_A_5X2_2_0200_17", "motivos": ["Atestado", "Férias"], "total": 6, "historico": [{"data": "01/04", "motivo": "Férias"}, {"data": "02/04", "motivo": "Férias"}, {"data": "03/04", "motivo": "Férias"}, {"data": "04/04", "motivo": "Férias"}, {"data": "05/04", "motivo": "Férias"}, {"data": "07/04", "motivo": "Atestado"}] },
+        { "nome": "SAMUEL ALEXANDRO LARGHY ISSA SPXBR12401", "unidade": "SPX", "cargo": "T3_A_5X2_2_0200_17", "motivos": ["Atestado", "Suspensão"], "total": 3, "historico": [{"data": "05/04", "motivo": "Suspensão"}, {"data": "11/04", "motivo": "Atestado"}, {"data": "12/04", "motivo": "Atestado"}] },
+        { "nome": "MARIANE SILVA SANTANA GN24727", "unidade": "GNX", "cargo": "T3_A_5X2_4_0200_23", "motivos": ["Falta"], "total": 1, "historico": [{"data": "10/04", "motivo": "Falta"}] },
+        { "nome": "EDUARDO NORTON RODRIGUES GN37495", "unidade": "GNX", "cargo": "T3_A_5X2_2_0200_17", "motivos": ["Suspensão", "Falta"], "total": 2, "historico": [{"data": "07/04", "motivo": "Suspensão"}, {"data": "11/04", "motivo": "Falta"}] },
+        { "nome": "RAFAEL FELIPE LIMA GN41710", "unidade": "GNX", "cargo": "T3_A_5X2_2_0200_17", "motivos": ["Suspensão", "Falta"], "total": 2, "historico": [{"data": "05/04", "motivo": "Suspensão"}, {"data": "07/04", "motivo": "Falta"}] },
+        { "nome": "KAUA FRANCA DA SILVA GN36990", "unidade": "GNX", "cargo": "T3_A_6X1_1_0400_7", "motivos": ["Falta"], "total": 1, "historico": [{"data": "04/04", "motivo": "Falta"}] },
+        { "nome": "NIKOLAS FABRO DE LIMA GN27592", "unidade": "GNX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Atestado"], "total": 1, "historico": [{"data": "11/04", "motivo": "Atestado"}] },
+        { "nome": "MESSIAS PEREIRA DOS SANTOS SPXBR33776", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Suspensão"], "total": 1, "historico": [{"data": "07/04", "motivo": "Suspensão"}] },
+        { "nome": "LIRISMAR BORGES LIMA SPXBR15152", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Afastamento"], "total": 29, "historico": [{"data": "01/04", "motivo": "Afastamento"}, {"data": "02/04", "motivo": "Afastamento"}, {"data": "03/04", "motivo": "Afastamento"}, {"data": "04/04", "motivo": "Afastamento"}, {"data": "05/04", "motivo": "Afastamento"}, {"data": "06/04", "motivo": "Afastamento"}, {"data": "07/04", "motivo": "Afastamento"}, {"data": "08/04", "motivo": "Afastamento"}, {"data": "09/04", "motivo": "Afastamento"}, {"data": "10/04", "motivo": "Afastamento"}, {"data": "11/04", "motivo": "Afastamento"}, {"data": "12/04", "motivo": "Afastamento"}, {"data": "13/04", "motivo": "Afastamento"}, {"data": "14/04", "motivo": "Afastamento"}, {"data": "15/04", "motivo": "Afastamento"}, {"data": "16/04", "motivo": "Afastamento"}, {"data": "17/04", "motivo": "Afastamento"}, {"data": "18/04", "motivo": "Afastamento"}, {"data": "19/04", "motivo": "Afastamento"}, {"data": "20/04", "motivo": "Afastamento"}, {"data": "21/04", "motivo": "Afastamento"}, {"data": "22/04", "motivo": "Afastamento"}, {"data": "23/04", "motivo": "Afastamento"}, {"data": "24/04", "motivo": "Afastamento"}, {"data": "25/04", "motivo": "Afastamento"}, {"data": "26/04", "motivo": "Afastamento"}, {"data": "27/04", "motivo": "Afastamento"}, {"data": "28/04", "motivo": "Afastamento"}, {"data": "29/04", "motivo": "Afastamento"}, {"data": "30/04", "motivo": "Afastamento"}] },
+        { "nome": "ALINE AQUINO OLIVEIRA SPXBR22191", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Banco de Horas", "Férias"], "total": 25, "historico": [{"data": "04/04", "motivo": "Banco de Horas"}, {"data": "07/04", "motivo": "Férias"}, {"data": "08/04", "motivo": "Férias"}, {"data": "09/04", "motivo": "Férias"}, {"data": "10/04", "motivo": "Férias"}, {"data": "11/04", "motivo": "Férias"}, {"data": "12/04", "motivo": "Férias"}, {"data": "13/04", "motivo": "Férias"}, {"data": "14/04", "motivo": "Férias"}, {"data": "15/04", "motivo": "Férias"}, {"data": "16/04", "motivo": "Férias"}, {"data": "17/04", "motivo": "Férias"}, {"data": "18/04", "motivo": "Férias"}, {"data": "19/04", "motivo": "Férias"}, {"data": "20/04", "motivo": "Férias"}, {"data": "21/04", "motivo": "Férias"}, {"data": "22/04", "motivo": "Férias"}, {"data": "23/04", "motivo": "Férias"}, {"data": "24/04", "motivo": "Férias"}, {"data": "25/04", "motivo": "Férias"}, {"data": "26/04", "motivo": "Férias"}, {"data": "27/04", "motivo": "Férias"}, {"data": "28/04", "motivo": "Férias"}, {"data": "29/04", "motivo": "Férias"}, {"data": "30/04", "motivo": "Férias"}] },
+        { "nome": "MARIA EDUARDA DOS SANTOS FERREIRA SPXBR30804", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Suspensão"], "total": 1, "historico": [{"data": "07/04", "motivo": "Suspensão"}] },
+        { "nome": "DANIEL FRANCISCO FERREIRA DA COSTA BENEVIDES SPXBR34049", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Suspensão"], "total": 1, "historico": [{"data": "07/04", "motivo": "Suspensão"}] },
+        { "nome": "NELSON SENA SILVA JUNIOR SPXBR32847", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Suspensão"], "total": 1, "historico": [{"data": "07/04", "motivo": "Suspensão"}] },
+        { "nome": "KLEBER JACOB SALES SPXBR21886", "unidade": "SPX", "cargo": "T1_A_5X2_1_0800_67", "motivos": ["Falta"], "total": 1, "historico": [{"data": "06/04", "motivo": "Falta"}] },
+        { "nome": "LUCAS MASCARENHAS PORTELA SPXBR24109", "unidade": "SPX", "cargo": "T1_A_5X2_2_0812_17", "motivos": ["Atestado", "Suspensão"], "total": 2, "historico": [{"data": "07/04", "motivo": "Suspensão"}, {"data": "09/04", "motivo": "Atestado"}] },
+        { "nome": "DEBORAH SILVA DO NASCIMENTO GN28811", "unidade": "GNX", "cargo": "T1_A_5X2_1_0800_67", "motivos": ["Atestado", "Suspensão"], "total": 2, "historico": [{"data": "01/04", "motivo": "Atestado"}, {"data": "08/04", "motivo": "Suspensão"}] },
+        { "nome": "JOYCE TORRES DE ALMEIDA SPXBR32852", "unidade": "SPX", "cargo": "T3_A_5X2_3_0200_12", "motivos": ["Atestado"], "total": 4, "historico": [{"data": "07/04", "motivo": "Atestado"}, {"data": "08/04", "motivo": "Atestado"}, {"data": "09/04", "motivo": "Atestado"}, {"data": "10/04", "motivo": "Atestado"}] }
     ];
 
     const week1 = data.slice(0, 7);
@@ -611,28 +607,32 @@
     }
 
     function filterAbs() {
-        const unit = document.getElementById('unit-filter').value;
         const reason = document.getElementById('reason-filter').value;
         const name = document.getElementById('name-search').value.toLowerCase();
         const tbody = document.getElementById('abs-table-body');
         
         const filtered = absData.filter(item => {
-            const matchUnit = unit === 'all' || item.unidade === unit;
             const matchReason = reason === 'all' || item.motivos.includes(reason);
             const matchName = item.nome.toLowerCase().includes(name);
-            return matchUnit && matchReason && matchName;
+            return matchReason && matchName;
         });
 
         tbody.innerHTML = '';
         filtered.forEach(item => {
             const row = document.createElement('tr');
-            const reasonBadges = item.motivos.map(m => `<span class="reason-tag reason-${m.toLowerCase().replace(' ', '-')}">${m}</span>`).join('');
+            
+            // Create daily history badges
+            const historyBadges = item.historico.map(h => `
+                <div class="history-item reason-${h.motivo.toLowerCase().replace(' ', '-')}">
+                    <span class="history-date">${h.data}</span>
+                    <span>${h.motivo}</span>
+                </div>
+            `).join('');
+
             row.innerHTML = `
                 <td class="td-bold">${item.nome}</td>
-                <td><span class="badge ${item.unidade === 'SPX' ? 'badge-spx' : (item.unidade === 'GNX' ? 'badge-gnx' : 'badge-other')}">${item.unidade}</span></td>
-                <td>${reasonBadges}</td>
+                <td><div class="history-container">${historyBadges}</div></td>
                 <td class="td-bold" style="color: var(--shopee-orange)">${item.total}</td>
-                <td>${item.ultima}</td>
             `;
             tbody.appendChild(row);
         });
