@@ -334,6 +334,7 @@
         .reason-outros { background: #F3F4F6; color: #4B5563; border-color: #D1D5DB; }
         .reason-diferença? { background: #F1F5F9; color: #475569; border-color: #CBD5E1; }
         .reason-desvio? { background: #FFF7ED; color: #C2410C; border-color: #FDBA74; }
+        .history-item { border: 1px solid var(--shopee-border); }
 
         footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
 
@@ -433,14 +434,15 @@
                 <label for="reason-filter">Motivo do AB</label>
                 <select id="reason-filter" onchange="filterAbs()">
                     <option value="all">Todos os Motivos</option>
-                    <option value="Falta">Falta</option>
-                    <option value="Atestado">Atestado</option>
-                    <option value="Suspensão">Suspensão</option>
-                    <option value="Afastamento">Afastamento</option>
-                    <option value="Férias">Férias</option>
+                    <option value="Afastamento longo">Afastamento longo</option>
+                    <option value="Atestado médico">Atestado médico</option>
                     <option value="Banco de Horas">Banco de Horas</option>
-                    <option value="Diferença?">Diferença?</option>
-                    <option value="Desvio?">Desvio?</option>
+                    <option value="Desligamento Programado">Desligamento Programado</option>
+                    <option value="Desligamento forçado">Desligamento forçado</option>
+                    <option value="Desligamento voluntário">Desligamento voluntário</option>
+                    <option value="Falta Injustificada">Falta Injustificada</option>
+                    <option value="Férias">Férias</option>
+                    <option value="Sinergia Enviada">Sinergia Enviada</option>
                 </select>
             </div>
             <div class="filter-item">
@@ -1947,8 +1949,7 @@
                         }
                 ]
         }
-]];
-
+];
     const week1 = data.slice(0, 7);
     const week2 = data.slice(7, 14);
 
