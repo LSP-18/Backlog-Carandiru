@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Backlog Carandiru</title>
+    <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <style>
+        :root {
+            --shopee-orange: #EE4D2D;
+            --shopee-orange-light: #FFF5F1;
+            --shopee-bg: #F6F6F6;
+            --shopee-white: #FFFFFF;
+            --shopee-text-main: #222222;
+            --shopee-text-muted: #757575;
+            --shopee-border: #E8E8E8;
+            --shopee-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            
+            /* Category Colors */
+            --color-amarelo: #F5C518;
+            --color-erro: #EE4D2D;
+            --color-onhold: #0055AA;
+            --color-fleet: #26AA99;
+            --color-office: #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--shopee-bg);
+            color: var(--shopee-text-main);
+            line-height: 1.6;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--shopee-white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 8px solid var(--shopee-orange);
+        }
+
+        .header-info h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--shopee-text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header-info p {
+            font-size: 15px;
+            color: var(--shopee-text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .shopee-logo { height: 36px; }
+
+        /* --- WELCOME BANNER --- */
+        .welcome-banner {
+            background: linear-gradient(135deg, #EE4D2D 0%, #FF7337 100%);
+            color: white;
+            padding: 24px 32px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .welcome-icon { background: rgba(255,255,255,0.2); padding: 16px; border-radius: 12px; }
+        .welcome-text h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .welcome-text p { font-size: 14px; opacity: 0.9; font-weight: 500; }
+
+        /* --- NAVIGATION --- */
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            background: var(--shopee-white);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--shopee-text-muted);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shopee-shadow);
+            white-space: nowrap;
+        }
+
+        .nav-btn.active {
+            background: var(--shopee-orange);
+            color: var(--shopee-white);
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- KPI CARDS --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: var(--shopee-white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--shopee-orange);
+        }
+
+        .kpi-label { font-size: 13px; color: var(--shopee-text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .kpi-value { font-size: 32px; font-weight: 800; color: var(--shopee-text-main); margin-bottom: 8px; }
+        .kpi-desc { font-size: 12px; color: var(--shopee-text-muted); font-weight: 500; }
+
+        /* --- SECTION TITLE --- */
+        .section-title { font-size: 18px; font-weight: 800; margin: 32px 0 24px 0; display: flex; align-items: center; gap: 12px; }
+
+        /* --- COMPARISON SECTION --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card-main {
+            background: var(--shopee-white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .card-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+        .card-subtitle { font-size: 13px; color: var(--shopee-text-muted); margin-bottom: 24px; font-weight: 500; }
+
+        /* --- CATEGORY CARDS GRID --- */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .cat-card {
+            background: var(--shopee-white);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            border-top: 5px solid var(--shopee-border);
+            transition: transform 0.2s ease;
+        }
+
+        .cat-card:hover { transform: translateY(-5px); }
+
+        .cat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cat-name { font-weight: 800; font-size: 16px; }
+        .cat-icon { opacity: 0.6; }
+
+        .cat-stats { display: flex; flex-direction: column; gap: 12px; }
+        .cat-stat-row { display: flex; justify-content: space-between; align-items: center; }
+        .cat-stat-label { color: var(--shopee-text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+        .cat-stat-val { font-weight: 800; font-family: monospace; font-size: 16px; }
+
+        .cat-divider { height: 1px; background: var(--shopee-border); margin: 12px 0; }
+
+        .cat-variation { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; }
+        .var-up { color: #d32f2f; }
+        .var-down { color: #2e7d32; }
+
+        /* --- GLOSSARY SECTION --- */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .glossary-item {
+            background: var(--shopee-white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .glossary-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .glossary-info h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+        .glossary-info p { font-size: 13px; color: var(--shopee-text-muted); line-height: 1.5; }
+
+        /* --- TABLE --- */
+        .table-container {
+            background: var(--shopee-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+            overflow: hidden;
+        }
+
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #F9FAFB; padding: 18px 24px; font-size: 12px; font-weight: 800; color: var(--shopee-text-muted); text-transform: uppercase; text-align: left; border-bottom: 2px solid var(--shopee-border); }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--shopee-border); }
+        .td-bold { font-weight: 700; }
+        .td-total { font-weight: 800; color: var(--shopee-orange); background: var(--shopee-orange-light); }
+
+        /* --- ABS TAB SPECIFIC --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            background: var(--shopee-white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-item label {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--shopee-text-muted);
+            text-transform: uppercase;
+        }
+
+        .filter-item select, .filter-item input {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--shopee-border);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-item select:focus, .filter-item input:focus {
+            border-color: var(--shopee-orange);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        
+        .history-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 600px;
+        }
+
+        .history-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 50px;
+            border: 1px solid var(--shopee-border);
+        }
+
+        .history-date { color: var(--shopee-text-muted); font-size: 9px; margin-bottom: 2px; }
+
+        .reason-falta { background: #FEE2E2; color: #B91C1C; border-color: #FCA5A5; }
+        .reason-atestado { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+        .reason-suspensão { background: #FEF3C7; color: #92400E; border-color: #FCD34D; }
+        .reason-afastamento { background: #E0F2FE; color: #0369A1; border-color: #7DD3FC; }
+        .reason-férias { background: #F3E8FF; color: #7E22CE; border-color: #D8B4FE; }
+        .reason-outros { background: #F3F4F6; color: #4B5563; border-color: #D1D5DB; }
+        .reason-diferença? { background: #F1F5F9; color: #475569; border-color: #CBD5E1; }
+        .reason-desvio? { background: #FFF7ED; color: #C2410C; border-color: #FDBA74; }
+
+        footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
+
+        @media (max-width: 1024px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-info">
+            <h1>Dashboard Backlog Carandiru - Emanuel Brendon</h1>
+            <p><i data-lucide="map-pin" size="16"></i> Shopee • Carandiru • 30/03 a 12/04</p>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/1200px-Shopee_logo.svg.png" alt="Shopee" class="shopee-logo">
+    </header>
+
+    <div class="welcome-banner">
+        <div class="welcome-icon"><i data-lucide="info" size="32"></i></div>
+        <div class="welcome-text">
+            <h2>Bem-vindo ao painel de controle de Backlog </h2>
+            <p>Este painel integra análise do backlog que ficou no piso do CD Carandiru.</p>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="18"></i> Visão Geral</button>
+        <button class="nav-btn" onclick="openTab('categories')"><i data-lucide="layers" size="18"></i> Categorias</button>
+        <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar" size="18"></i> Histórico Diário</button>
+        <button class="nav-btn" onclick="openTab('abs-tab')"><i data-lucide="user-x" size="18"></i> ABs do Mês</button>
+        <button class="nav-btn" onclick="openTab('guide')"><i data-lucide="help-circle" size="18"></i> Guia de Categorias</button>
+    </div>
+
+    <!-- TAB: OVERVIEW -->
+    <div id="overview" class="tab-content active">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="package" size="16"></i> Total Acumulado</div>
+                <div id="kpi-total" class="kpi-value">0</div>
+                <div class="kpi-desc">Volume total de pacotes no período.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="activity" size="16"></i> Média Diária</div>
+                <div id="kpi-avg" class="kpi-value">0</div>
+                <div class="kpi-desc">Volume médio processado por dia útil.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="trending-down" size="16"></i> Variação Semanal</div>
+                <div id="kpi-trend" class="kpi-value">0%</div>
+                <div class="kpi-desc">Comparação entre o dia 30/03 a 12/04.</div>
+            </div>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="card-main">
+                <div class="card-title"><i data-lucide="bar-chart-horizontal" size="20" style="color: var(--shopee-orange)"></i> Comparativo Semanal por Categoria</div>
+                <div class="card-subtitle">Analise como cada tipo de backlog evoluiu entre a primeira e a segunda semana.</div>
+                <div style="height: 350px;">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            <div class="card-main">
+                <div class="card-title"><i data-lucide="pie-chart" size="20" style="color: var(--shopee-orange)"></i> Composição do Backlog</div>
+                <div class="card-subtitle">Entenda quais categorias representam a maior parte do volume total.</div>
+                <div style="height: 350px;">
+                    <canvas id="shareChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: CATEGORIES -->
+    <div id="categories" class="tab-content">
+        <div class="card-main" style="margin-bottom: 32px;">
+            <div class="card-title"><i data-lucide="trending-up" size="20" style="color: var(--shopee-orange)"></i> Evolução de Cada Categoria (14 Dias)</div>
+            <div class="card-subtitle">Visualize como cada categoria se comportou ao longo do período completo.</div>
+            <div style="height: 400px;">
+                <canvas id="categoryEvolutionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <i data-lucide="layers" size="20" style="color: var(--shopee-orange)"></i>
+            Deep-Dive: Análise Detalhada por Categoria
+        </div>
+        <div id="category-cards" class="category-grid">
+            <!-- Cards will be injected here -->
+        </div>
+    </div>
+
+    <!-- TAB: ABS TAB (UPDATED) -->
+    <div id="abs-tab" class="tab-content">
+        <div class="filter-bar">
+            <div class="filter-item">
+                <label for="reason-filter">Motivo do AB</label>
+                <select id="reason-filter" onchange="filterAbs()">
+                    <option value="all">Todos os Motivos</option>
+                    <option value="Falta">Falta</option>
+                    <option value="Atestado">Atestado</option>
+                    <option value="Suspensão">Suspensão</option>
+                    <option value="Afastamento">Afastamento</option>
+                    <option value="Férias">Férias</option>
+                    <option value="Banco de Horas">Banco de Horas</option>
+                    <option value="Diferença?">Diferença?</option>
+                    <option value="Desvio?">Desvio?</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="name-search">Buscar Nome</label>
+                <input type="text" id="name-search" placeholder="Digite o nome..." oninput="filterAbs()">
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Colaborador</th>
+                            <th>Histórico Diário (Data/Motivo)</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="abs-table-body">
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: GUIDE -->
+    <div id="guide" class="tab-content">
+        <div class="section-title" style="margin-bottom: 24px;"><i data-lucide="help-circle" size="20" style="color: var(--shopee-orange)"></i> O que significam estas categorias?</div>
+        <div class="glossary-grid">
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-amarelo)"></div>
+                <div class="glossary-info">
+                    <h3>Amarelo</h3>
+                    <p>A maioria dos pacotes que aparecem em amarelo são do tipo return, ou seja, insucessos que não entram no auto add. A outra parte corresponde a pacotes que, por algum motivo, também não foram incluídos no auto add.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-erro)"></div>
+                <div class="glossary-info">
+                    <h3>Erro Operacional</h3>
+                    <p>São pacotes com falhas operacionais, como erro de etiqueta, erro de sorteio e erro na expedição — ou seja, todos são erros da operação.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-onhold)"></div>
+                <div class="glossary-info">
+                    <h3>On Hold</h3>
+                    <p>São pacotes que não entram no auto add por não possuírem rota disponível ou por serem insucessos, que também não são incluídos no auto add.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-fleet)"></div>
+                <div class="glossary-info">
+                    <h3>Retirada Fleet</h3>
+                    <p>São pacotes retirados pelo time de fleet por falta de espaço no veículo do motorista e que não foram reatribuídos para outra rota.</p>
+                </div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-dot" style="background: var(--color-office)"></div>
+                <div class="glossary-info">
+                    <h3>Office</h3>
+                    <p>São pacotes de comércios que não operam aos sábados, domingos e feriados; por isso, não são roteirizados nesses dias e permanecem no piso para saída em um dia útil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: DAILY -->
+    <div id="daily" class="tab-content">
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Dia</th>
+                            <th>Amarelo</th>
+                            <th>Erro Op.</th>
+                            <th>On Hold</th>
+                            <th>Ret. Fleet</th>
+                            <th>Office</th>
+                            <th>Total Diário</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>©️ 2026 Shopee Logistics • Gestão de Backlog Profissional • Emanuel Brendon</footer>
+</div>
+
+<script>
+    Chart.register(ChartDataLabels);
+
+    const data = [
+      { "data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "total": 1156 },
+      { "data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "total": 590 },
+      { "data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "total": 527 },
+      { "data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "total": 479 },
+      { "data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "total": 5866 },
+      { "data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "total": 2918 },
+      { "data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "total": 1358 },
+      { "data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "total": 671 },
+      { "data": "07/04", "dia": "Terça", "amarelo": 157, "erro": 162, "onhold": 104, "fleet": 9, "office": 0, "total": 432 },
+      { "data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 151, "onhold": 147, "fleet": 83, "office": 0, "total": 587 },
+      { "data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "total": 518 },
+      { "data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "total": 1350 },
+      { "data": "11/04", "dia": "Sábado", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 },
+      { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
+    ];
+
+    // Dados Reais dos ABs (V3)
+    const absData = [
+        {
+                "nome": "SARA SIANY DO NASCIMENTO SPXBR14455",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [
+                        "Afastamento longo"
+                ],
+                "total": 12,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Afastamento longo"
+                        }
+                ]
+        },
+        {
+                "nome": "ISABEL CRISTINA DE NORONHA SOUZA SPXBR24110",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Férias"
+                ],
+                "total": 12,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Férias"
+                        }
+                ]
+        },
+        {
+                "nome": "LIRISMAR BORGES LIMA SPXBR15152",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Afastamento longo"
+                ],
+                "total": 12,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Afastamento longo"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Afastamento longo"
+                        }
+                ]
+        },
+        {
+                "nome": "THABATA MAGNUSSON GN35042",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Desligamento forçado",
+                        "Falta Injustificada"
+                ],
+                "total": 12,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "PATRICK DE SOUZA RODRIGUES SPXBR25283",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [
+                        "Desligamento Programado",
+                        "Falta Injustificada"
+                ],
+                "total": 11,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento Programado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento Programado"
+                        }
+                ]
+        },
+        {
+                "nome": "BEATRIS RODRIGUES DA SILVA SPXBR30734",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Desligamento forçado"
+                ],
+                "total": 11,
+                "historico": [
+                        {
+                                "data": "02/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "GEIZITON GOES DOS SANTOS SPXBR32849",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Desligamento forçado"
+                ],
+                "total": 11,
+                "historico": [
+                        {
+                                "data": "02/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "JANAINA FERREIRA COSTA GN29799",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Desligamento forçado"
+                ],
+                "total": 10,
+                "historico": [
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "RICARDO BHERING GONCALVES GN35308",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Desligamento forçado"
+                ],
+                "total": 10,
+                "historico": [
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "ROGERIO ALVES DA SILVA GN33668",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [
+                        "Desligamento forçado"
+                ],
+                "total": 10,
+                "historico": [
+                        {
+                                "data": "03/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento forçado"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento forçado"
+                        }
+                ]
+        },
+        {
+                "nome": "VICTORIA FEU FELIZARDO DA ROCHA GN21843",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [
+                        "Atestado médico",
+                        "Desligamento voluntário"
+                ],
+                "total": 9,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Desligamento voluntário"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Desligamento voluntário"
+                        }
+                ]
+        },
+        {
+                "nome": "ALINE AQUINO OLIVEIRA SPXBR22191",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Banco de Horas",
+                        "Férias"
+                ],
+                "total": 7,
+                "historico": [
+                        {
+                                "data": "04/04",
+                                "motivo": "Banco de Horas"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Férias"
+                        }
+                ]
+        },
+        {
+                "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Férias"
+                ],
+                "total": 6,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Férias"
+                        }
+                ]
+        },
+        {
+                "nome": "GABRIEL KUVALELA JOMBA SPXBR22306",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [
+                        "Atestado médico",
+                        "Férias"
+                ],
+                "total": 6,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "02/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "03/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Férias"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 5,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "ANTONIO CELSO SANTANA SPXBR28227",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 5,
+                "historico": [
+                        {
+                                "data": "06/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "RENAN GABRIEL SANTANA FERREIRA GN21557",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [
+                        "Falta Injustificada",
+                        "Sinergia Enviada"
+                ],
+                "total": 4,
+                "historico": [
+                        {
+                                "data": "02/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "JOYCE TORRES DE ALMEIDA SPXBR32852",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 4,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "ALINE MATIAS HILARIO SPXBR25282",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 3,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "BRUNO DO CARMO PIZZOLITTO GN23467",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [
+                        "Falta Injustificada",
+                        "Sinergia Enviada"
+                ],
+                "total": 3,
+                "historico": [
+                        {
+                                "data": "05/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "06/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "SAMUEL ALEXANDRO LARGHY ISSA SPXBR12401",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [
+                        "Atestado médico",
+                        "Sinergia Enviada"
+                ],
+                "total": 3,
+                "historico": [
+                        {
+                                "data": "05/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "GUILHERME DIAS DE SOUZA SPXBR8802",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "06/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "EDUARDO NORTON RODRIGUES GN37495",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [
+                        "Falta Injustificada",
+                        "Sinergia Enviada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "RAFAEL FELIPE LIMA GN41710",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [
+                        "Falta Injustificada",
+                        "Sinergia Enviada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "05/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "07/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "LUCAS MASCARENHAS PORTELA SPXBR24109",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Atestado médico",
+                        "Sinergia Enviada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "DEBORAH SILVA DO NASCIMENTO GN28811",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Atestado médico",
+                        "Sinergia Enviada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "RAFAELA SILVA DOS SANTOS GN38884",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Atestado médico",
+                        "Sinergia Enviada"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "08/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "DOUGLAS EDUARDO DIAS GN33661",
+                "unidade": "GNX",
+                "cargo": "T2_A_6X1_1_1600_7",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "GABRIELLA AMARO LUIZ SPXBR30760",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "11/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "04/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "HUGO SILVA PEREIRA GN28739",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "02/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "JAQUELINE PEREIRA ADELINO SPXBR17931",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "SARA CRISTINA CANDIDO ALVES PEREIRA SPXBR25284",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "08/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "SUELEN FERNANDA TRIGNANI NASCIMENTO SPXBR25288",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "10/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "MARIANE SILVA SANTANA GN24727",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "10/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "KAUA FRANCA DA SILVA GN36990",
+                "unidade": "GNX",
+                "cargo": "T3_A_6X1_1_0400_7",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "04/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "NIKOLAS FABRO DE LIMA GN27592",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "11/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "MESSIAS PEREIRA DOS SANTOS SPXBR33776",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "MARIA EDUARDA DOS SANTOS FERREIRA SPXBR30804",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "ELISANGELA GOMES DE LUCENA SPXBR30751",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_1000_17",
+                "motivos": [
+                        "Banco de Horas"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "11/04",
+                                "motivo": "Banco de Horas"
+                        }
+                ]
+        },
+        {
+                "nome": "DANIEL FRANCISCO FERREIRA DA COSTA BENEVIDES SPXBR34049",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "NELSON SENA SILVA JUNIOR SPXBR32847",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "KLEBER JACOB SALES SPXBR21886",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "06/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
+                "nome": "CARLOS HENRIQUE QUEIROZ DA SILVA GN33635",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "09/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "VANESSA GANDUR NASCIMENTO GUILHEM SPXBR30838",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "YNGRID DOS SANTOS SILVA GN26448",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "RAYSSA CAMPOS DA SILVA GN35673",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "08/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "EDUARDO ARAUJO RODRIGUES GN33917",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "08/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "MARTA PAULINA DINIZ GOMES SPXBR29786",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [
+                        "Sinergia Enviada"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Sinergia Enviada"
+                        }
+                ]
+        },
+        {
+                "nome": "ROSILENE ALVES DE SOUZA GN36997",
+                "unidade": "GNX",
+                "cargo": "T1_A_6X1_1_1200_7",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 1,
+                "historico": [
+                        {
+                                "data": "07/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        }
+]];
+
+    const week1 = data.slice(0, 7);
+    const week2 = data.slice(7, 14);
+
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        
+        if(tabId === 'abs-tab') filterAbs();
+    }
+
+    function filterAbs() {
+        const reason = document.getElementById('reason-filter').value;
+        const name = document.getElementById('name-search').value.toLowerCase();
+        const tbody = document.getElementById('abs-table-body');
+        
+        const filtered = absData.filter(item => {
+            const matchReason = reason === 'all' || item.motivos.includes(reason);
+            const matchName = item.nome.toLowerCase().includes(name);
+            return matchReason && matchName;
+        });
+
+        tbody.innerHTML = '';
+        filtered.forEach(item => {
+            const row = document.createElement('tr');
+            
+            // Create daily history badges
+            const historyBadges = item.historico.map(h => `
+                <div class="history-item reason-${h.motivo.toLowerCase().replace(' ', '-')}">
+                    <span class="history-date">${h.data}</span>
+                    <span>${h.motivo}</span>
+                </div>
+            `).join('');
+
+            row.innerHTML = `
+                <td class="td-bold">${item.nome}</td>
+                <td><div class="history-container">${historyBadges}</div></td>
+                <td class="td-bold" style="color: var(--shopee-orange)">${item.total}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // --- CALCULATIONS ---
+    const totalAll = data.reduce((a, b) => a + b.total, 0);
+    const avgAll = Math.round(totalAll / data.filter(d => d.total > 0).length);
+    
+    const w1Total = week1.reduce((a, b) => a + b.total, 0);
+    const w2Total = week2.reduce((a, b) => a + b.total, 0);
+    const trend = w1Total > 0 ? Math.round(((w2Total - w1Total) / w1Total) * 100) : 0;
+
+    document.getElementById('kpi-total').innerText = totalAll.toLocaleString();
+    document.getElementById('kpi-avg').innerText = avgAll.toLocaleString();
+    document.getElementById('kpi-trend').innerText = (trend > 0 ? '+' : '') + trend + '%';
+
+    // --- CATEGORY CALCULATIONS ---
+    const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
+    const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office'];
+    const catColors = ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'];
+
+    const week1Totals = cats.map(c => week1.reduce((a, b) => a + b[c], 0));
+    const week2Totals = cats.map(c => week2.reduce((a, b) => a + b[c], 0));
+
+    // --- RENDER CATEGORY CARDS ---
+    const catCardsContainer = document.getElementById('category-cards');
+    cats.forEach((c, i) => {
+        const w1 = week1Totals[i];
+        const w2 = week2Totals[i];
+        const diff = w1 > 0 ? Math.round(((w2 - w1) / w1) * 100) : (w2 > 0 ? 100 : 0);
+        
+        const card = document.createElement('div');
+        card.className = 'cat-card';
+        card.style.borderTopColor = catColors[i];
+        card.innerHTML = `
+            <div class="cat-card-header">
+                <span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span>
+                <i data-lucide="box" size="16" class="cat-icon"></i>
+            </div>
+            <div class="cat-stats">
+                <div class="cat-stat-row">
+                    <span class="cat-stat-label">Semana 30/03 a 05/04</span>
+                    <span class="cat-stat-val">${w1.toLocaleString()}</span>
+                </div>
+                <div class="cat-stat-row">
+                    <span class="cat-stat-label">Semana 06/04 a 12/04</span>
+                    <span class="cat-stat-val">${w2.toLocaleString()}</span>
+                </div>
+                <div class="cat-divider"></div>
+                <div class="cat-stat-row">
+                    <span class="cat-stat-label">Variação</span>
+                    <span class="cat-variation ${diff <= 0 ? 'var-down' : 'var-up'}">
+                        <i data-lucide="${diff <= 0 ? 'arrow-down-right' : 'arrow-up-right'}" size="14"></i>
+                        ${diff > 0 ? '+' : ''}${diff}%
+                    </span>
+                </div>
+            </div>
+        `;
+        catCardsContainer.appendChild(card);
+    });
+
+    // --- RENDER DAILY TABLE ---
+    const tableBody = document.getElementById('daily-table-body');
+    data.forEach(day => {
+        tableBody.innerHTML += `
+            <tr>
+                <td class="td-bold">${day.data}</td>
+                <td>${day.dia}</td>
+                <td>${day.amarelo || '-'}</td>
+                <td>${day.erro || '-'}</td>
+                <td>${day.onhold || '-'}</td>
+                <td>${day.fleet || '-'}</td>
+                <td>${day.office || '-'}</td>
+                <td class="td-total">${day.total.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+
+    // --- CHARTS ---
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            datalabels: {
+                anchor: 'end', align: 'top',
+                font: { weight: 'bold', size: 10 },
+                formatter: (v) => v > 0 ? v.toLocaleString() : ''
+            }
+        }
+    };
+
+    // Comparison Chart
+    new Chart(document.getElementById('comparisonChart'), {
+        type: 'bar',
+        data: {
+            labels: catLabels,
+            datasets: [
+                { label: 'Semana 30/03 a 05/04', data: week1Totals, backgroundColor: '#e0e0e0', borderRadius: 6 },
+                { label: 'Semana 06/04 a 12/04', data: week2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 }
+            ]
+        },
+        options: {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' } }
+        }
+    });
+
+    // Share Chart
+    const shareData = cats.map(c => data.reduce((a, b) => a + b[c], 0));
+    const shareTotal = shareData.reduce((a, b) => a + b, 0);
+    
+    new Chart(document.getElementById('shareChart'), {
+        type: 'doughnut',
+        data: {
+            labels: catLabels,
+            datasets: [{
+                data: shareData,
+                backgroundColor: catColors,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            ...commonOptions,
+            plugins: {
+                ...commonOptions.plugins,
+                legend: { display: true, position: 'right' },
+                datalabels: {
+                    display: true,
+                    anchor: 'center',
+                    align: 'center',
+                    font: { weight: 'bold', size: 12 },
+                    color: '#fff',
+                    formatter: (value) => {
+                        const percentage = ((value / shareTotal) * 100).toFixed(1);
+                        return percentage + '%';
+                    }
+                }
+            }
+        }
+    });
+
+    // Category Evolution
+    new Chart(document.getElementById('categoryEvolutionChart'), {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.data),
+            datasets: cats.map((c, i) => ({
+                label: catLabels[i],
+                data: data.map(d => d[c]),
+                borderColor: catColors[i],
+                backgroundColor: catColors[i],
+                tension: 0.3,
+                pointRadius: 3,
+                fill: false
+            }))
+        },
+        options: {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom' }, datalabels: { display: false } }
+        }
+    });
+
+    lucide.createIcons();
+</script>
+</body>
+</html>
