@@ -257,6 +257,72 @@
         .td-bold { font-weight: 700; }
         .td-total { font-weight: 800; color: var(--shopee-orange); background: var(--shopee-orange-light); }
 
+        /* --- ABS TAB SPECIFIC --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            background: var(--shopee-white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shopee-shadow);
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-item label {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--shopee-text-muted);
+            text-transform: uppercase;
+        }
+
+        .filter-item select, .filter-item input {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--shopee-border);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-item select:focus, .filter-item input:focus {
+            border-color: var(--shopee-orange);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .badge-am { background: #E0F2FE; color: #0369A1; }
+        .badge-other { background: #F3F4F6; color: #374151; }
+        
+        .reason-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .reason-falta { background: #FEE2E2; color: #B91C1C; }
+        .reason-atraso { background: #FEF3C7; color: #92400E; }
+        .reason-atestado { background: #DCFCE7; color: #15803D; }
+        .reason-outros { background: #F3F4F6; color: #4B5563; }
+
         footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
 
         @media (max-width: 1024px) {
@@ -287,6 +353,7 @@
         <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="18"></i> Visão Geral</button>
         <button class="nav-btn" onclick="openTab('categories')"><i data-lucide="layers" size="18"></i> Categorias</button>
         <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar" size="18"></i> Histórico Diário</button>
+        <button class="nav-btn" onclick="openTab('abs-tab')"><i data-lucide="user-x" size="18"></i> ABs do Mês</button>
         <button class="nav-btn" onclick="openTab('guide')"><i data-lucide="help-circle" size="18"></i> Guia de Categorias</button>
     </div>
 
@@ -344,6 +411,55 @@
         </div>
         <div id="category-cards" class="category-grid">
             <!-- Cards will be injected here -->
+        </div>
+    </div>
+
+    <!-- TAB: ABS TAB (NEW) -->
+    <div id="abs-tab" class="tab-content">
+        <div class="filter-bar">
+            <div class="filter-item">
+                <label for="unit-filter">Unidade</label>
+                <select id="unit-filter" onchange="filterAbs()">
+                    <option value="all">Todas as Unidades</option>
+                    <option value="AM">AM (Amazonas)</option>
+                    <option value="SP">SP (São Paulo)</option>
+                    <option value="RJ">RJ (Rio de Janeiro)</option>
+                    <option value="MG">MG (Minas Gerais)</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="reason-filter">Motivo do AB</label>
+                <select id="reason-filter" onchange="filterAbs()">
+                    <option value="all">Todos os Motivos</option>
+                    <option value="Falta">Falta</option>
+                    <option value="Atraso">Atraso</option>
+                    <option value="Atestado">Atestado</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="name-search">Buscar Nome</label>
+                <input type="text" id="name-search" placeholder="Digite o nome..." oninput="filterAbs()">
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Colaborador</th>
+                            <th>Unidade</th>
+                            <th>Motivo(s)</th>
+                            <th>Total</th>
+                            <th>Última Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="abs-table-body">
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -435,6 +551,20 @@
       { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
     ];
 
+    // Dados de exemplo para ABs
+    const absData = [
+        { nome: "Ana Silva", unidade: "AM", motivos: ["Falta", "Atraso"], total: 2, ultima: "05/04" },
+        { nome: "Bruno Santos", unidade: "SP", motivos: ["Atestado"], total: 1, ultima: "08/04" },
+        { nome: "Carlos Oliveira", unidade: "AM", motivos: ["Falta"], total: 1, ultima: "02/04" },
+        { nome: "Daniela Lima", unidade: "RJ", motivos: ["Atraso", "Atraso"], total: 2, ultima: "09/04" },
+        { nome: "Eduardo Costa", unidade: "AM", motivos: ["Outros"], total: 1, ultima: "03/04" },
+        { nome: "Fernanda Souza", unidade: "MG", motivos: ["Falta", "Falta"], total: 2, ultima: "10/04" },
+        { nome: "Gabriel Rocha", unidade: "AM", motivos: ["Atestado"], total: 1, ultima: "07/04" },
+        { nome: "Helena Martins", unidade: "SP", motivos: ["Atraso"], total: 1, ultima: "04/04" },
+        { nome: "Igor Pereira", unidade: "AM", motivos: ["Falta"], total: 1, ultima: "01/04" },
+        { nome: "Juliana Alves", unidade: "RJ", motivos: ["Outros"], total: 1, ultima: "06/04" }
+    ];
+
     const week1 = data.slice(0, 7);
     const week2 = data.slice(7, 14);
 
@@ -443,6 +573,36 @@
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
+        
+        if(tabId === 'abs-tab') filterAbs();
+    }
+
+    function filterAbs() {
+        const unit = document.getElementById('unit-filter').value;
+        const reason = document.getElementById('reason-filter').value;
+        const name = document.getElementById('name-search').value.toLowerCase();
+        const tbody = document.getElementById('abs-table-body');
+        
+        const filtered = absData.filter(item => {
+            const matchUnit = unit === 'all' || item.unidade === unit;
+            const matchReason = reason === 'all' || item.motivos.includes(reason);
+            const matchName = item.nome.toLowerCase().includes(name);
+            return matchUnit && matchReason && matchName;
+        });
+
+        tbody.innerHTML = '';
+        filtered.forEach(item => {
+            const row = document.createElement('tr');
+            const reasonBadges = item.motivos.map(m => `<span class="reason-tag reason-${m.toLowerCase()}">${m}</span>`).join('');
+            row.innerHTML = `
+                <td class="td-bold">${item.nome}</td>
+                <td><span class="badge ${item.unidade === 'AM' ? 'badge-am' : 'badge-other'}">${item.unidade}</span></td>
+                <td>${reasonBadges}</td>
+                <td class="td-bold" style="color: var(--shopee-orange)">${item.total}</td>
+                <td>${item.ultima}</td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
     // --- CALCULATIONS ---
