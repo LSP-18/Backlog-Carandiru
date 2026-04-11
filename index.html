@@ -305,7 +305,8 @@
             text-transform: uppercase;
         }
 
-        .badge-am { background: #E0F2FE; color: #0369A1; }
+        .badge-spx { background: #E0F2FE; color: #0369A1; }
+        .badge-gnx { background: #FEF3C7; color: #92400E; }
         .badge-other { background: #F3F4F6; color: #374151; }
         
         .reason-tag {
@@ -319,8 +320,10 @@
         }
 
         .reason-falta { background: #FEE2E2; color: #B91C1C; }
-        .reason-atraso { background: #FEF3C7; color: #92400E; }
         .reason-atestado { background: #DCFCE7; color: #15803D; }
+        .reason-suspensão { background: #FEF3C7; color: #92400E; }
+        .reason-afastamento { background: #E0F2FE; color: #0369A1; }
+        .reason-férias { background: #F3E8FF; color: #7E22CE; }
         .reason-outros { background: #F3F4F6; color: #4B5563; }
 
         footer { text-align: center; padding: 48px 0; color: var(--shopee-text-muted); font-size: 13px; font-weight: 500; }
@@ -418,13 +421,12 @@
     <div id="abs-tab" class="tab-content">
         <div class="filter-bar">
             <div class="filter-item">
-                <label for="unit-filter">Unidade</label>
+                <label for="unit-filter">Unidade (BPO)</label>
                 <select id="unit-filter" onchange="filterAbs()">
                     <option value="all">Todas as Unidades</option>
-                    <option value="AM">AM (Amazonas)</option>
-                    <option value="SP">SP (São Paulo)</option>
-                    <option value="RJ">RJ (Rio de Janeiro)</option>
-                    <option value="MG">MG (Minas Gerais)</option>
+                    <option value="SPX">SPX</option>
+                    <option value="GNX">GNX</option>
+                    <option value="GI GROUP">GI GROUP</option>
                 </select>
             </div>
             <div class="filter-item">
@@ -432,9 +434,11 @@
                 <select id="reason-filter" onchange="filterAbs()">
                     <option value="all">Todos os Motivos</option>
                     <option value="Falta">Falta</option>
-                    <option value="Atraso">Atraso</option>
                     <option value="Atestado">Atestado</option>
-                    <option value="Outros">Outros</option>
+                    <option value="Suspensão">Suspensão</option>
+                    <option value="Afastamento">Afastamento</option>
+                    <option value="Férias">Férias</option>
+                    <option value="Banco de Horas">Banco de Horas</option>
                 </select>
             </div>
             <div class="filter-item">
@@ -551,18 +555,47 @@
       { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
     ];
 
-    // Dados de exemplo para ABs
+    // Dados Reais dos ABs (Processados do arquivo enviado)
     const absData = [
-        { nome: "Ana Silva", unidade: "AM", motivos: ["Falta", "Atraso"], total: 2, ultima: "05/04" },
-        { nome: "Bruno Santos", unidade: "SP", motivos: ["Atestado"], total: 1, ultima: "08/04" },
-        { nome: "Carlos Oliveira", unidade: "AM", motivos: ["Falta"], total: 1, ultima: "02/04" },
-        { nome: "Daniela Lima", unidade: "RJ", motivos: ["Atraso", "Atraso"], total: 2, ultima: "09/04" },
-        { nome: "Eduardo Costa", unidade: "AM", motivos: ["Outros"], total: 1, ultima: "03/04" },
-        { nome: "Fernanda Souza", unidade: "MG", motivos: ["Falta", "Falta"], total: 2, ultima: "10/04" },
-        { nome: "Gabriel Rocha", unidade: "AM", motivos: ["Atestado"], total: 1, ultima: "07/04" },
-        { nome: "Helena Martins", unidade: "SP", motivos: ["Atraso"], total: 1, ultima: "04/04" },
-        { nome: "Igor Pereira", unidade: "AM", motivos: ["Falta"], total: 1, ultima: "01/04" },
-        { nome: "Juliana Alves", unidade: "RJ", motivos: ["Outros"], total: 1, ultima: "06/04" }
+        { "nome": "SARA SIANY DO NASCIMENTO SPXBR14455", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Afastamento"], "total": 29, "ultima": "30/04" },
+        { "nome": "VICTORIA FEU FELIZARDO DA ROCHA GN21843", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 26, "ultima": "30/04" },
+        { "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 2, "ultima": "05/04" },
+        { "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "04/04" },
+        { "nome": "HUGO SILVA PEREIRA GN28739", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "02/04" },
+        { "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Férias"], "total": 24, "ultima": "30/04" },
+        { "nome": "ANTONIO CELSO SANTANA SPXBR28227", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 5, "ultima": "10/04" },
+        { "nome": "JAQUELINE PEREIRA ADELINO SPXBR17931", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" },
+        { "nome": "GUILHERME DIAS DE SOUZA SPXBR8802", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "07/04" },
+        { "nome": "SARA CRISTINA CANDIDO ALVES PEREIRA SPXBR25284", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "08/04" },
+        { "nome": "ISABEL CRISTINA DE NORONHA SOUZA SPXBR24110", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Férias"], "total": 13, "ultima": "14/04" },
+        { "nome": "RENAN GABRIEL SANTANA FERREIRA GN21557", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 4, "ultima": "09/04" },
+        { "nome": "ALINE MATIAS HILARIO SPXBR25282", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 3, "ultima": "09/04" },
+        { "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 2, "ultima": "09/04" },
+        { "nome": "BRUNO DO CARMO PIZZOLITTO GN23467", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 3, "ultima": "07/04" },
+        { "nome": "GABRIEL KUVALELA JOMBA SPXBR22306", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta", "Férias"], "total": 5, "ultima": "07/04" },
+        { "nome": "SAMUEL ALEXANDRO LARGHY ISSA SPXBR12401", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "05/04" },
+        { "nome": "CAMILA DOS SANTOS ROCHA GN33940", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" },
+        { "nome": "EDUARDO NORTON RODRIGUES GN37495", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "RAFAEL FELIPE LIMA GN41710", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão", "Falta"], "total": 2, "ultima": "07/04" },
+        { "nome": "KAUA FRANCA DA SILVA GN36990", "unidade": "GNX", "cargo": "FISCAL DE PATIO", "motivos": ["Falta"], "total": 1, "ultima": "04/04" },
+        { "nome": "MESSIAS PEREIRA DOS SANTOS SPXBR33776", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "LIRISMAR BORGES LIMA SPXBR15152", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Afastamento"], "total": 29, "ultima": "30/04" },
+        { "nome": "ALINE AQUINO OLIVEIRA SPXBR22191", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Banco de Horas", "Férias"], "total": 25, "ultima": "30/04" },
+        { "nome": "MARIA EDUARDA DOS SANTOS FERREIRA SPXBR30804", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "DANIEL FRANCISCO FERREIRA DA COSTA BENEVIDES SPXBR34049", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "NELSON SENA SILVA JUNIOR SPXBR32847", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "KLEBER JACOB SALES SPXBR21886", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Falta"], "total": 1, "ultima": "06/04" },
+        { "nome": "LUCAS MASCARENHAS PORTELA SPXBR24109", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado", "Suspensão"], "total": 2, "ultima": "09/04" },
+        { "nome": "DEBORAH SILVA DO NASCIMENTO GN28811", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "08/04" },
+        { "nome": "JOYCE TORRES DE ALMEIDA SPXBR32852", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Atestado"], "total": 5, "ultima": "11/04" },
+        { "nome": "CARLOS HENRIQUE QUEIROZ DA SILVA GN33635", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "09/04" },
+        { "nome": "VANESSA GANDUR NASCIMENTO GUILHEM SPXBR30838", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "YNGRID DOS SANTOS SILVA GN26448", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "RAYSSA CAMPOS DA SILVA GN35673", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "08/04" },
+        { "nome": "EDUARDO ARAUJO RODRIGUES GN33917", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Suspensão"], "total": 1, "ultima": "08/04" },
+        { "nome": "MARTA PAULINA DINIZ GOMES SPXBR29786", "unidade": "SPX", "cargo": "AUXILIAR DE LOGISTICA I", "motivos": ["Suspensão"], "total": 1, "ultima": "07/04" },
+        { "nome": "RAFAELA SILVA DOS SANTOS GN38884", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado", "Suspensão"], "total": 2, "ultima": "08/04" },
+        { "nome": "ROSILENE ALVES DE SOUZA GN36997", "unidade": "GNX", "cargo": "AUXILIAR DE LOGISTICA", "motivos": ["Atestado"], "total": 1, "ultima": "07/04" }
     ];
 
     const week1 = data.slice(0, 7);
@@ -593,10 +626,10 @@
         tbody.innerHTML = '';
         filtered.forEach(item => {
             const row = document.createElement('tr');
-            const reasonBadges = item.motivos.map(m => `<span class="reason-tag reason-${m.toLowerCase()}">${m}</span>`).join('');
+            const reasonBadges = item.motivos.map(m => `<span class="reason-tag reason-${m.toLowerCase().replace(' ', '-')}">${m}</span>`).join('');
             row.innerHTML = `
                 <td class="td-bold">${item.nome}</td>
-                <td><span class="badge ${item.unidade === 'AM' ? 'badge-am' : 'badge-other'}">${item.unidade}</span></td>
+                <td><span class="badge ${item.unidade === 'SPX' ? 'badge-spx' : (item.unidade === 'GNX' ? 'badge-gnx' : 'badge-other')}">${item.unidade}</span></td>
                 <td>${reasonBadges}</td>
                 <td class="td-bold" style="color: var(--shopee-orange)">${item.total}</td>
                 <td>${item.ultima}</td>
