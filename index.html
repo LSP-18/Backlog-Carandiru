@@ -432,17 +432,29 @@
         <div class="filter-bar">
             <div class="filter-item">
                 <label for="reason-filter">Motivo do AB</label>
-                <select id="reason-filter" onchange="filterAbs()">
-                    <option value="all">Todos os Motivos</option>
-                    <option value="Afastamento longo">Afastamento longo</option>
-                    <option value="Atestado médico">Atestado médico</option>
-                    <option value="Banco de Horas">Banco de Horas</option>
-                    <option value="Desligamento Programado">Desligamento Programado</option>
-                    <option value="Desligamento forçado">Desligamento forçado</option>
-                    <option value="Desligamento voluntário">Desligamento voluntário</option>
-                    <option value="Falta Injustificada">Falta Injustificada</option>
-                    <option value="Férias">Férias</option>
-                    <option value="Sinergia Enviada">Sinergia Enviada</option>
+                <select id="reason-filter" onchange="filterAbs()"><option value="all">Todos os Motivos</option>
+                    <option value="Afastamento">Afastamento (AF)</option>
+                    <option value="Afastamento longo">Afastamento longo (AL)</option>
+                    <option value="Atestado médico">Atestado médico (AM)</option>
+                    <option value="Banco de Horas">Banco de Horas (BH)</option>
+                    <option value="Descanso Semanal Remunerado">Descanso Semanal Remunerado (DSR)</option>
+                    <option value="Desligamento Programado">Desligamento Programado (DP)</option>
+                    <option value="Desligamento forçado">Desligamento forçado (DF)</option>
+                    <option value="Desligamento voluntário">Desligamento voluntário (DV)</option>
+                    <option value="Falta Injustificada">Falta Injustificada (F)</option>
+                    <option value="Falta Justificada">Falta Justificada (FJ)</option>
+                    <option value="Folga">Folga (FO)</option>
+                    <option value="Folga compensatória">Folga compensatória (FC)</option>
+                    <option value="Férias">Férias (FE)</option>
+                    <option value="Internalização">Internalização (IN)</option>
+                    <option value="No-Show">No-Show (NS)</option>
+                    <option value="Não Contratado">Não Contratado (NC)</option>
+                    <option value="Promoção">Promoção (PR)</option>
+                    <option value="Sinergia Enviada">Sinergia Enviada (S1)</option>
+                    <option value="Sinergia Recebida">Sinergia Recebida (S2)</option>
+                    <option value="Suspensão">Suspensão (SU)</option>
+                    <option value="Transferência">Transferência (TR)</option>
+                    <option value="Treinamento e desenvolvimento">Treinamento e desenvolvimento (TD)</option>
                 </select>
             </div>
             <div class="filter-item">
@@ -457,6 +469,7 @@
                     <thead>
                         <tr>
                             <th>Colaborador</th>
+                            <th>Cargo / Turno</th>
                             <th>Histórico Diário (Data/Motivo)</th>
                             <th>Total</th>
                         </tr>
@@ -562,1394 +575,148 @@
         {
                 "nome": "SARA SIANY DO NASCIMENTO SPXBR14455",
                 "unidade": "SPX",
-                "cargo": "T3_A_5X2_2_0200_17",
+                "cargo": "AUXILIAR DE LOGISTICA I",
+                "turno": "T3_A_5X2_2_0200_17",
                 "motivos": [
                         "Afastamento longo"
                 ],
-                "total": 12,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "02/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Afastamento longo"
-                        }
-                ]
-        },
-        {
-                "nome": "ISABEL CRISTINA DE NORONHA SOUZA SPXBR24110",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Férias"
+                "motivos_codes": [
+                        "AL"
                 ],
                 "total": 12,
                 "historico": [
                         {
                                 "data": "01/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "02/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "03/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "04/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "05/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "06/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "08/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "09/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "10/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "11/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         },
                         {
                                 "data": "12/04",
-                                "motivo": "Férias"
+                                "motivo": "Afastamento longo",
+                                "code": "AL"
                         }
                 ]
         },
         {
-                "nome": "LIRISMAR BORGES LIMA SPXBR15152",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Afastamento longo"
-                ],
-                "total": 12,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "02/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Afastamento longo"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Afastamento longo"
-                        }
-                ]
-        },
-        {
-                "nome": "THABATA MAGNUSSON GN35042",
+                "nome": "ALESSANDRO BARBOSA DE ANDRADE GN39724",
                 "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
+                "cargo": "AUXILIAR DE LOGISTICA",
+                "turno": "T3_A_5X2_3_0200_12",
                 "motivos": [
-                        "Desligamento forçado",
-                        "Falta Injustificada"
+                        "Descanso Semanal Remunerado",
+                        "Folga"
                 ],
-                "total": 12,
+                "motivos_codes": [
+                        "FO",
+                        "DSR"
+                ],
+                "total": 3,
                 "historico": [
                         {
-                                "data": "01/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "02/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
                                 "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
+                                "motivo": "Folga",
+                                "code": "FO"
                         },
                         {
                                 "data": "06/04",
-                                "motivo": "Desligamento forçado"
+                                "motivo": "Descanso Semanal Remunerado",
+                                "code": "DSR"
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
+                                "motivo": "Descanso Semanal Remunerado",
+                                "code": "DSR"
                         }
                 ]
         },
         {
-                "nome": "PATRICK DE SOUZA RODRIGUES SPXBR25283",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_4_0200_23",
-                "motivos": [
-                        "Desligamento Programado",
-                        "Falta Injustificada"
-                ],
-                "total": 11,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento Programado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento Programado"
-                        }
-                ]
-        },
-        {
-                "nome": "BEATRIS RODRIGUES DA SILVA SPXBR30734",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Desligamento forçado"
-                ],
-                "total": 11,
-                "historico": [
-                        {
-                                "data": "02/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
-                        }
-                ]
-        },
-        {
-                "nome": "GEIZITON GOES DOS SANTOS SPXBR32849",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Desligamento forçado"
-                ],
-                "total": 11,
-                "historico": [
-                        {
-                                "data": "02/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
-                        }
-                ]
-        },
-        {
-                "nome": "JANAINA FERREIRA COSTA GN29799",
+                "nome": "JENNIFER GOMES DOS SANTOS CARLOS GN39781",
                 "unidade": "GNX",
-                "cargo": "T3_A_5X2_3_0200_12",
+                "cargo": "AUXILIAR DE LOGISTICA",
+                "turno": "T3_A_5X2_3_0200_12",
                 "motivos": [
-                        "Desligamento forçado"
+                        "Descanso Semanal Remunerado",
+                        "Folga"
                 ],
-                "total": 10,
-                "historico": [
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
-                        }
-                ]
-        },
-        {
-                "nome": "RICARDO BHERING GONCALVES GN35308",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Desligamento forçado"
-                ],
-                "total": 10,
-                "historico": [
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
-                        }
-                ]
-        },
-        {
-                "nome": "ROGERIO ALVES DA SILVA GN33668",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_1_2100_67",
-                "motivos": [
-                        "Desligamento forçado"
-                ],
-                "total": 10,
-                "historico": [
-                        {
-                                "data": "03/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento forçado"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento forçado"
-                        }
-                ]
-        },
-        {
-                "nome": "VICTORIA FEU FELIZARDO DA ROCHA GN21843",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_1_2100_67",
-                "motivos": [
-                        "Atestado médico",
-                        "Desligamento voluntário"
-                ],
-                "total": 9,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "02/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "06/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Desligamento voluntário"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Desligamento voluntário"
-                        }
-                ]
-        },
-        {
-                "nome": "ALINE AQUINO OLIVEIRA SPXBR22191",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Banco de Horas",
-                        "Férias"
-                ],
-                "total": 7,
-                "historico": [
-                        {
-                                "data": "04/04",
-                                "motivo": "Banco de Horas"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Férias"
-                        }
-                ]
-        },
-        {
-                "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Férias"
-                ],
-                "total": 6,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Férias"
-                        }
-                ]
-        },
-        {
-                "nome": "GABRIEL KUVALELA JOMBA SPXBR22306",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_2_0200_17",
-                "motivos": [
-                        "Atestado médico",
-                        "Férias"
-                ],
-                "total": 6,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "02/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "03/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Férias"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 5,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "ANTONIO CELSO SANTANA SPXBR28227",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 5,
-                "historico": [
-                        {
-                                "data": "06/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "RENAN GABRIEL SANTANA FERREIRA GN21557",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_1_2100_67",
-                "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
+                "motivos_codes": [
+                        "FO",
+                        "DSR"
                 ],
                 "total": 4,
                 "historico": [
                         {
-                                "data": "02/04",
-                                "motivo": "Falta Injustificada"
+                                "data": "03/04",
+                                "motivo": "Folga",
+                                "code": "FO"
                         },
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "JOYCE TORRES DE ALMEIDA SPXBR32852",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 4,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "ALINE MATIAS HILARIO SPXBR25282",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_4_0200_23",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 3,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "BRUNO DO CARMO PIZZOLITTO GN23467",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_1_2100_67",
-                "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
-                ],
-                "total": 3,
-                "historico": [
                         {
                                 "data": "05/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Folga",
+                                "code": "FO"
                         },
                         {
                                 "data": "06/04",
-                                "motivo": "Falta Injustificada"
+                                "motivo": "Descanso Semanal Remunerado",
+                                "code": "DSR"
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "SAMUEL ALEXANDRO LARGHY ISSA SPXBR12401",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_2_0200_17",
-                "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
-                ],
-                "total": 3,
-                "historico": [
-                        {
-                                "data": "05/04",
-                                "motivo": "Sinergia Enviada"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "12/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "GUILHERME DIAS DE SOUZA SPXBR8802",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_4_0200_23",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "06/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "EDUARDO NORTON RODRIGUES GN37495",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_2_0200_17",
-                "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "RAFAEL FELIPE LIMA GN41710",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_2_0200_17",
-                "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "05/04",
-                                "motivo": "Sinergia Enviada"
-                        },
-                        {
-                                "data": "07/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "LUCAS MASCARENHAS PORTELA SPXBR24109",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "DEBORAH SILVA DO NASCIMENTO GN28811",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "RAFAELA SILVA DOS SANTOS GN38884",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "08/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "DOUGLAS EDUARDO DIAS GN33661",
-                "unidade": "GNX",
-                "cargo": "T2_A_6X1_1_1600_7",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 2,
-                "historico": [
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "GABRIELLA AMARO LUIZ SPXBR30760",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "11/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "04/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "HUGO SILVA PEREIRA GN28739",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "02/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "JAQUELINE PEREIRA ADELINO SPXBR17931",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "SARA CRISTINA CANDIDO ALVES PEREIRA SPXBR25284",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "08/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "SUELEN FERNANDA TRIGNANI NASCIMENTO SPXBR25288",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_1_0100_67",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "10/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "MARIANE SILVA SANTANA GN24727",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_4_0200_23",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "10/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "KAUA FRANCA DA SILVA GN36990",
-                "unidade": "GNX",
-                "cargo": "T3_A_6X1_1_0400_7",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "04/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "NIKOLAS FABRO DE LIMA GN27592",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "11/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "MESSIAS PEREIRA DOS SANTOS SPXBR33776",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "MARIA EDUARDA DOS SANTOS FERREIRA SPXBR30804",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "ELISANGELA GOMES DE LUCENA SPXBR30751",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_1000_17",
-                "motivos": [
-                        "Banco de Horas"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "11/04",
-                                "motivo": "Banco de Horas"
-                        }
-                ]
-        },
-        {
-                "nome": "DANIEL FRANCISCO FERREIRA DA COSTA BENEVIDES SPXBR34049",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "NELSON SENA SILVA JUNIOR SPXBR32847",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "KLEBER JACOB SALES SPXBR21886",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "06/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "CARLOS HENRIQUE QUEIROZ DA SILVA GN33635",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "09/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "VANESSA GANDUR NASCIMENTO GUILHEM SPXBR30838",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "YNGRID DOS SANTOS SILVA GN26448",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "RAYSSA CAMPOS DA SILVA GN35673",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_2_0812_17",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "08/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "EDUARDO ARAUJO RODRIGUES GN33917",
-                "unidade": "GNX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "08/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "MARTA PAULINA DINIZ GOMES SPXBR29786",
-                "unidade": "SPX",
-                "cargo": "T1_A_5X2_1_0800_67",
-                "motivos": [
-                        "Sinergia Enviada"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Sinergia Enviada"
-                        }
-                ]
-        },
-        {
-                "nome": "ROSILENE ALVES DE SOUZA GN36997",
-                "unidade": "GNX",
-                "cargo": "T1_A_6X1_1_1200_7",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "07/04",
-                                "motivo": "Atestado médico"
+                                "motivo": "Descanso Semanal Remunerado",
+                                "code": "DSR"
                         }
                 ]
         }
-];
+]];
     const week1 = data.slice(0, 7);
     const week2 = data.slice(7, 14);
 
@@ -1987,6 +754,10 @@
 
             row.innerHTML = `
                 <td class="td-bold">${item.nome}</td>
+                <td style="font-size: 12px; color: var(--shopee-text-muted)">
+                    <div class="td-bold" style="color: var(--shopee-text-main)">${item.cargo}</div>
+                    <div>${item.turno}</div>
+                </td>
                 <td><div class="history-container">${historyBadges}</div></td>
                 <td class="td-bold" style="color: var(--shopee-orange)">${item.total}</td>
             `;
