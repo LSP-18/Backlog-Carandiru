@@ -365,6 +365,7 @@
     <div class="nav-tabs">
         <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="18"></i> Visão Geral</button>
         <button class="nav-btn" onclick="openTab('categories')"><i data-lucide="layers" size="18"></i> Categorias</button>
+        <button class="nav-btn" onclick="openTab('weekly')"><i data-lucide="bar-chart-2" size="18"></i> Visão Semanal</button>
         <button class="nav-btn" onclick="openTab('daily')"><i data-lucide="calendar" size="18"></i> Histórico Diário</button>
         <button class="nav-btn" onclick="openTab('abs-tab')"><i data-lucide="user-x" size="18"></i> ABs do Mês</button>
         <button class="nav-btn" onclick="openTab('guide')"><i data-lucide="help-circle" size="18"></i> Guia de Categorias</button>
@@ -511,6 +512,28 @@
         </div>
     </div>
 
+    <!-- TAB: WEEKLY -->
+    <div id="weekly" class="tab-content">
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Semana</th>
+                            <th>Amarelo</th>
+                            <th>Erro Op.</th>
+                            <th>On Hold</th>
+                            <th>Ret. Fleet</th>
+                            <th>Office</th>
+                            <th>Total Semanal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weekly-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- TAB: DAILY -->
     <div id="daily" class="tab-content">
         <div class="table-container">
@@ -554,7 +577,7 @@
       { "data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "total": 518 },
       { "data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "total": 1350 },
       { "data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "total": 2143 },
-      { "data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0 }
+      { "data": "12/04", "dia": "Domingo", "amarelo": 688, "erro": 0, "onhold": 21, "fleet": 133, "office": 2027, "total": 2869 }
     ];
 
     // Dados Reais dos ABs (V3)
@@ -2049,6 +2072,27 @@
             </div>
         `;
         catCardsContainer.appendChild(card);
+    });
+
+    // --- RENDER WEEKLY TABLE ---
+    const weeklyTableBody = document.getElementById('weekly-table-body');
+    const weeks = [
+        { name: "30/03 a 05/04", data: week1Totals, total: w1Total },
+        { name: "06/04 a 12/04", data: week2Totals, total: w2Total }
+    ];
+    
+    weeks.forEach(w => {
+        weeklyTableBody.innerHTML += `
+            <tr>
+                <td class="td-bold">${w.name}</td>
+                <td>${w.data[0].toLocaleString()}</td>
+                <td>${w.data[1].toLocaleString()}</td>
+                <td>${w.data[2].toLocaleString()}</td>
+                <td>${w.data[3].toLocaleString()}</td>
+                <td>${w.data[4].toLocaleString()}</td>
+                <td class="td-total">${w.total.toLocaleString()}</td>
+            </tr>
+        `;
     });
 
     // --- RENDER DAILY TABLE ---
