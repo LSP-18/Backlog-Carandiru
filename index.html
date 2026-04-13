@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Backlog Carandiru - Acumulativo</title>
+    <title>Dashboard Backlog Carandiru - V3 Realtime</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -336,8 +336,8 @@
     <div class="welcome-banner">
         <div class="welcome-icon"><i data-lucide="trending-up" size="32"></i></div>
         <div class="welcome-text">
-            <h2>Gestão de Backlog Acumulativa</h2>
-            <p>Todos os dados adicionados são preservados no histórico completo.</p>
+            <h2>Gestão de Backlog Realtime</h2>
+            <p>Os dados são atualizados automaticamente em todos os gráficos.</p>
         </div>
     </div>
 
@@ -353,7 +353,7 @@
             <div class="kpi-card">
                 <div class="kpi-label"><i data-lucide="package" size="14" style="color: var(--shopee-orange)"></i> Total Geral</div>
                 <div class="kpi-value" id="kpi-total">0</div>
-                <div class="kpi-desc">Volume acumulado de todo o histórico</div>
+                <div class="kpi-desc">Volume acumulado no Firebase</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label"><i data-lucide="bar-chart-3" size="14" style="color: var(--shopee-orange)"></i> Média Diária</div>
@@ -479,7 +479,7 @@
 </div>
 
 <script>
-    // --- FIREBASE ---
+    // --- FIREBASE CONFIG ---
     const firebaseConfig = {
         databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/" 
     };
@@ -493,8 +493,8 @@
     Chart.register(ChartDataLabels);
     document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR');
 
-    // Dados Iniciais Estáticos
-    const initialStaticData = [
+    // Dados Iniciais (Caso o Firebase esteja vazio)
+    const initialData = [
       { "data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "total": 1156 },
       { "data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "total": 590 },
       { "data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "total": 527 },
@@ -511,7 +511,7 @@
       { "data": "12/04", "dia": "Domingo", "amarelo": 487, "erro": 201, "onhold": 21, "fleet": 133, "office": 2027, "total": 2869 }
     ];
 
-    let dashboardData = [...initialStaticData];
+    let dashboardData = [...initialData];
     let charts = {};
 
     function toggleModal(show) { document.getElementById('addModal').style.display = show ? 'flex' : 'none'; }
@@ -524,15 +524,14 @@
 
     function updateDashboard() {
         const data = dashboardData;
-        const totalCount = data.length;
         
-        // Separação por semanas (sempre as últimas duas para o comparativo)
+        // Separação de semanas para comparação (sempre os últimos 14 dias)
         const week2 = data.slice(-7);
         const week1 = data.length >= 14 ? data.slice(-14, -7) : data.slice(0, Math.max(0, data.length - 7));
 
         // KPIs
         const totalAll = data.reduce((a, b) => a + b.total, 0);
-        const avgAll = Math.round(totalAll / data.filter(d => d.total > 0).length) || 0;
+        const avgAll = Math.round(totalAll / data.length) || 0;
         const w1Total = week1.reduce((a, b) => a + b.total, 0);
         const w2Total = week2.reduce((a, b) => a + b.total, 0);
         const trend = w1Total > 0 ? Math.round(((w2Total - w1Total) / w1Total) * 100) : 0;
@@ -541,7 +540,7 @@
         document.getElementById('kpi-avg').innerText = avgAll.toLocaleString();
         document.getElementById('kpi-trend').innerText = (trend > 0 ? '+' : '') + trend + '%';
 
-        // Categorias e Variação
+        // Categorias
         const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office'];
         const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office'];
         const catColors = ['#F5C518', '#EE4D2D', '#0055AA', '#26AA99', '#64748B'];
@@ -575,30 +574,19 @@
                 </div>`;
         });
 
-        // Tabelas
+        // Tabelas e Gráficos
         renderTables(data, cats);
-        
-        // Gráficos
         renderCharts(catLabels, w1Totals, w2Totals, cats, catColors);
-        
         lucide.createIcons();
     }
 
     function renderTables(data, cats) {
-        // Tabela Diária (Inversa - mais recente primeiro)
         const dailyBody = document.getElementById('daily-table-body');
         dailyBody.innerHTML = '';
         [...data].reverse().forEach(day => {
-            dailyBody.innerHTML += `
-                <tr>
-                    <td class="td-bold">${day.data}</td>
-                    <td>${day.dia}</td>
-                    <td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td>
-                    <td class="td-total">${day.total.toLocaleString()}</td>
-                </tr>`;
+            dailyBody.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
         });
 
-        // Tabela Semanal (Dinâmica por blocos de 7 dias)
         const weeklyBody = document.getElementById('weekly-table-body');
         weeklyBody.innerHTML = '';
         for (let i = 0; i < data.length; i += 7) {
@@ -606,13 +594,7 @@
             const wTotal = weekSlice.reduce((a, b) => a + b.total, 0);
             const wCats = cats.map(c => weekSlice.reduce((a, b) => a + b[c], 0));
             const dateRange = `${weekSlice[0].data} a ${weekSlice[weekSlice.length-1].data}`;
-            
-            weeklyBody.innerHTML += `
-                <tr>
-                    <td class="td-bold">${dateRange}</td>
-                    <td>${wCats[0]}</td><td>${wCats[1]}</td><td>${wCats[2]}</td><td>${wCats[3]}</td><td>${wCats[4]}</td>
-                    <td class="td-total">${wTotal.toLocaleString()}</td>
-                </tr>`;
+            weeklyBody.innerHTML += `<tr><td class="td-bold">${dateRange}</td><td>${wCats[0]}</td><td>${wCats[1]}</td><td>${wCats[2]}</td><td>${wCats[3]}</td><td>${wCats[4]}</td><td class="td-total">${wTotal.toLocaleString()}</td></tr>`;
         }
     }
 
@@ -646,14 +628,15 @@
         });
     }
 
-    // --- SYNC ---
+    // --- SYNC FIREBASE ---
     if (db) {
         db.ref('backlog_data').on('value', (snapshot) => {
             const val = snapshot.val();
             if (val) {
-                // Combina dados estáticos com dados do Firebase
+                // Ao receber dados do Firebase, eles são PRIORIDADE.
+                // Se houver dados no Firebase, usamos eles + os iniciais.
                 const firebaseItems = Object.values(val);
-                dashboardData = [...initialStaticData, ...firebaseItems];
+                dashboardData = [...initialData, ...firebaseItems];
                 updateDashboard();
             }
         });
@@ -674,9 +657,11 @@
 
         if (db) {
             db.ref('backlog_data').push(newItem);
+            alert("Sucesso! O dashboard será atualizado em instantes.");
         } else {
             dashboardData.push(newItem);
             updateDashboard();
+            alert("Firebase não configurado. Dados adicionados localmente.");
         }
         toggleModal(false);
         this.reset();
