@@ -349,7 +349,7 @@
                 <ul style="list-style: none; color: var(--shopee-text-muted);">
                     <li style="margin-bottom: 4px;">• Navegue entre as abas para ver diferentes visões.</li>
                     <li style="margin-bottom: 4px;">• Passe o mouse nos gráficos para detalhes.</li>
-                    <li>• A área de edição é protegida por senha.</li>
+                    <li>• A área de adição é protegida por senha.</li>
                 </ul>
             </div>
             <button class="btn-start" onclick="closeOnboarding()">Entendi, vamos lá!</button>
@@ -376,9 +376,9 @@
     </div>
 
     <nav class="nav-tabs">
-        <button class="nav-btn active" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="16"></i> Visão Geral</button>
-        <button class="nav-btn" onclick="openTab('evolution')"><i data-lucide="trending-up" size="16"></i> Evolução</button>
-        <button class="nav-btn" onclick="openTab('history')"><i data-lucide="history" size="16"></i> Histórico Completo</button>
+        <button class="nav-btn active" data-tab="overview" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="16"></i> Visão Geral</button>
+        <button class="nav-btn" data-tab="evolution" onclick="openTab('evolution')"><i data-lucide="trending-up" size="16"></i> Evolução</button>
+        <button class="nav-btn" data-tab="history" onclick="openTab('history')"><i data-lucide="history" size="16"></i> Histórico Completo</button>
     </nav>
 
     <!-- TAB: OVERVIEW -->
@@ -521,7 +521,7 @@
 <script>
     // --- CONFIGURAÇÃO FIREBASE ---
     const firebaseConfig = {
-        databaseURL: "https://backlog-carandiru-default-rtdb.firebaseio.com/"
+        databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/"
     };
     
     let db = null;
@@ -569,7 +569,7 @@
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        document.querySelector(`.nav-btn[data-tab="${tabId}"]`).classList.add('active');
     }
 
     function openPasswordGate() { document.getElementById('passwordModal').style.display = 'flex'; }
@@ -748,8 +748,10 @@
         newItem.total = newItem.amarelo + newItem.erro + newItem.onhold + newItem.fleet + newItem.office;
 
         if (db) {
-            db.ref('backlog_data').push(newItem);
-            alert("Dados sincronizados com sucesso!");
+            db.ref('backlog_data').push(newItem).then(() => {
+                alert("Dados sincronizados com sucesso!");
+                updateDashboard(); // Força atualização visual
+            });
         } else {
             dashboardData.push(newItem);
             updateDashboard();
