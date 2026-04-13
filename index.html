@@ -428,27 +428,55 @@
         </div>
     </div>
 
-    <!-- TAB: ABS TAB (UPDATED) -->
+    <!-- TAB: ABS TAB (PROFESSIONAL) -->
+    <!-- TAB: ABS TAB (PROFESSIONAL) -->
     <div id="abs-tab" class="tab-content">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="users" size="14"></i> Total Colaboradores</div>
+                <div id="abs-kpi-total" class="kpi-value">0</div>
+                <div class="kpi-desc">Base completa carregada</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="user-x" size="14"></i> Total de Ausências</div>
+                <div id="abs-kpi-abs" class="kpi-value">0</div>
+                <div class="kpi-desc">Ocorrências no período</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i data-lucide="alert-circle" size="14"></i> Maior Incidência</div>
+                <div id="abs-kpi-top" class="kpi-value">-</div>
+                <div class="kpi-desc">Motivo mais frequente</div>
+            </div>
+        </div>
+
         <div class="filter-bar">
             <div class="filter-item">
-                <label for="reason-filter">Motivo do AB</label>
+                <label for="name-search">Buscar Colaborador</label>
+                <input type="text" id="name-search" placeholder="Nome ou ID..." oninput="filterAbs()">
+            </div>
+            <div class="filter-item">
+                <label for="reason-filter">Motivo</label>
                 <select id="reason-filter" onchange="filterAbs()">
                     <option value="all">Todos os Motivos</option>
                     <option value="Afastamento longo">Afastamento longo</option>
                     <option value="Atestado médico">Atestado médico</option>
                     <option value="Banco de Horas">Banco de Horas</option>
-                    <option value="Desligamento Programado">Desligamento Programado</option>
                     <option value="Desligamento forçado">Desligamento forçado</option>
                     <option value="Desligamento voluntário">Desligamento voluntário</option>
                     <option value="Falta Injustificada">Falta Injustificada</option>
                     <option value="Férias">Férias</option>
-                    <option value="Sinergia Enviada">Sinergia Enviada</option>
+                    <option value="Suspensão">Suspensão</option>
+                    <option value="Dispensa paga">Dispensa paga</option>
                 </select>
             </div>
             <div class="filter-item">
-                <label for="name-search">Buscar Nome</label>
-                <input type="text" id="name-search" placeholder="Digite o nome..." oninput="filterAbs()">
+                <label for="unit-filter">Unidade</label>
+                <select id="unit-filter" onchange="filterAbs()">
+                    <option value="all">Todas</option>
+                    <option value="SPX">SPX</option>
+                    <option value="GNX">GNX</option>
+                    <option value="GI GROUP">GI GROUP</option>
+                </select>
             </div>
         </div>
 
@@ -458,17 +486,18 @@
                     <thead>
                         <tr>
                             <th>Colaborador</th>
-                            <th>Histórico Diário (Data/Motivo)</th>
-                            <th>Total</th>
+                            <th>Unidade / Cargo</th>
+                            <th>Histórico (Data: Motivo)</th>
+                            <th style="text-align: center">Total</th>
                         </tr>
                     </thead>
-                    <tbody id="abs-table-body">
-                        <!-- Data will be injected here -->
-                    </tbody>
+                    <tbody id="abs-table-body"></tbody>
                 </table>
             </div>
+            <div id="abs-pagination" style="padding: 20px; display: flex; justify-content: center; gap: 10px;"></div>
         </div>
     </div>
+
 
     <!-- TAB: GUIDE -->
     <div id="guide" class="tab-content">
@@ -577,7 +606,7 @@
       { "data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "total": 518 },
       { "data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "total": 1350 },
       { "data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "total": 2143 },
-      { "data": "12/04", "dia": "Domingo", "amarelo": 688, "erro": 0, "onhold": 21, "fleet": 133, "office": 2027, "total": 2869 }
+      { "data": "12/04", "dia": "Domingo", "amarelo": 487, "erro": 201, "onhold": 21, "fleet": 133, "office": 2027, "total": 2869 }
     ];
 
     // Dados Reais dos ABs (V3)
@@ -824,7 +853,7 @@
                 "unidade": "SPX",
                 "cargo": "T3_A_5X2_4_0200_23",
                 "motivos": [
-                        "Desligamento Programado",
+                        "Dispensa paga",
                         "Falta Injustificada"
                 ],
                 "total": 11,
@@ -835,43 +864,43 @@
                         },
                         {
                                 "data": "03/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "04/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "05/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "06/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "08/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "09/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "10/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "11/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         },
                         {
                                 "data": "12/04",
-                                "motivo": "Desligamento Programado"
+                                "motivo": "Dispensa paga"
                         }
                 ]
         },
@@ -1143,8 +1172,8 @@
                 "unidade": "GNX",
                 "cargo": "T3_A_5X2_1_2100_67",
                 "motivos": [
-                        "Atestado médico",
-                        "Desligamento voluntário"
+                        "Desligamento voluntário",
+                        "Atestado médico"
                 ],
                 "total": 9,
                 "historico": [
@@ -1227,6 +1256,41 @@
                 ]
         },
         {
+                "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 6,
+                "historico": [
+                        {
+                                "data": "01/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "04/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "05/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "10/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "11/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
                 "nome": "ROSENIR DE NORONHA SOUZA SPXBR22450",
                 "unidade": "SPX",
                 "cargo": "T3_A_5X2_1_0100_67",
@@ -1266,8 +1330,8 @@
                 "unidade": "SPX",
                 "cargo": "T3_A_5X2_2_0200_17",
                 "motivos": [
-                        "Atestado médico",
-                        "Férias"
+                        "Férias",
+                        "Atestado médico"
                 ],
                 "total": 6,
                 "historico": [
@@ -1294,37 +1358,6 @@
                         {
                                 "data": "07/04",
                                 "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "GUILHERME DA SILVA FREIRE DE OLIVEIRA SPXBR25286",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Falta Injustificada"
-                ],
-                "total": 5,
-                "historico": [
-                        {
-                                "data": "01/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "04/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "05/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "10/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "11/04",
-                                "motivo": "Falta Injustificada"
                         }
                 ]
         },
@@ -1364,10 +1397,10 @@
                 "unidade": "GNX",
                 "cargo": "T3_A_5X2_1_2100_67",
                 "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Falta Injustificada"
                 ],
-                "total": 4,
+                "total": 5,
                 "historico": [
                         {
                                 "data": "02/04",
@@ -1375,7 +1408,7 @@
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "08/04",
@@ -1383,6 +1416,10 @@
                         },
                         {
                                 "data": "09/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "12/04",
                                 "motivo": "Falta Injustificada"
                         }
                 ]
@@ -1438,18 +1475,41 @@
                 ]
         },
         {
+                "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [
+                        "Falta Injustificada"
+                ],
+                "total": 3,
+                "historico": [
+                        {
+                                "data": "06/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "09/04",
+                                "motivo": "Falta Injustificada"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Falta Injustificada"
+                        }
+                ]
+        },
+        {
                 "nome": "BRUNO DO CARMO PIZZOLITTO GN23467",
                 "unidade": "GNX",
                 "cargo": "T3_A_5X2_1_2100_67",
                 "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Falta Injustificada"
                 ],
                 "total": 3,
                 "historico": [
                         {
                                 "data": "05/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "06/04",
@@ -1457,7 +1517,7 @@
                         },
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1466,17 +1526,55 @@
                 "unidade": "SPX",
                 "cargo": "T3_A_5X2_2_0200_17",
                 "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Atestado médico"
                 ],
                 "total": 3,
                 "historico": [
                         {
                                 "data": "05/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "11/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "GABRIELLA AMARO LUIZ SPXBR30760",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "11/04",
+                                "motivo": "Atestado médico"
+                        },
+                        {
+                                "data": "12/04",
+                                "motivo": "Atestado médico"
+                        }
+                ]
+        },
+        {
+                "nome": "HUGO SILVA PEREIRA GN28739",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [
+                        "Atestado médico"
+                ],
+                "total": 2,
+                "historico": [
+                        {
+                                "data": "02/04",
                                 "motivo": "Atestado médico"
                         },
                         {
@@ -1505,37 +1603,18 @@
                 ]
         },
         {
-                "nome": "MATEUS DOS SANTOS FERREIRA LACERDA SPXBR8863",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_4_0200_23",
+                "nome": "EDUARDO NORTON RODRIGUES GN37495",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
                 "motivos": [
+                        "Suspensão",
                         "Falta Injustificada"
                 ],
                 "total": 2,
                 "historico": [
                         {
-                                "data": "06/04",
-                                "motivo": "Falta Injustificada"
-                        },
-                        {
-                                "data": "09/04",
-                                "motivo": "Falta Injustificada"
-                        }
-                ]
-        },
-        {
-                "nome": "EDUARDO NORTON RODRIGUES GN37495",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_2_0200_17",
-                "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
-                ],
-                "total": 2,
-                "historico": [
-                        {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "11/04",
@@ -1548,14 +1627,14 @@
                 "unidade": "GNX",
                 "cargo": "T3_A_5X2_2_0200_17",
                 "motivos": [
-                        "Falta Injustificada",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Falta Injustificada"
                 ],
                 "total": 2,
                 "historico": [
                         {
                                 "data": "05/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "07/04",
@@ -1568,14 +1647,14 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Atestado médico"
                 ],
                 "total": 2,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         },
                         {
                                 "data": "09/04",
@@ -1588,8 +1667,8 @@
                 "unidade": "GNX",
                 "cargo": "T1_A_5X2_1_0800_67",
                 "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Atestado médico"
                 ],
                 "total": 2,
                 "historico": [
@@ -1599,7 +1678,7 @@
                         },
                         {
                                 "data": "08/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1608,8 +1687,8 @@
                 "unidade": "GNX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Atestado médico",
-                        "Sinergia Enviada"
+                        "Suspensão",
+                        "Atestado médico"
                 ],
                 "total": 2,
                 "historico": [
@@ -1619,7 +1698,7 @@
                         },
                         {
                                 "data": "08/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1643,21 +1722,6 @@
                 ]
         },
         {
-                "nome": "GABRIELLA AMARO LUIZ SPXBR30760",
-                "unidade": "SPX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "11/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
                 "nome": "JOSE DENILSON PAULINO DO NASCIMENTO GN33922",
                 "unidade": "GNX",
                 "cargo": "T3_A_5X2_3_0200_12",
@@ -1668,21 +1732,6 @@
                 "historico": [
                         {
                                 "data": "04/04",
-                                "motivo": "Atestado médico"
-                        }
-                ]
-        },
-        {
-                "nome": "HUGO SILVA PEREIRA GN28739",
-                "unidade": "GNX",
-                "cargo": "T3_A_5X2_3_0200_12",
-                "motivos": [
-                        "Atestado médico"
-                ],
-                "total": 1,
-                "historico": [
-                        {
-                                "data": "02/04",
                                 "motivo": "Atestado médico"
                         }
                 ]
@@ -1782,13 +1831,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1797,13 +1846,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1827,13 +1876,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1842,13 +1891,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1887,13 +1936,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_1_0800_67",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1902,13 +1951,13 @@
                 "unidade": "GNX",
                 "cargo": "T1_A_5X2_2_0812_17",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1932,13 +1981,13 @@
                 "unidade": "GNX",
                 "cargo": "T1_A_5X2_1_0800_67",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "08/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1947,13 +1996,13 @@
                 "unidade": "SPX",
                 "cargo": "T1_A_5X2_1_0800_67",
                 "motivos": [
-                        "Sinergia Enviada"
+                        "Suspensão"
                 ],
                 "total": 1,
                 "historico": [
                         {
                                 "data": "07/04",
-                                "motivo": "Sinergia Enviada"
+                                "motivo": "Suspensão"
                         }
                 ]
         },
@@ -1971,6 +2020,550 @@
                                 "motivo": "Atestado médico"
                         }
                 ]
+        },
+        {
+                "nome": "ALESSANDRO BARBOSA DE ANDRADE GN39724",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JENNIFER GOMES DOS SANTOS CARLOS GN39781",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "KAILLANY VITORIA CASTRO DA SILVA GN39723",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "DANILO RODRIGUES DOS SANTOS SPXBR22251",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "SIMONY VITORIA MOURA BEZERRA GN33925",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ISABELLA DOS SANTOS GN26449",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ALEXANDRE TEODORO CASSEMIRO GN33926",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "SELMA VICTOR FERREIRA DA SILVA SPXBR25460",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "NEZIO HENRIQUE LARANJEIRA GN40544",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0200_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "LUCAS CARDOSO FIRMINO GN40543",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0200_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RAFAEL NORONHA SILVA SPXBR7874",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RENATO FERREIRA SPXBR18115",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "EDIVALDO VICENTE PINTO GN26751",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JOYCE VICTOR DOS SANTOS GN40541",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0200_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "DAYANE DA SILVA CERQUEIRA GN28735",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ANA BEATRIZ GOMES GN40039",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_1_0200_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MARCELA VITORIA MEIRA DE FREITAS SIQUEIRA GN39434",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "CASSIA CONCEICAO DA ROCHA ALVES SPXBR22231",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RAYANE SANTOS DE LISBOA SPXBR24971",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "GABRIEL DE MELO MORGADO SPXBR24111",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JEFERSON CONCEICAO PASSOS GN28920",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "TONGO MBALA GN28951",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "KATIA SABRINA BENNATI GN36118",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "THAMIRES APARECIDA DE OLIVEIRA MACHADO GN33919",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_4_0200_23",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "LEONARDO OLIVEIRA PIRES DE CARVALHO GN33945",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_3_0200_12",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "CLEIBE JOHNES SANTOS VEIGA GN39414",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ROSIMEIRE SIQUEIRA DA SILVA GN21586",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "GISLENE SOUZA MENDONCA GN25847",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "GUSTAVO VICTOR SANTANA GN29042",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "GISLEIDE MARIA DA SILVA GN33929",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ANA CAROLINA ALVES CONDE GN33875",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "LARISSA CAMPOS DE OLIVEIRA GN40540",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "CAMILA DOS SANTOS ROCHA GN33940",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "HENRIQUE CAVILHA GOMES FONTOLAN GN40584",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MORGANA REGINA DE MORAES GN29860",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "DIEGO DA SILVA ROCHA GN41570",
+                "unidade": "GNX",
+                "cargo": "T3_A_5X2_2_0200_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ERIKSON FLAVIO SOUZA DOS SANTOS GN36992",
+                "unidade": "GNX",
+                "cargo": "T3_A_6X1_2_0300_1",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RINNARY ADRIELLE DE SOUZA CASTRO SPXBR17507",
+                "unidade": "SPX",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "THAIS SANTOS DE LISBOA GN27595",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "PAMELA CRISTINE DA SILVA GI640224",
+                "unidade": "GI GROUP",
+                "cargo": "T3_A_5X2_1_2100_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MICHELE FERREIRA DA SILVA DONATO SPXBR30811",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ITHAMARA MARQUES DA SILVA SPXBR30768",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "CAIO FERNANDES DE OLIVEIRA BRAGANTE SPXBR22226",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MELQUISEDEQUE SANTOS DE BARROS SPXBR17501",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "FRANCIANE CRISTINA SANTANA DE CASTRO SPXBR32848",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "THIAGO KAIQUE DA SILVA SPXBR34109",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MAGNO SANTOS DE BRITO SPXBR32845",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "LARISSA RAIANE TOLEDO LUIZ GN27465",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ARTHUR ALVES DA SILVEIRA GN28810",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "FLAVIO ALISON ALVES MENDES GN28805",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JONAS FILIPE GOMES SAMPAIO GN28946",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "CLAYTON JHONATA DE OLIVEIRA SPXBR27600",
+                "unidade": "SPX",
+                "cargo": "T1_A_5X2_2_1212_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ANA CAROLINE SANTANA DE SOUZA GN29875",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "FLAVIA SOUZA DO AMARAL GN33918",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "EVERTON FRUTUOSO DO NASCIMENTO GN33872",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_1_0800_67",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "FRANCIELE BARBOSA FERREIRA GN34477",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "DAVI FARIAS DA SILVA GN33692",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "TAUANE CRISTINA GOMES COSTA GN34470",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "LARISSA GONCALVES LEAO GN36364",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ALINE LOURDES SENA MARTINS GN36362",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JAQUELINE MARTINS DA SILVA GN41568",
+                "unidade": "GNX",
+                "cargo": "T1_A_5X2_2_0812_17",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RAQUEL DOS SANTOS FRANCISCO GN36999",
+                "unidade": "GNX",
+                "cargo": "T1_A_6X1_1_1200_7",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ANDREA MATOS VIANA GN33666",
+                "unidade": "GNX",
+                "cargo": "T2_A_6X1_1_1600_7",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "MICHELLE REGINA MALDONADO GN33818",
+                "unidade": "GNX",
+                "cargo": "T2_A_6X1_1_1600_7",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "JULIANA RAMALHO DA SILVA GN39723",
+                "unidade": "Não encontrado, contate WFM",
+                "cargo": "Não encontrado, contate WFM",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "DENYS DAVID SILVA DIAS GN41711",
+                "unidade": "GNX",
+                "cargo": "T2_A_6X1_1_1600_7",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "RAFAEL SANTANA VICENTE GN41709",
+                "unidade": "GNX",
+                "cargo": "T2_A_6X1_1_1600_7",
+                "motivos": [],
+                "total": 0,
+                "historico": []
+        },
+        {
+                "nome": "ELAINE CRISTINA NASCIMENTO DE ALENCAR GN40274 \"",
+                "unidade": "",
+                "cargo": "",
+                "motivos": [],
+                "total": 0,
+                "historico": []
         }
 ];
     const week1 = data.slice(0, 7);
