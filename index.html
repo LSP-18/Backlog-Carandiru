@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Backlog Carandiru | Gestão Estratégica</title>
+    <title>Dashboard Backlog Carandiru</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <!-- Google Fonts: Inter -->
@@ -283,49 +283,28 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal-content {
             background: white;
             padding: 32px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             width: 100%;
             max-width: 450px;
             box-shadow: var(--shopee-shadow);
         }
-
+        .modal-header { margin-bottom: 24px; }
+        .modal-header h3 { font-size: 18px; font-weight: 800; }
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--shopee-text-muted); }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--shopee-border);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-        }
-        .form-group input:focus { border-color: var(--shopee-orange); outline: none; ring: 2px var(--shopee-orange-light); }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--shopee-text-muted); margin-bottom: 6px; text-transform: uppercase; }
+        .form-group input, .form-group select { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--shopee-border); font-family: inherit; font-size: 14px; }
+        .btn-submit { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 8px; }
 
-        .btn-submit {
-            width: 100%;
-            background: var(--shopee-orange);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-
-        /* Password Overlay for Admin */
-        #password-gate {
+        footer {
+            margin-top: 40px;
             text-align: center;
-        }
-        #password-gate input {
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 4px;
-            margin-bottom: 16px;
+            padding: 24px;
+            color: var(--shopee-text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--shopee-border);
         }
 
         @media (max-width: 1024px) {
@@ -335,58 +314,60 @@
 </head>
 <body>
 
-<div class="container">
-    <!-- Onboarding / Welcome -->
-    <div id="onboarding" class="onboarding-overlay">
-        <div class="onboarding-card">
-            <div style="background: var(--shopee-orange-light); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--shopee-orange);">
-                <i data-lucide="help-circle" size="32"></i>
-            </div>
-            <h2>Bem-vindo ao Dashboard!</h2>
-            <p>Este painel centraliza o controle de backlog do Carandiru. Aqui você acompanha a evolução diária, semanal e a distribuição por categorias de erro.</p>
-            <div style="text-align: left; background: #F9FAFB; padding: 16px; border-radius: 12px; margin-bottom: 24px; font-size: 13px;">
-                <p style="margin-bottom: 8px;"><strong>💡 Como usar:</strong></p>
-                <ul style="list-style: none; color: var(--shopee-text-muted);">
-                    <li style="margin-bottom: 4px;">• Navegue entre as abas para ver diferentes visões.</li>
-                    <li style="margin-bottom: 4px;">• Passe o mouse nos gráficos para detalhes.</li>
-                    <li>• A área de adição é protegida por senha.</li>
-                </ul>
-            </div>
-            <button class="btn-start" onclick="closeOnboarding()">Entendi, vamos lá!</button>
+<div class="onboarding-overlay" id="onboarding">
+    <div class="onboarding-card">
+        <div style="background: var(--shopee-orange-light); width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--shopee-orange);">
+            <i data-lucide="bar-chart-3" size="32"></i>
         </div>
+        <h2>Bem-vindo ao Dashboard!</h2>
+        <p>Olá! Este painel de controle foi desenvolvido pelo <strong>Analista Emanuel Brendon</strong> para facilitar a gestão do backlog Carandiru. Acompanhe os indicadores em tempo real.</p>
+        <button class="btn-start" onclick="closeOnboarding()">Acessar Painel</button>
     </div>
+</div>
 
+<div class="container">
     <header>
         <div class="header-info">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
-                <h1>Backlog Carandiru</h1>
-                <div class="status-badge"><span style="width: 8px; height: 8px; background: #10B981; border-radius: 50%;"></span> Live Data</div>
-            </div>
-            <p><i data-lucide="calendar" size="14"></i> Atualizado em tempo real • <span id="current-date"></span></p>
+            <h1>Dashboard Backlog Carandiru</h1>
+            <p>
+                <i data-lucide="calendar" size="14"></i>
+                <span id="current-date"></span>
+                <span style="margin: 0 8px; opacity: 0.3">|</span>
+                <i data-lucide="map-pin" size="14"></i>
+                Logística Shopee
+            </p>
         </div>
         <div class="shopee-logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/1200px-Shopee.svg.png" class="shopee-logo" alt="Shopee">
+            <div class="status-badge">
+                <span style="width: 8px; height: 8px; background: #10B981; border-radius: 50%; display: inline-block;"></span>
+                Sistema Online
+            </div>
+            <img src="https://logodownload.org/wp-content/uploads/2021/03/shopee-logo-0.png" class="shopee-logo" alt="Shopee">
         </div>
     </header>
 
     <div class="action-bar">
         <button class="btn-add" onclick="openPasswordGate()">
-            <i data-lucide="plus-circle" size="18"></i> Adicionar Novos Dados
+            <i data-lucide="plus" size="18"></i>
+            Novo Registro
         </button>
     </div>
 
     <nav class="nav-tabs">
-        <button class="nav-btn active" data-tab="overview" onclick="openTab('overview')"><i data-lucide="layout-dashboard" size="16"></i> Visão Geral</button>
-        <button class="nav-btn" data-tab="evolution" onclick="openTab('evolution')"><i data-lucide="trending-up" size="16"></i> Evolução</button>
-        <button class="nav-btn" data-tab="history" onclick="openTab('history')"><i data-lucide="history" size="16"></i> Histórico Completo</button>
+        <button class="nav-btn active" data-tab="tab-geral" onclick="openTab('tab-geral')">
+            <i data-lucide="layout-dashboard" size="16"></i> Visão Geral
+        </button>
+        <button class="nav-btn" data-tab="tab-historico" onclick="openTab('tab-historico')">
+            <i data-lucide="history" size="16"></i> Histórico Detalhado
+        </button>
     </nav>
 
-    <!-- TAB: OVERVIEW -->
-    <div id="overview" class="tab-content active">
+    <!-- ABA 1: VISÃO GERAL -->
+    <div id="tab-geral" class="tab-content active">
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <div class="kpi-icon-box"><i data-lucide="layers" size="20"></i></div>
+                    <div class="kpi-icon-box"><i data-lucide="package" size="20"></i></div>
                     <div id="trend-badge" class="kpi-trend-badge">--%</div>
                 </div>
                 <div class="kpi-label">Backlog Total Atual</div>
@@ -396,57 +377,59 @@
                 <div class="kpi-header">
                     <div class="kpi-icon-box"><i data-lucide="activity" size="20"></i></div>
                 </div>
-                <div class="kpi-label">Média Diária (Últ. 7 dias)</div>
+                <div class="kpi-label">Média (Últimos 7 dias)</div>
                 <div id="kpi-avg" class="kpi-value">0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <div class="kpi-icon-box"><i data-lucide="alert-triangle" size="20"></i></div>
+                    <div class="kpi-icon-box" style="background: #FEF3C7; color: #D97706;"><i data-lucide="alert-triangle" size="20"></i></div>
                 </div>
-                <div class="kpi-label">Maior Gargalo</div>
-                <div id="kpi-bottleneck" class="kpi-value" style="font-size: 20px; padding-top: 8px;">--</div>
+                <div class="kpi-label">Maior Concentração</div>
+                <div id="kpi-bottleneck" class="kpi-value" style="font-size: 20px;">--</div>
             </div>
         </div>
 
-        <div class="category-grid" id="category-cards">
-            <!-- Cards gerados via JS -->
+        <div id="category-cards" class="category-grid">
+            <!-- Gerado via JS -->
         </div>
 
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header">
-                    <div class="card-title"><i data-lucide="bar-chart-3" size="18"></i> Comparativo Semanal</div>
-                    <div class="card-subtitle">Semana Atual vs. Anterior</div>
+                    <div>
+                        <div class="card-title"><i data-lucide="trending-up" size="18" style="color: var(--shopee-orange)"></i> Tendência de Backlog</div>
+                        <div class="card-subtitle">Comparativo entre a semana anterior e a atual</div>
+                    </div>
                 </div>
                 <div style="height: 300px;"><canvas id="comparisonChart"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header">
-                    <div class="card-title"><i data-lucide="pie-chart" size="18"></i> Mix de Backlog</div>
-                    <div class="card-subtitle">Distribuição por Categoria</div>
+                    <div>
+                        <div class="card-title"><i data-lucide="pie-chart" size="18" style="color: var(--shopee-orange)"></i> Mix de Categorias</div>
+                        <div class="card-subtitle">Distribuição percentual do último registro</div>
+                    </div>
                 </div>
                 <div style="height: 300px;"><canvas id="shareChart"></canvas></div>
             </div>
         </div>
-    </div>
 
-    <!-- TAB: EVOLUTION -->
-    <div id="evolution" class="tab-content">
-        <div class="card-container" style="margin-bottom: 24px;">
+        <div class="card-container">
             <div class="card-header">
-                <div class="card-title"><i data-lucide="line-chart" size="18"></i> Tendência por Categoria</div>
-                <div class="card-subtitle">Análise de série temporal</div>
+                <div>
+                    <div class="card-title"><i data-lucide="line-chart" size="18" style="color: var(--shopee-orange)"></i> Evolução por Categoria</div>
+                    <div class="card-subtitle">Acompanhamento diário do volume de cada status</div>
+                </div>
             </div>
-            <div style="height: 450px;"><canvas id="categoryEvolutionChart"></canvas></div>
+            <div style="height: 350px;"><canvas id="categoryEvolutionChart"></canvas></div>
         </div>
     </div>
 
-    <!-- TAB: HISTORY -->
-    <div id="history" class="tab-content">
+    <!-- ABA 2: HISTÓRICO -->
+    <div id="tab-historico" class="tab-content">
         <div class="card-container">
             <div class="card-header">
-                <div class="card-title"><i data-lucide="table" size="18"></i> Detalhamento Diário</div>
-                <div class="card-subtitle">Registro cronológico de entradas</div>
+                <div class="card-title">Registros Diários</div>
             </div>
             <div class="table-container">
                 <table>
@@ -462,66 +445,73 @@
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody id="daily-table-body"></tbody>
+                    <tbody id="daily-table-body">
+                        <!-- Gerado via JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
 
-<!-- MODAL: PASSWORD -->
-<div id="passwordModal" class="modal">
-    <div class="modal-content" id="password-gate">
-        <div style="color: var(--shopee-orange); margin-bottom: 16px;"><i data-lucide="lock" size="48"></i></div>
-        <h2 style="margin-bottom: 8px;">Acesso Restrito</h2>
-        <p style="font-size: 14px; color: var(--shopee-text-muted); margin-bottom: 24px;">Insira a senha de administrador para adicionar dados.</p>
-        <div class="form-group">
-            <input type="password" id="admin-password" placeholder="••••••">
+    <!-- MODAL SENHA -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Acesso Restrito</h3>
+                <p style="font-size: 13px; color: var(--shopee-text-muted); margin-top: 4px;">Insira a senha de administrador para adicionar dados.</p>
+            </div>
+            <div class="form-group">
+                <input type="password" id="admin-password" placeholder="Senha de 6 dígitos">
+            </div>
+            <button class="btn-submit" onclick="checkPassword()">Verificar</button>
+            <button class="btn-submit" style="background: #E5E7EB; color: #374151; margin-top: 8px;" onclick="closeModal('passwordModal')">Cancelar</button>
         </div>
-        <button class="btn-submit" onclick="checkPassword()">Acessar</button>
-        <button class="btn-submit" style="background: #eee; color: #666; margin-top: 8px;" onclick="closeModal('passwordModal')">Cancelar</button>
     </div>
-</div>
 
-<!-- MODAL: ADD DATA -->
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <div class="card-header" style="margin-bottom: 24px;">
-            <div class="card-title"><i data-lucide="plus-circle" size="20"></i> Novo Registro</div>
-            <button onclick="closeModal('addModal')" style="border:none; background:none; cursor:pointer; color: #999;"><i data-lucide="x" size="20"></i></button>
+    <!-- MODAL ADICIONAR -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Novo Registro Diário</h3>
+            </div>
+            <form id="dataForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="text" id="form-data" placeholder="DD/MM" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dia da Semana</label>
+                        <select id="form-dia">
+                            <option>Segunda</option><option>Terça</option><option>Quarta</option>
+                            <option>Quinta</option><option>Sexta</option><option>Sábado</option><option>Domingo</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group"><label>Amarelo</label><input type="number" id="form-amarelo" value="0"></div>
+                    <div class="form-group"><label>Erro Op.</label><input type="number" id="form-erro" value="0"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group"><label>On Hold</label><input type="number" id="form-onhold" value="0"></div>
+                    <div class="form-group"><label>Ret. Fleet</label><input type="number" id="form-fleet" value="0"></div>
+                </div>
+                <div class="form-group"><label>Office</label><input type="number" id="form-office" value="0"></div>
+                <button type="submit" class="btn-submit">Salvar Registro</button>
+            </form>
         </div>
-        <form id="dataForm">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <div class="form-group">
-                    <label>Data</label>
-                    <input type="text" id="form-data" placeholder="DD/MM" required>
-                </div>
-                <div class="form-group">
-                    <label>Dia da Semana</label>
-                    <select id="form-dia">
-                        <option>Segunda</option><option>Terça</option><option>Quarta</option>
-                        <option>Quinta</option><option>Sexta</option><option>Sábado</option><option>Domingo</option>
-                    </select>
-                </div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <div class="form-group"><label>Amarelo</label><input type="number" id="form-amarelo" value="0"></div>
-                <div class="form-group"><label>Erro Op.</label><input type="number" id="form-erro" value="0"></div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <div class="form-group"><label>On Hold</label><input type="number" id="form-onhold" value="0"></div>
-                <div class="form-group"><label>Ret. Fleet</label><input type="number" id="form-fleet" value="0"></div>
-            </div>
-            <div class="form-group"><label>Office</label><input type="number" id="form-office" value="0"></div>
-            <button type="submit" class="btn-submit">Salvar Registro</button>
-        </form>
     </div>
+
+    <footer>©️ 2026 Shopee • Gestão de Backlog • Desenvolvido pelo <strong>Analista Emanuel Brendon</strong></footer>
 </div>
 
 <script>
+    // --- REGISTRAR PLUGIN DATALABELS ---
+    Chart.register(ChartDataLabels);
+
     // --- CONFIGURAÇÃO FIREBASE ---
     const firebaseConfig = {
-        databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/"
+        databaseURL: "https://backlog-carandiru-default-rtdb.firebaseio.com/"
     };
     
     let db = null;
@@ -548,7 +538,7 @@
 
     let dashboardData = [...initialData];
     let charts = {};
-    const ADMIN_PASSWORD = "123"; // Senha solicitada
+    const ADMIN_PASSWORD = "150311"; // Senha solicitada
 
     // --- FUNÇÕES DE UI ---
     function closeOnboarding() { 
@@ -667,10 +657,17 @@
             maintainAspectRatio: false, 
             plugins: { 
                 legend: { display: false },
-                datalabels: { display: false }
+                datalabels: { 
+                    display: true,
+                    anchor: 'end',
+                    align: 'top',
+                    offset: 4,
+                    font: { weight: 'bold', size: 10 },
+                    formatter: (value) => value > 0 ? value.toLocaleString() : ''
+                }
             },
             scales: {
-                y: { grid: { display: false }, ticks: { font: { size: 10 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 10 } }, beginAtZero: true, grace: '10%' },
                 x: { grid: { display: false }, ticks: { font: { size: 10 } } }
             }
         };
@@ -689,17 +686,34 @@
                     { label: 'S. Atual', data: w2Totals, backgroundColor: '#EE4D2D', borderRadius: 4 }
                 ] 
             },
-            options: { ...commonOptions, plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } } }
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } } }
         });
 
         // Mix
         const lastDay = dashboardData[dashboardData.length - 1];
         const shareData = cats.map(c => lastDay[c]);
+        const shareTotal = shareData.reduce((a, b) => a + b, 0);
+
         if(charts.share) charts.share.destroy();
         charts.share = new Chart(document.getElementById('shareChart'), {
             type: 'doughnut',
             data: { labels, datasets: [{ data: shareData, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
-            options: { ...commonOptions, cutout: '70%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
+            options: { 
+                ...commonOptions, 
+                cutout: '65%', 
+                plugins: { 
+                    ...commonOptions.plugins,
+                    legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 11 },
+                        formatter: (value) => {
+                            const pct = (value / shareTotal * 100).toFixed(1);
+                            return pct > 5 ? pct + '%' : '';
+                        }
+                    }
+                } 
+            }
         });
 
         // Evolução
@@ -718,7 +732,14 @@
                     borderWidth: 2
                 }))
             },
-            options: { ...commonOptions, plugins: { legend: { display: true, position: 'top' } } }
+            options: { 
+                ...commonOptions, 
+                plugins: { 
+                    ...commonOptions.plugins, 
+                    legend: { display: true, position: 'top' },
+                    datalabels: { display: false } // Não exibir valores na linha para não poluir
+                } 
+            }
         });
     }
 
@@ -750,7 +771,7 @@
         if (db) {
             db.ref('backlog_data').push(newItem).then(() => {
                 alert("Dados sincronizados com sucesso!");
-                updateDashboard(); // Força atualização visual
+                updateDashboard();
             });
         } else {
             dashboardData.push(newItem);
