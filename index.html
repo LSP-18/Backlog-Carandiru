@@ -432,7 +432,7 @@
         <h2 style="margin-bottom:24px; color:var(--text-main)">Acesso Administrativo</h2>
         <div class="form-group">
             <label>E-mail</label>
-            <input type="email" id="login-email" class="form-input" placeholder="emanuel.issa@shopee.com">
+            <input type="email" id="login-email" class="form-input" placeholder="admin@shopee.com">
         </div>
         <div class="form-group">
             <label>Senha</label>
@@ -641,7 +641,7 @@
     function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
-        if (email === "admin@shopee.com" && pass === "150311") {
+        if (email === "emanue.issa@shopee.com" && pass === "150311") {
             isAdmin = true;
             document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="16"></i> Admin (${email}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
             document.getElementById('admin-status-box').className = 'admin-status admin-logged';
