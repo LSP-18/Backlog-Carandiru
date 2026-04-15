@@ -193,7 +193,7 @@
         }
         .header-info h1 { font-size: 24px; font-weight: 800; color: var(--text-main); }
         .header-info p { font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-        .shopee-logo { height: 32px; }
+        .shopee-logo { height: 43px; }
 
         .theme-toggle {
             background: var(--bg-input);
@@ -405,7 +405,7 @@
     <div class="onboarding-card">
         <div class="onboarding-left">
             <div class="shopee-badge"><i data-lucide="shield-check" size="14"></i> Acesso Autorizado</div>
-            <h1>Gestão <span>de    </span><br>Backlog Carandiru</h1>
+            <h1>Dashboard<span>Backlog</span><br>Carandiru</h1>
             <p>Central de inteligência analítica com cálculo fiscal preciso (Segunda a Domingo).</p>
             <button class="btn-elite" onclick="closeOnboarding()">
                 Acessar Dashboard <i data-lucide="arrow-right"></i>
@@ -458,7 +458,7 @@
                 <i data-lucide="eye" size="16"></i> Modo Visualização
                 <button class="btn-login-trigger" onclick="openLogin()">Login Admin</button>
             </div>
-            <img src="https://logodownload.org/wp-content/uploads/2021/03/shopee-logo-0.png" class="shopee-logo" alt="Shopee">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/960px-Shopee.svg.png" class="shopee-logo" alt="Shopee">
         </div>
     </header>
 
@@ -773,7 +773,7 @@
     function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
-        if (email === "emanue.issa@shopee.com" && pass === "150311") {
+        if (email === "emanuel.issa@shopee.com" && pass === "150311") {
             isAdmin = true;
             document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="16"></i> Admin (${email}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
             document.getElementById('admin-status-box').className = 'admin-status admin-logged';
