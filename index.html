@@ -587,15 +587,147 @@
     let isAdmin = false;
     // Dados de exemplo ajustados para mostrar o comportamento de reset na segunda 13/04
     let initialData = [
-        { "data": "06/04", "dia": "Segunda", "amarelo": 500, "erro": 200, "onhold": 100, "fleet": 50, "office": 1000, "total": 1850 },
-        { "data": "07/04", "dia": "Terça", "amarelo": 400, "erro": 150, "onhold": 80, "fleet": 40, "office": 900, "total": 1570 },
-        { "data": "08/04", "dia": "Quarta", "amarelo": 300, "erro": 100, "onhold": 60, "fleet": 30, "office": 800, "total": 1290 },
-        { "data": "09/04", "dia": "Quinta", "amarelo": 200, "erro": 50, "onhold": 40, "fleet": 20, "office": 700, "total": 1010 },
-        { "data": "10/04", "dia": "Sexta", "amarelo": 100, "erro": 25, "onhold": 20, "fleet": 10, "office": 600, "total": 755 },
-        { "data": "11/04", "dia": "Sábado", "amarelo": 50, "erro": 10, "onhold": 10, "fleet": 5, "office": 500, "total": 575 },
-        { "data": "12/04", "dia": "Domingo", "amarelo": 25, "erro": 5, "onhold": 5, "fleet": 2, "office": 400, "total": 437 },
-        { "data": "13/04", "dia": "Segunda", "amarelo": 100, "erro": 50, "onhold": 20, "fleet": 10, "office": 300, "total": 480 }
-    ];
+        {
+                "data": "30/03",
+                "dia": "Segunda",
+                "amarelo": 149,
+                "erro": 233,
+                "onhold": 502,
+                "fleet": 272,
+                "office": 0,
+                "total": 1156
+        },
+        {
+                "data": "31/03",
+                "dia": "Terça",
+                "amarelo": 51,
+                "erro": 178,
+                "onhold": 252,
+                "fleet": 109,
+                "office": 0,
+                "total": 590
+        },
+        {
+                "data": "01/04",
+                "dia": "Quarta",
+                "amarelo": 149,
+                "erro": 230,
+                "onhold": 61,
+                "fleet": 87,
+                "office": 0,
+                "total": 527
+        },
+        {
+                "data": "02/04",
+                "dia": "Quinta",
+                "amarelo": 82,
+                "erro": 198,
+                "onhold": 37,
+                "fleet": 162,
+                "office": 0,
+                "total": 479
+        },
+        {
+                "data": "03/04",
+                "dia": "Sexta",
+                "amarelo": 209,
+                "erro": 361,
+                "onhold": 2099,
+                "fleet": 187,
+                "office": 3010,
+                "total": 5866
+        },
+        {
+                "data": "04/04",
+                "dia": "Sábado",
+                "amarelo": 177,
+                "erro": 147,
+                "onhold": 45,
+                "fleet": 65,
+                "office": 2484,
+                "total": 2918
+        },
+        {
+                "data": "05/04",
+                "dia": "Domingo",
+                "amarelo": 57,
+                "erro": 165,
+                "onhold": 29,
+                "fleet": 120,
+                "office": 987,
+                "total": 1358
+        },
+        {
+                "data": "06/04",
+                "dia": "Segunda",
+                "amarelo": 503,
+                "erro": 0,
+                "onhold": 168,
+                "fleet": 0,
+                "office": 0,
+                "total": 671
+        },
+        {
+                "data": "07/04",
+                "dia": "Terça",
+                "amarelo": 157,
+                "erro": 162,
+                "onhold": 104,
+                "fleet": 9,
+                "office": 0,
+                "total": 432
+        },
+        {
+                "data": "08/04",
+                "dia": "Quarta",
+                "amarelo": 206,
+                "erro": 151,
+                "onhold": 147,
+                "fleet": 83,
+                "office": 0,
+                "total": 587
+        },
+        {
+                "data": "09/04",
+                "dia": "Quinta",
+                "amarelo": 237,
+                "erro": 144,
+                "onhold": 56,
+                "fleet": 81,
+                "office": 0,
+                "total": 518
+        },
+        {
+                "data": "10/04",
+                "dia": "Sexta",
+                "amarelo": 529,
+                "erro": 675,
+                "onhold": 19,
+                "fleet": 127,
+                "office": 0,
+                "total": 1350
+        },
+        {
+                "data": "11/04",
+                "dia": "Sábado",
+                "amarelo": 370,
+                "erro": 249,
+                "onhold": 128,
+                "fleet": 202,
+                "office": 1194,
+                "total": 2143
+        },
+        {
+                "data": "12/04",
+                "dia": "Domingo",
+                "amarelo": 0,
+                "erro": 0,
+                "onhold": 0,
+                "fleet": 0,
+                "office": 0,
+                "total": 0
+        }
+];
     let dashboardData = [...initialData];
     let charts = {};
 
