@@ -385,6 +385,13 @@
 
         <div class="category-grid" id="category-cards"></div>
 
+        <div class="card-container">
+            <div class="card-header">
+                <div class="card-title"><i data-lucide="arrow-left-right" size="18"></i> Comparação de Desempenho: Carandiru vs Vila Guilherme</div>
+            </div>
+            <div style="height: 350px;"><canvas id="hubComparisonChart"></canvas></div>
+        </div>
+
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="bar-chart-3" size="18"></i> Comparativo Semanal por Categoria</div></div>
@@ -485,12 +492,12 @@
 <script>
     Chart.register(ChartDataLabels);
 
-    // RESTAURANDO FIREBASE ORIGINAL
+    // FIREBASE CONFIG
     const firebaseConfig = { databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/" };
     let db = null;
     try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e) {}
 
-    // DADOS ORIGINAIS CARANDIRU
+    // DADOS ORIGINAIS CARANDIRU (HARDCODED)
     let initialDataCarandiru = [
         {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "total": 1156},
         {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "total": 590},
@@ -509,7 +516,7 @@
     ];
 
     let dataCarandiru = [...initialDataCarandiru];
-    let dataVilaGuilherme = initialDataCarandiru.map(d => ({...d, amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0}));
+    let dataVilaGuilherme = []; // Inicia vazio, será preenchido pelo Firebase
 
     let currentHub = 'all';
     let dashboardData = [];
@@ -571,13 +578,31 @@
     }
 
     function updateDashboard() {
+        // Alinhamento de datas para consolidado e comparação
+        const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data)])].sort((a,b) => {
+            const [d1, m1] = a.split('/').map(Number);
+            const [d2, m2] = b.split('/').map(Number);
+            return (m1 * 100 + d1) - (m2 * 100 + d2);
+        });
+
+        const syncData = (source, hubName) => allDates.map(date => {
+            const found = source.find(d => d.data === date);
+            if (found) return found;
+            // Se não achar, tenta achar o dia da semana em qualquer fonte
+            const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date);
+            return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0, hub: hubName };
+        });
+
+        const syncedCarandiru = syncData(dataCarandiru, 'carandiru');
+        const syncedVila = syncData(dataVilaGuilherme, 'vila-guilherme');
+
         if (currentHub === 'carandiru') {
-            dashboardData = [...dataCarandiru];
+            dashboardData = syncedCarandiru;
         } else if (currentHub === 'vila-guilherme') {
-            dashboardData = [...dataVilaGuilherme];
+            dashboardData = syncedVila;
         } else {
-            dashboardData = dataCarandiru.map((d, i) => {
-                const vg = dataVilaGuilherme[i] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0};
+            dashboardData = syncedCarandiru.map((d, i) => {
+                const vg = syncedVila[i];
                 return {
                     data: d.data, dia: d.dia,
                     amarelo: d.amarelo + vg.amarelo,
@@ -643,26 +668,26 @@
         });
         document.getElementById('kpi-bottleneck').innerText = bottleneck || "Nenhum";
         
-        renderTables();
-        renderCharts(catLabels, cats, catColors, weekPrev, weekCurr);
+        renderTables(syncedCarandiru, syncedVila);
+        renderCharts(catLabels, cats, catColors, weekPrev, weekCurr, syncedCarandiru, syncedVila);
     }
 
-    function renderTables() {
+    function renderTables(car, vila) {
         const bodyCarandiru = document.getElementById('table-carandiru');
         const bodyVila = document.getElementById('table-vila');
         bodyCarandiru.innerHTML = '';
         bodyVila.innerHTML = '';
 
-        [...dataCarandiru].reverse().forEach(day => {
+        [...car].reverse().forEach(day => {
             bodyCarandiru.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
         });
 
-        [...dataVilaGuilherme].reverse().forEach(day => {
+        [...vila].reverse().forEach(day => {
             bodyVila.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
         });
     }
 
-    function renderCharts(labels, cats, colors, week1, week2) {
+    function renderCharts(labels, cats, colors, week1, week2, car, vila) {
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#CBD5E1';
         const gridColor = theme === 'light' ? '#E5E7EB' : '#334155';
@@ -684,6 +709,19 @@
         
         if(charts.evolution) charts.evolution.destroy();
         charts.evolution = new Chart(document.getElementById('categoryEvolutionChart'), { type: 'line', data: { labels: dashboardData.map(d => d.data), datasets: cats.map((c, i) => ({ label: labels[i], data: dashboardData.map(d => d[c]), borderColor: colors[i], backgroundColor: colors[i], tension: 0.3, pointRadius: 4, borderWidth: 3 })) }, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor } }, datalabels: { display: false } } } });
+
+        if(charts.hubComparison) charts.hubComparison.destroy();
+        charts.hubComparison = new Chart(document.getElementById('hubComparisonChart'), {
+            type: 'bar',
+            data: {
+                labels: car.map(d => d.data),
+                datasets: [
+                    { label: 'Carandiru', data: car.map(d => d.total), backgroundColor: '#EE4D2D', borderRadius: 4 },
+                    { label: 'Vila Guilherme', data: vila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 4 }
+                ]
+            },
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor } }, datalabels: { display: false } } }
+        });
     }
 
     // FIREBASE SYNC
@@ -692,16 +730,10 @@
             const val = snapshot.val();
             if (val) {
                 const firebaseItems = Object.values(val);
+                // Filtra Carandiru (inclui itens sem hub para compatibilidade com registros antigos)
                 dataCarandiru = [...initialDataCarandiru, ...firebaseItems.filter(i => i.hub === 'carandiru' || !i.hub)];
+                // Filtra Vila Guilherme
                 dataVilaGuilherme = firebaseItems.filter(i => i.hub === 'vila-guilherme');
-                // Preencher Vila Guilherme com zeros para datas que só existem no Carandiru para manter o gráfico alinhado
-                const allDates = [...new Set(dataCarandiru.map(d => d.data))];
-                dataVilaGuilherme = allDates.map(date => {
-                    const existing = dataVilaGuilherme.find(v => v.data === date);
-                    if (existing) return existing;
-                    const carDay = dataCarandiru.find(c => c.data === date);
-                    return { data: date, dia: carDay.dia, amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0, hub: 'vila-guilherme' };
-                });
                 updateDashboard();
             }
         });
@@ -724,14 +756,16 @@
 
         if (db) {
             db.ref('backlog_data').push(newItem).then(() => {
-                alert("Dados Sincronizados com Firebase!");
+                alert(`Dados do Hub ${targetHub.toUpperCase()} sincronizados com Firebase!`);
                 closeModal('addModal');
+            }).catch(err => {
+                alert("Erro ao sincronizar: " + err.message);
             });
         } else {
             if (targetHub === 'carandiru') dataCarandiru.push(newItem);
             else dataVilaGuilherme.push(newItem);
             updateDashboard();
-            alert("Salvo localmente.");
+            alert("Salvo localmente (Firebase não conectado).");
             closeModal('addModal');
         }
         this.reset();
