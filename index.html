@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Backlog - Hubs Shopee</title>
+    <title>Dashboard Backlog Shopee - Hubs</title>
     <link rel="icon" href="https://cdn.awsli.com.br/800x800/2015/2015798/produto/354645871/shoppe--2--mvj1hgvttt.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -335,7 +335,8 @@
 
     <div class="nav-tabs">
         <button class="nav-btn active" data-tab="tab-overview" onclick="openTab('tab-overview')"><i data-lucide="layout-dashboard" size="16"></i> Visão Geral</button>
-        <button class="nav-btn" data-tab="tab-history" onclick="openTab('tab-history')"><i data-lucide="history" size="16"></i> Histórico</button>
+        <button class="nav-btn" data-tab="tab-history-carandiru" onclick="openTab('tab-history-carandiru')"><i data-lucide="history" size="16"></i> Histórico Carandiru</button>
+        <button class="nav-btn" data-tab="tab-history-vila" onclick="openTab('tab-history-vila')"><i data-lucide="history" size="16"></i> Histórico Vila Guilherme</button>
     </div>
 
     <div id="tab-overview" class="tab-content active">
@@ -401,14 +402,29 @@
         </div>
     </div>
 
-    <div id="tab-history" class="tab-content">
+    <div id="tab-history-carandiru" class="tab-content">
         <div class="card-container">
+            <div class="card-header"><div class="card-title"><i data-lucide="history" size="18"></i> Histórico Carandiru</div></div>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro Op.</th><th>On Hold</th><th>Ret. Fleet</th><th>Office</th><th>Total</th></tr>
                     </thead>
-                    <tbody id="daily-table-body"></tbody>
+                    <tbody id="table-carandiru"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-history-vila" class="tab-content">
+        <div class="card-container">
+            <div class="card-header"><div class="card-title"><i data-lucide="history" size="18"></i> Histórico Vila Guilherme</div></div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro Op.</th><th>On Hold</th><th>Ret. Fleet</th><th>Office</th><th>Total</th></tr>
+                    </thead>
+                    <tbody id="table-vila"></tbody>
                 </table>
             </div>
         </div>
@@ -469,13 +485,13 @@
 <script>
     Chart.register(ChartDataLabels);
 
-    // Configuração Firebase (Opcional, se quiser usar)
+    // RESTAURANDO FIREBASE ORIGINAL
     const firebaseConfig = { databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/" };
     let db = null;
     try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e) {}
 
-    // Dados Iniciais Carandiru
-    let dataCarandiru = [
+    // DADOS ORIGINAIS CARANDIRU
+    let initialDataCarandiru = [
         {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "total": 1156},
         {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "total": 590},
         {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "total": 527},
@@ -492,35 +508,22 @@
         {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "total": 0}
     ];
 
-    // Dados Iniciais Vila Guilherme
-    let dataVilaGuilherme = dataCarandiru.map(d => ({
-        ...d,
-        amarelo: Math.round(d.amarelo * 0.85),
-        erro: Math.round(d.erro * 0.9),
-        onhold: Math.round(d.onhold * 0.7),
-        fleet: Math.round(d.fleet * 1.1),
-        office: Math.round(d.office * 0.6),
-        total: 0
-    })).map(d => {
-        d.total = d.amarelo + d.erro + d.onhold + d.fleet + d.office;
-        return d;
-    });
+    let dataCarandiru = [...initialDataCarandiru];
+    let dataVilaGuilherme = initialDataCarandiru.map(d => ({...d, amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0}));
 
     let currentHub = 'all';
     let dashboardData = [];
     let charts = {};
     let isAdmin = false;
 
-    // --- LOGICA DE LOGIN ---
     const users = {
         "emanuel.issa@shopee.com": "150311",
-        "admin.hubs@shopee.com": "shopee2026" // Segundo login adicionado
+        "admin.hubs@shopee.com": "shopee2026"
     };
 
     function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
-        
         if (users[email] && users[email] === pass) {
             isAdmin = true;
             document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="16"></i> Admin (${email.split('@')[0]}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
@@ -576,8 +579,7 @@
             dashboardData = dataCarandiru.map((d, i) => {
                 const vg = dataVilaGuilherme[i] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0};
                 return {
-                    data: d.data,
-                    dia: d.dia,
+                    data: d.data, dia: d.dia,
                     amarelo: d.amarelo + vg.amarelo,
                     erro: d.erro + vg.erro,
                     onhold: d.onhold + vg.onhold,
@@ -641,15 +643,22 @@
         });
         document.getElementById('kpi-bottleneck').innerText = bottleneck || "Nenhum";
         
-        renderTables(data);
+        renderTables();
         renderCharts(catLabels, cats, catColors, weekPrev, weekCurr);
     }
 
-    function renderTables(data) {
-        const dailyBody = document.getElementById('daily-table-body');
-        dailyBody.innerHTML = '';
-        [...data].reverse().forEach(day => {
-            dailyBody.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
+    function renderTables() {
+        const bodyCarandiru = document.getElementById('table-carandiru');
+        const bodyVila = document.getElementById('table-vila');
+        bodyCarandiru.innerHTML = '';
+        bodyVila.innerHTML = '';
+
+        [...dataCarandiru].reverse().forEach(day => {
+            bodyCarandiru.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
+        });
+
+        [...dataVilaGuilherme].reverse().forEach(day => {
+            bodyVila.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`;
         });
     }
 
@@ -677,11 +686,32 @@
         charts.evolution = new Chart(document.getElementById('categoryEvolutionChart'), { type: 'line', data: { labels: dashboardData.map(d => d.data), datasets: cats.map((c, i) => ({ label: labels[i], data: dashboardData.map(d => d[c]), borderColor: colors[i], backgroundColor: colors[i], tension: 0.3, pointRadius: 4, borderWidth: 3 })) }, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor } }, datalabels: { display: false } } } });
     }
 
-    // --- SALVAR DADOS ---
+    // FIREBASE SYNC
+    if (db) {
+        db.ref('backlog_data').on('value', (snapshot) => {
+            const val = snapshot.val();
+            if (val) {
+                const firebaseItems = Object.values(val);
+                dataCarandiru = [...initialDataCarandiru, ...firebaseItems.filter(i => i.hub === 'carandiru' || !i.hub)];
+                dataVilaGuilherme = firebaseItems.filter(i => i.hub === 'vila-guilherme');
+                // Preencher Vila Guilherme com zeros para datas que só existem no Carandiru para manter o gráfico alinhado
+                const allDates = [...new Set(dataCarandiru.map(d => d.data))];
+                dataVilaGuilherme = allDates.map(date => {
+                    const existing = dataVilaGuilherme.find(v => v.data === date);
+                    if (existing) return existing;
+                    const carDay = dataCarandiru.find(c => c.data === date);
+                    return { data: date, dia: carDay.dia, amarelo:0, erro:0, onhold:0, fleet:0, office:0, total:0, hub: 'vila-guilherme' };
+                });
+                updateDashboard();
+            }
+        });
+    }
+
     document.getElementById('dataForm').onsubmit = function(e) {
         e.preventDefault();
         const targetHub = document.getElementById('form-hub').value;
         const newItem = {
+            hub: targetHub,
             data: document.getElementById('form-data').value,
             dia: document.getElementById('form-dia').value,
             amarelo: parseInt(document.getElementById('form-amarelo').value) || 0,
@@ -692,15 +722,18 @@
         };
         newItem.total = newItem.amarelo + newItem.erro + newItem.onhold + newItem.fleet + newItem.office;
 
-        if (targetHub === 'carandiru') {
-            dataCarandiru.push(newItem);
+        if (db) {
+            db.ref('backlog_data').push(newItem).then(() => {
+                alert("Dados Sincronizados com Firebase!");
+                closeModal('addModal');
+            });
         } else {
-            dataVilaGuilherme.push(newItem);
+            if (targetHub === 'carandiru') dataCarandiru.push(newItem);
+            else dataVilaGuilherme.push(newItem);
+            updateDashboard();
+            alert("Salvo localmente.");
+            closeModal('addModal');
         }
-
-        updateDashboard();
-        alert(`Dados salvos com sucesso no Hub ${targetHub.toUpperCase()}!`);
-        closeModal('addModal');
         this.reset();
     };
 
