@@ -35,9 +35,6 @@
             --color-fleet: #10B981;
             --color-office: #6366F1;
             --color-lhpiso: #FF8C00;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --radius-sm: 8px;
         }
 
         [data-theme="dark"] {
@@ -60,7 +57,7 @@
             --color-lhpiso: #FFA500;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -77,57 +74,49 @@
         /* HEADER */
         header {
             background: var(--bg-card);
-            padding: 28px 32px;
-            border-radius: var(--radius-lg);
+            padding: 20px 32px;
+            border-radius: 16px;
             box-shadow: var(--shadow-sm);
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            align-items: center;
             border: 1px solid var(--border-color);
             border-bottom: 3px solid var(--shopee-orange);
-        }
-        @media (min-width: 768px) {
-            header { flex-direction: row; justify-content: space-between; align-items: center; gap: 24px; }
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .header-info h1 { 
-            font-size: 22px; 
+            font-size: 20px; 
             font-weight: 800; 
             color: var(--text-main); 
-            letter-spacing: -0.5px;
         }
         .header-info p { 
-            font-size: 13px; 
+            font-size: 12px; 
             color: var(--text-muted); 
             display: flex; 
             align-items: center; 
             gap: 8px;
             margin-top: 4px;
         }
-        .shopee-logo { height: 36px; }
-        @media (min-width: 768px) { 
-            .shopee-logo { height: 40px; } 
-            .header-info h1 { font-size: 26px; } 
-        }
+
+        .shopee-logo { height: 32px; }
 
         .header-actions { 
             display: flex; 
             align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
-            gap: 16px; 
+            gap: 14px; 
         }
-        @media (min-width: 768px) { .header-actions { width: auto; } }
 
         .admin-status {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 6px 12px;
             background: var(--bg-tab-nav);
-            border-radius: 10px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
@@ -142,10 +131,10 @@
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             transition: all 0.2s ease;
         }
@@ -157,8 +146,8 @@
         .theme-toggle {
             background: var(--bg-tab-nav);
             border: 1px solid var(--border-color);
-            padding: 8px;
-            border-radius: 10px;
+            padding: 6px;
+            border-radius: 8px;
             cursor: pointer;
             color: var(--text-main);
             display: flex;
@@ -172,121 +161,75 @@
             border-color: var(--shopee-orange);
         }
 
-        /* NAVIGATION - UNIFIED & SIMPLE */
-        .nav-main {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-        @media (min-width: 768px) {
-            .nav-main {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-            }
-        }
-
-        .nav-card {
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* TABS NAVIGATION */
+        .tabs-nav {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            text-align: center;
-            position: relative;
+            gap: 0;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 0;
+            margin-bottom: 24px;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
-        .nav-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--border-color);
-            transition: background 0.3s ease;
-        }
-
-        .nav-card:hover {
-            border-color: var(--shopee-orange);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
-        }
-
-        .nav-card.active {
-            border-color: var(--shopee-orange);
-            background: var(--shopee-orange-light);
-            box-shadow: 0 8px 24px rgba(238, 77, 45, 0.2);
-        }
-
-        .nav-card.active::before {
-            background: var(--shopee-orange);
-        }
-
-        .nav-card-icon {
-            font-size: 32px;
+        .tab-button {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            background: transparent;
             color: var(--text-muted);
-            transition: all 0.3s ease;
-        }
-
-        .nav-card.active .nav-card-icon {
-            color: var(--shopee-orange);
-            transform: scale(1.2);
-        }
-
-        .nav-card-title {
-            font-weight: 800;
+            font-weight: 700;
             font-size: 14px;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .nav-card-subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .nav-card.active .nav-card-title {
+        .tab-button:hover {
+            background: var(--bg-tab-nav);
             color: var(--shopee-orange);
         }
+
+        .tab-button.active {
+            background: var(--shopee-orange-light);
+            color: var(--shopee-orange);
+            border-bottom-color: var(--shopee-orange);
+        }
+
+        .tab-button i { transition: transform 0.3s ease; }
+        .tab-button.active i { transform: scale(1.15); }
 
         /* ACTION BAR */
         .action-bar { 
             display: flex; 
             justify-content: flex-end; 
-            margin-bottom: 28px; 
+            margin-bottom: 20px; 
         }
         .btn-add {
             background: var(--shopee-orange);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 10px 18px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             display: none;
             align-items: center;
             gap: 8px;
-            width: 100%;
-            justify-content: center;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
         }
         .btn-add:hover {
             background: var(--shopee-orange-dark);
-            box-shadow: 0 6px 16px rgba(238, 77, 45, 0.4);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
-        @media (min-width: 768px) { .btn-add { width: auto; } }
 
         /* TAB CONTENT */
         .tab-content { display: none; }
@@ -295,17 +238,14 @@
         /* KPI CARDS */
         .kpi-grid { 
             display: grid; 
-            grid-template-columns: 1fr; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 16px; 
             margin-bottom: 24px; 
         }
-        @media (min-width: 768px) { 
-            .kpi-grid { grid-template-columns: repeat(3, 1fr); } 
-        }
         .kpi-card {
             background: var(--bg-card);
-            padding: 24px;
-            border-radius: var(--radius-md);
+            padding: 20px;
+            border-radius: 12px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
             transition: all 0.2s ease;
@@ -318,10 +258,10 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .kpi-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -329,54 +269,14 @@
         }
         .kpi-icon {
             color: var(--shopee-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .kpi-value {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -1px;
-        }
-
-        /* WEEKLY TOTALS */
-        .weekly-totals-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .total-box {
-            background: var(--bg-card);
-            padding: 24px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .total-info h4 {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        .total-info div {
             font-size: 28px;
             font-weight: 800;
             color: var(--text-main);
         }
-        .total-icon {
-            color: var(--shopee-orange);
-            opacity: 0.3;
-        }
 
-        /* CATEGORY CARDS - ENHANCED LH PISO */
+        /* CATEGORY CARDS */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -386,7 +286,7 @@
         .cat-card {
             background: var(--bg-card);
             padding: 16px;
-            border-radius: var(--radius-md);
+            border-radius: 10px;
             border-left: 4px solid;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
@@ -402,30 +302,30 @@
             border-left-width: 6px;
         }
         .cat-name {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: block;
-            margin-bottom: 8px;
-        }
-        .cat-val {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-main);
             margin-bottom: 6px;
         }
+        .cat-val {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
         .cat-variation {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
         }
 
         /* CARDS CONTAINER */
         .card-container {
             background: var(--bg-card);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             box-shadow: var(--shadow-sm);
-            padding: 24px;
+            padding: 20px;
             margin-bottom: 24px;
             border: 1px solid var(--border-color);
         }
@@ -433,12 +333,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border-color);
         }
         .card-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
@@ -449,18 +349,15 @@
         /* MAIN GRID */
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 24px;
             margin-bottom: 24px;
-        }
-        @media (min-width: 1024px) {
-            .main-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* TABLE */
         .table-container {
             overflow-x: auto;
-            border-radius: var(--radius-md);
+            border-radius: 10px;
             border: 1px solid var(--border-color);
         }
         table {
@@ -470,28 +367,24 @@
         }
         th {
             background: var(--bg-tab-nav);
-            padding: 12px;
+            padding: 10px;
             text-align: left;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 2px solid var(--border-color);
         }
         td { 
-            padding: 12px; 
+            padding: 10px; 
             border-bottom: 1px solid var(--border-color); 
             color: var(--text-main); 
+            font-size: 13px;
         }
-        tr:hover {
-            background: var(--bg-tab-nav);
-        }
+        tr:hover { background: var(--bg-tab-nav); }
         .td-bold { font-weight: 700; }
-        .td-total { 
-            font-weight: 800; 
-            color: var(--shopee-orange);
-        }
+        .td-total { font-weight: 800; color: var(--shopee-orange); }
 
         /* MODALS */
         .modal {
@@ -507,10 +400,10 @@
         }
         .modal-content {
             background: var(--bg-card);
-            padding: 32px;
-            border-radius: 20px;
+            padding: 28px;
+            border-radius: 16px;
             width: 100%;
-            max-width: 520px;
+            max-width: 500px;
             box-shadow: var(--shadow-lg);
             max-height: 90vh;
             overflow-y: auto;
@@ -520,78 +413,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .modal-header h3 {
             font-weight: 800;
-            font-size: 18px;
-            letter-spacing: -0.5px;
-        }
-        .modal-header i {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .modal-header i:hover {
-            color: var(--shopee-orange);
+            font-size: 16px;
         }
 
-        .form-group { 
-            margin-bottom: 18px; 
-        }
+        .form-group { margin-bottom: 16px; }
         .form-group label { 
             display: block; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: 700; 
             color: var(--text-muted); 
-            margin-bottom: 8px; 
+            margin-bottom: 6px; 
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .form-input { 
             width: 100%; 
-            padding: 12px 14px; 
-            border-radius: 10px; 
+            padding: 10px 12px; 
+            border-radius: 8px; 
             border: 1px solid var(--border-color); 
             background: var(--bg-input); 
             color: var(--text-main); 
             font-family: inherit; 
             font-size: 13px;
-            transition: all 0.2s ease;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: var(--shopee-orange);
-            box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.1);
         }
 
-        /* TRENDS */
-        .kpi-trend-badge { 
-            font-size: 12px; 
-            font-weight: 800; 
-            padding: 6px 10px; 
-            border-radius: 20px; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 4px; 
-            margin-top: 8px;
-        }
-        .trend-up { 
-            background: #FEE2E2; 
-            color: #DC2626;
-        }
-        .trend-down { 
-            background: #ECFDF5; 
-            color: #059669;
-        }
-
-        /* FOOTER */
         footer { 
             text-align: center; 
-            padding: 28px 0; 
+            padding: 24px 0; 
             color: var(--text-muted); 
-            font-size: 12px; 
+            font-size: 11px; 
             border-top: 1px solid var(--border-color); 
-            margin-top: 32px;
+            margin-top: 24px;
         }
     </style>
 </head>
@@ -608,110 +463,95 @@
                 <i data-lucide="user-circle" size="14"></i> Visitante
                 <button class="btn-login-trigger" onclick="openLogin()">Entrar</button>
             </div>
-            <div style="display:flex; align-items:center; gap:14px">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/2560px-Shopee.svg.png" class="shopee-logo" alt="Shopee">
-                <button class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" data-lucide="moon" size="18"></i></button>
-            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/2560px-Shopee.svg.png" class="shopee-logo" alt="Shopee">
+            <button class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" data-lucide="moon" size="16"></i></button>
         </div>
     </header>
 
-    <!-- UNIFIED NAVIGATION -->
-    <div class="nav-main">
-        <div class="nav-card active" onclick="selectView('overview')">
-            <div class="nav-card-icon"><i data-lucide="layout-dashboard"></i></div>
-            <div class="nav-card-title">Visão Geral</div>
-            <div class="nav-card-subtitle">Todos os Hubs</div>
-        </div>
-        <div class="nav-card" onclick="selectView('carandiru')">
-            <div class="nav-card-icon"><i data-lucide="building-2"></i></div>
-            <div class="nav-card-title">Carandiru</div>
-            <div class="nav-card-subtitle">Histórico Completo</div>
-        </div>
-        <div class="nav-card" onclick="selectView('vila')">
-            <div class="nav-card-icon"><i data-lucide="building-2"></i></div>
-            <div class="nav-card-title">Vila Guilherme</div>
-            <div class="nav-card-subtitle">Histórico Completo</div>
-        </div>
+    <!-- TABS NAVIGATION -->
+    <div class="tabs-nav">
+        <button class="tab-button active" onclick="switchTab('overview', this)">
+            <i data-lucide="layout-dashboard" size="18"></i> Visão Geral
+        </button>
+        <button class="tab-button" onclick="switchTab('carandiru', this)">
+            <i data-lucide="building-2" size="18"></i> Carandiru
+        </button>
+        <button class="tab-button" onclick="switchTab('vila', this)">
+            <i data-lucide="building-2" size="18"></i> Vila Guilherme
+        </button>
     </div>
 
     <div class="action-bar">
-        <button class="btn-add" id="btn-add-data" onclick="openAddModal()"><i data-lucide="plus" size="18"></i> Adicionar Dados</button>
+        <button class="btn-add" id="btn-add-data" onclick="openAddModal()"><i data-lucide="plus" size="16"></i> Adicionar Dados</button>
     </div>
 
     <!-- TAB: OVERVIEW -->
     <div id="tab-overview" class="tab-content active">
+        <div class="card-container">
+            <div class="card-header">
+                <div class="card-title"><i data-lucide="arrow-left-right" size="16"></i> Comparativo: Carandiru vs Vila Guilherme</div>
+            </div>
+            <div style="height: 300px;"><canvas id="hubComparisonChart"></canvas></div>
+        </div>
+
+        <div class="main-grid">
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="bar-chart-3" size="16"></i> Comparativo Semanal</div></div>
+                <div style="height: 280px;"><canvas id="comparisonChart"></canvas></div>
+            </div>
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog (Total)</div></div>
+                <div style="height: 280px;"><canvas id="shareChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução Geral</div></div>
+            <div style="height: 320px;"><canvas id="categoryEvolutionChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- TAB: CARANDIRU -->
+    <div id="tab-carandiru" class="tab-content" style="display:none">
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <div class="kpi-title">Backlog Total</div>
+                    <div class="kpi-title">Backlog Atual</div>
                     <div class="kpi-icon"><i data-lucide="package" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-total">0</div>
-                <div class="kpi-trend-badge" id="trend-badge">--%</div>
+                <div class="kpi-value" id="kpi-car-total">0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <div class="kpi-title">Média Diária</div>
+                    <div class="kpi-title">Média Semanal</div>
                     <div class="kpi-icon"><i data-lucide="trending-up" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-avg">0</div>
+                <div class="kpi-value" id="kpi-car-avg">0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-header">
                     <div class="kpi-title">Maior Gargalo</div>
                     <div class="kpi-icon"><i data-lucide="alert-triangle" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-bottleneck" style="font-size: 20px;">--</div>
+                <div class="kpi-value" id="kpi-car-bottleneck" style="font-size: 18px;">--</div>
             </div>
         </div>
 
-        <div class="weekly-totals-row">
-            <div class="total-box">
-                <div class="total-info">
-                    <h4>Semana Anterior</h4>
-                    <div id="total-week-prev">0</div>
-                </div>
-                <div class="total-icon"><i data-lucide="calendar-days" size="20"></i></div>
-            </div>
-            <div class="total-box" style="border-left: 4px solid var(--shopee-orange);">
-                <div class="total-info">
-                    <h4>Semana Atual</h4>
-                    <div id="total-week-curr">0</div>
-                </div>
-                <div class="total-icon"><i data-lucide="zap" size="20"></i></div>
-            </div>
-        </div>
-
-        <div class="category-grid" id="category-cards"></div>
-
-        <div class="card-container">
-            <div class="card-header">
-                <div class="card-title"><i data-lucide="arrow-left-right" size="18"></i> Carandiru vs Vila Guilherme</div>
-            </div>
-            <div style="height: 280px;"><canvas id="hubComparisonChart"></canvas></div>
-        </div>
+        <div class="category-grid" id="category-cards-car"></div>
 
         <div class="main-grid">
             <div class="card-container">
-                <div class="card-header"><div class="card-title"><i data-lucide="bar-chart-3" size="18"></i> Comparativo Semanal</div></div>
-                <div style="height: 280px;"><canvas id="comparisonChart"></canvas></div>
+                <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
+                <div style="height: 280px;"><canvas id="shareChartCar"></canvas></div>
             </div>
             <div class="card-container">
-                <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="18"></i> Mix de Backlog</div></div>
-                <div style="height: 280px;"><canvas id="shareChart"></canvas></div>
+                <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
+                <div style="height: 280px;"><canvas id="categoryEvolutionChartCar"></canvas></div>
             </div>
         </div>
 
         <div class="card-container">
-            <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="18"></i> Evolução das Categorias</div></div>
-            <div style="height: 320px;"><canvas id="categoryEvolutionChart"></canvas></div>
-        </div>
-    </div>
-
-    <!-- TAB: CARANDIRU HISTORY -->
-    <div id="tab-carandiru" class="tab-content" style="display:none">
-        <div class="card-container">
-            <div class="card-header"><div class="card-title"><i data-lucide="history" size="18"></i> Histórico Completo - Carandiru</div></div>
+            <div class="card-header"><div class="card-title"><i data-lucide="history" size="16"></i> Histórico Completo</div></div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -723,10 +563,47 @@
         </div>
     </div>
 
-    <!-- TAB: VILA HISTORY -->
+    <!-- TAB: VILA -->
     <div id="tab-vila" class="tab-content" style="display:none">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Backlog Atual</div>
+                    <div class="kpi-icon"><i data-lucide="package" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-vila-total">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Média Semanal</div>
+                    <div class="kpi-icon"><i data-lucide="trending-up" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-vila-avg">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Maior Gargalo</div>
+                    <div class="kpi-icon"><i data-lucide="alert-triangle" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-vila-bottleneck" style="font-size: 18px;">--</div>
+            </div>
+        </div>
+
+        <div class="category-grid" id="category-cards-vila"></div>
+
+        <div class="main-grid">
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
+                <div style="height: 280px;"><canvas id="shareChartVila"></canvas></div>
+            </div>
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
+                <div style="height: 280px;"><canvas id="categoryEvolutionChartVila"></canvas></div>
+            </div>
+        </div>
+
         <div class="card-container">
-            <div class="card-header"><div class="card-title"><i data-lucide="history" size="18"></i> Histórico Completo - Vila Guilherme</div></div>
+            <div class="card-header"><div class="card-title"><i data-lucide="history" size="16"></i> Histórico Completo</div></div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -746,7 +623,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Acesso</h3>
-            <i data-lucide="x" onclick="closeModal('loginModal')" size="24"></i>
+            <i data-lucide="x" onclick="closeModal('loginModal')" size="20"></i>
         </div>
         <div class="form-group">
             <label>E-mail</label>
@@ -756,8 +633,8 @@
             <label>Senha</label>
             <input type="password" id="login-password" class="form-input" placeholder="••••••">
         </div>
-        <p id="login-error" style="color:var(--shopee-orange); font-size:12px; font-weight:700; margin-bottom:16px; display:none">Credenciais inválidas!</p>
-        <button class="hub-btn active" style="width:100%; padding:14px; font-size:13px; font-weight:700; background: var(--shopee-orange); color: white; border: none; border-radius: 10px; cursor: pointer;" onclick="handleLogin()">Entrar</button>
+        <p id="login-error" style="color:var(--shopee-orange); font-size:11px; font-weight:700; margin-bottom:12px; display:none">Credenciais inválidas!</p>
+        <button style="width:100%; padding:12px; font-size:13px; font-weight:700; background: var(--shopee-orange); color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="handleLogin()">Entrar</button>
     </div>
 </div>
 
@@ -766,7 +643,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Novo Registro</h3>
-            <i data-lucide="x" onclick="closeModal('addModal')" size="24"></i>
+            <i data-lucide="x" onclick="closeModal('addModal')" size="20"></i>
         </div>
         <form id="dataForm">
             <div class="form-group">
@@ -776,7 +653,7 @@
                     <option value="vila-guilherme">Vila Guilherme</option>
                 </select>
             </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px">
                 <div class="form-group"><label>Data</label><input type="text" id="form-data" class="form-input" placeholder="13/04" required></div>
                 <div class="form-group"><label>Dia</label><select id="form-dia" class="form-input"><option value="Segunda">Segunda</option><option value="Terça">Terça</option><option value="Quarta">Quarta</option><option value="Quinta">Quinta</option><option value="Sexta">Sexta</option><option value="Sábado">Sábado</option><option value="Domingo">Domingo</option></select></div>
                 <div class="form-group"><label>Amarelo</label><input type="number" id="form-amarelo" class="form-input" value="0"></div>
@@ -786,7 +663,7 @@
                 <div class="form-group"><label>Office</label><input type="number" id="form-office" class="form-input" value="0"></div>
                 <div class="form-group"><label>LH Piso</label><input type="number" id="form-lhpiso" class="form-input" value="0"></div>
             </div>
-            <button type="submit" style="width:100%; margin-top:16px; padding:14px; font-size:13px; font-weight:700; background: var(--shopee-orange); color: white; border: none; border-radius: 10px; cursor: pointer;">Salvar</button>
+            <button type="submit" style="width:100%; margin-top:12px; padding:12px; font-size:13px; font-weight:700; background: var(--shopee-orange); color: white; border: none; border-radius: 8px; cursor: pointer;">Salvar</button>
         </form>
     </div>
 </div>
@@ -798,66 +675,55 @@
     let db = null;
     try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e) {}
 
-    // Dados iniciais Carandiru com LH Piso melhorado
     let initialDataCarandiru = [
-        {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "lhpiso": 85, "total": 1241},
-        {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "lhpiso": 42, "total": 632},
-        {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "lhpiso": 38, "total": 565},
-        {"data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "lhpiso": 51, "total": 530},
-        {"data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "lhpiso": 127, "total": 5993},
-        {"data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "lhpiso": 94, "total": 3012},
-        {"data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "lhpiso": 68, "total": 1426},
-        {"data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "lhpiso": 73, "total": 744},
-        {"data": "07/04", "dia": "Terça", "amarelo": 157, "erro": 162, "onhold": 104, "fleet": 9, "office": 0, "lhpiso": 55, "total": 487},
-        {"data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 151, "onhold": 147, "fleet": 83, "office": 0, "lhpiso": 62, "total": 649},
-        {"data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "lhpiso": 48, "total": 566},
-        {"data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "lhpiso": 156, "total": 1506},
-        {"data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "lhpiso": 112, "total": 2255},
+        {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "lhpiso": 0, "total": 1156},
+        {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "lhpiso": 0, "total": 590},
+        {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "lhpiso": 0, "total": 527},
+        {"data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "lhpiso": 0, "total": 479},
+        {"data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "lhpiso": 0, "total": 5866},
+        {"data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "lhpiso": 0, "total": 2918},
+        {"data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "lhpiso": 0, "total": 1358},
+        {"data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "lhpiso": 0, "total": 671},
+        {"data": "07/04", "dia": "Terça", "amarelo": 157, "erro": 162, "onhold": 104, "fleet": 9, "office": 0, "lhpiso": 0, "total": 432},
+        {"data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 151, "onhold": 147, "fleet": 83, "office": 0, "lhpiso": 0, "total": 587},
+        {"data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "lhpiso": 0, "total": 518},
+        {"data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "lhpiso": 0, "total": 1350},
+        {"data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "lhpiso": 0, "total": 2143},
         {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "lhpiso": 0, "total": 0}
     ];
 
-    // Dados iniciais Vila Guilherme
     let initialDataVilaGuilherme = [
-        {"data": "30/03", "dia": "Segunda", "amarelo": 78, "erro": 145, "onhold": 312, "fleet": 156, "office": 0, "lhpiso": 52, "total": 743},
-        {"data": "31/03", "dia": "Terça", "amarelo": 32, "erro": 98, "onhold": 156, "fleet": 67, "office": 0, "lhpiso": 28, "total": 381},
-        {"data": "01/04", "dia": "Quarta", "amarelo": 85, "erro": 124, "onhold": 42, "fleet": 51, "office": 0, "lhpiso": 31, "total": 333},
-        {"data": "02/04", "dia": "Quinta", "amarelo": 45, "erro": 108, "onhold": 23, "fleet": 89, "office": 0, "lhpiso": 38, "total": 303},
-        {"data": "03/04", "dia": "Sexta", "amarelo": 124, "erro": 198, "onhold": 1156, "fleet": 103, "office": 1645, "lhpiso": 89, "total": 3315},
-        {"data": "04/04", "dia": "Sábado", "amarelo": 98, "erro": 82, "onhold": 28, "fleet": 38, "office": 1356, "lhpiso": 67, "total": 1669},
-        {"data": "05/04", "dia": "Domingo", "amarelo": 31, "erro": 92, "onhold": 16, "fleet": 67, "office": 542, "lhpiso": 45, "total": 793},
-        {"data": "06/04", "dia": "Segunda", "amarelo": 278, "erro": 0, "onhold": 93, "fleet": 0, "office": 0, "lhpiso": 52, "total": 423},
-        {"data": "07/04", "dia": "Terça", "amarelo": 87, "erro": 89, "onhold": 58, "fleet": 5, "office": 0, "lhpiso": 38, "total": 277},
-        {"data": "08/04", "dia": "Quarta", "amarelo": 114, "erro": 83, "onhold": 81, "fleet": 46, "office": 0, "lhpiso": 44, "total": 368},
-        {"data": "09/04", "dia": "Quinta", "amarelo": 131, "erro": 79, "onhold": 31, "fleet": 45, "office": 0, "lhpiso": 35, "total": 321},
-        {"data": "10/04", "dia": "Sexta", "amarelo": 289, "erro": 371, "onhold": 11, "fleet": 70, "office": 0, "lhpiso": 98, "total": 839},
-        {"data": "11/04", "dia": "Sábado", "amarelo": 204, "erro": 137, "onhold": 71, "fleet": 111, "office": 656, "lhpiso": 78, "total": 1257},
+        {"data": "30/03", "dia": "Segunda", "amarelo": 78, "erro": 145, "onhold": 312, "fleet": 156, "office": 0, "lhpiso": 0, "total": 691},
+        {"data": "31/03", "dia": "Terça", "amarelo": 32, "erro": 98, "onhold": 156, "fleet": 67, "office": 0, "lhpiso": 0, "total": 353},
+        {"data": "01/04", "dia": "Quarta", "amarelo": 85, "erro": 124, "onhold": 42, "fleet": 51, "office": 0, "lhpiso": 0, "total": 302},
+        {"data": "02/04", "dia": "Quinta", "amarelo": 45, "erro": 108, "onhold": 23, "fleet": 89, "office": 0, "lhpiso": 0, "total": 265},
+        {"data": "03/04", "dia": "Sexta", "amarelo": 124, "erro": 198, "onhold": 1156, "fleet": 103, "office": 1645, "lhpiso": 0, "total": 3226},
+        {"data": "04/04", "dia": "Sábado", "amarelo": 98, "erro": 82, "onhold": 28, "fleet": 38, "office": 1356, "lhpiso": 0, "total": 1602},
+        {"data": "05/04", "dia": "Domingo", "amarelo": 31, "erro": 92, "onhold": 16, "fleet": 67, "office": 542, "lhpiso": 0, "total": 748},
+        {"data": "06/04", "dia": "Segunda", "amarelo": 278, "erro": 0, "onhold": 93, "fleet": 0, "office": 0, "lhpiso": 0, "total": 371},
+        {"data": "07/04", "dia": "Terça", "amarelo": 87, "erro": 89, "onhold": 58, "fleet": 5, "office": 0, "lhpiso": 0, "total": 239},
+        {"data": "08/04", "dia": "Quarta", "amarelo": 114, "erro": 83, "onhold": 81, "fleet": 46, "office": 0, "lhpiso": 0, "total": 324},
+        {"data": "09/04", "dia": "Quinta", "amarelo": 131, "erro": 79, "onhold": 31, "fleet": 45, "office": 0, "lhpiso": 0, "total": 286},
+        {"data": "10/04", "dia": "Sexta", "amarelo": 289, "erro": 371, "onhold": 11, "fleet": 70, "office": 0, "lhpiso": 0, "total": 741},
+        {"data": "11/04", "dia": "Sábado", "amarelo": 204, "erro": 137, "onhold": 71, "fleet": 111, "office": 656, "lhpiso": 0, "total": 1179},
         {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "lhpiso": 0, "total": 0}
     ];
 
     let dataCarandiru = [...initialDataCarandiru];
     let dataVilaGuilherme = [...initialDataVilaGuilherme];
-
-    let currentView = 'overview';
-    let dashboardData = [];
+    let currentTab = 'overview';
     let charts = {};
     let isAdmin = false;
 
     const users = { "emanuel.issa@shopee.com": "150311", "admin.hubs@shopee.com": "shopee2026" };
 
-    function selectView(view) {
-        currentView = view;
-        document.querySelectorAll('.nav-card').forEach(card => card.classList.remove('active'));
-        event.target.closest('.nav-card').classList.add('active');
+    function switchTab(tab, element) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
         
-        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-        
-        if (view === 'overview') {
-            document.getElementById('tab-overview').style.display = 'block';
-        } else if (view === 'carandiru') {
-            document.getElementById('tab-carandiru').style.display = 'block';
-        } else if (view === 'vila') {
-            document.getElementById('tab-vila').style.display = 'block';
-        }
+        document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+        document.getElementById(`tab-${tab}`).style.display = 'block';
         
         setTimeout(() => updateDashboard(), 100);
     }
@@ -890,83 +756,133 @@
 
     function updateThemeIcon() {
         const theme = document.documentElement.getAttribute('data-theme');
-        const icon = document.getElementById('theme-icon');
-        icon.setAttribute('data-lucide', theme === 'light' ? 'moon' : 'sun');
+        document.getElementById('theme-icon').setAttribute('data-lucide', theme === 'light' ? 'moon' : 'sun');
         lucide.createIcons();
     }
 
     function updateDashboard() {
+        if (currentTab === 'overview') renderOverview();
+        else if (currentTab === 'carandiru') renderCarandiru();
+        else if (currentTab === 'vila') renderVila();
+    }
+
+    function renderOverview() {
         const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data)])].sort((a,b) => {
             const [d1, m1] = a.split('/').map(Number);
             const [d2, m2] = b.split('/').map(Number);
             return (m1 * 100 + d1) - (m2 * 100 + d2);
         });
 
-        const syncData = (source, hubName) => allDates.map(date => {
+        const syncData = (source) => allDates.map(date => {
             const found = source.find(d => d.data === date);
             if (found) return found;
             const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date);
-            return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0, hub: hubName };
+            return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0 };
         });
 
-        const syncedCarandiru = syncData(dataCarandiru, 'carandiru');
-        const syncedVila = syncData(dataVilaGuilherme, 'vila-guilherme');
+        const syncedCar = syncData(dataCarandiru);
+        const syncedVila = syncData(dataVilaGuilherme);
 
-        if (currentView === 'overview') {
-            dashboardData = syncedCarandiru.map((d, i) => {
-                const vg = syncedVila[i];
-                return {
-                    data: d.data, dia: d.dia,
-                    amarelo: d.amarelo + vg.amarelo, erro: d.erro + vg.erro,
-                    onhold: d.onhold + vg.onhold, fleet: d.fleet + vg.fleet,
-                    office: d.office + vg.office, lhpiso: d.lhpiso + vg.lhpiso,
-                    total: d.total + vg.total
-                };
-            });
-        } else if (currentView === 'carandiru') {
-            dashboardData = syncedCarandiru;
-        } else if (currentView === 'vila') {
-            dashboardData = syncedVila;
-        }
+        const theme = document.documentElement.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
+        const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
+        const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
 
-        const data = dashboardData;
-        const findLastMondayIndex = (arr) => {
-            for (let i = arr.length - 1; i >= 0; i--) if (arr[i].dia === "Segunda") return i;
-            return -1;
+        const commonOptions = { 
+            responsive: true, maintainAspectRatio: false, 
+            plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', color: labelColor, font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v.toLocaleString() : '' } }, 
+            scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
         };
 
-        const lastMondayIdx = findLastMondayIndex(data);
-        const weekCurr = lastMondayIdx !== -1 ? data.slice(lastMondayIdx) : data;
-        let weekPrev = [];
-        if (lastMondayIdx !== -1) {
-            const dataBeforeLastMonday = data.slice(0, lastMondayIdx);
-            const prevMondayIdx = findLastMondayIndex(dataBeforeLastMonday);
-            weekPrev = prevMondayIdx !== -1 ? dataBeforeLastMonday.slice(prevMondayIdx) : dataBeforeLastMonday;
-        }
-
-        const currentTotal = data.length > 0 ? data[data.length - 1].total : 0;
-        const w1Total = weekPrev.reduce((a, b) => a + b.total, 0);
-        const w2Total = weekCurr.reduce((a, b) => a + b.total, 0);
-        const avg7d = weekCurr.length > 0 ? Math.round(w2Total / weekCurr.length) : 0;
-        const trend = w1Total > 0 ? Math.round(((w2Total - w1Total) / w1Total) * 100) : 0;
-
-        document.getElementById('total-week-prev').innerText = w1Total.toLocaleString();
-        document.getElementById('total-week-curr').innerText = w2Total.toLocaleString();
-        document.getElementById('kpi-total').innerText = currentTotal.toLocaleString();
-        document.getElementById('kpi-avg').innerText = avg7d.toLocaleString();
-        
-        const trendBadge = document.getElementById('trend-badge');
-        trendBadge.innerText = (trend > 0 ? '↑ ' : '↓ ') + Math.abs(trend) + '%';
-        trendBadge.className = 'kpi-trend-badge ' + (trend > 0 ? 'trend-up' : 'trend-down');
+        if(charts.hubComparison) charts.hubComparison.destroy();
+        charts.hubComparison = new Chart(document.getElementById('hubComparisonChart'), { 
+            type: 'bar', 
+            data: { 
+                labels: syncedCar.map(d => d.data), 
+                datasets: [ 
+                    { label: 'Carandiru', data: syncedCar.map(d => d.total), backgroundColor: '#EE4D2D', borderRadius: 6 }, 
+                    { label: 'Vila Guilherme', data: syncedVila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 6 } 
+                ] 
+            }, 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
+        });
 
         const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
         const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
-        const lastDay = data.length > 0 ? data[data.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
-        
+
+        const w1Totals = cats.map(c => syncedCar.slice(0, 7).reduce((a, b) => a + b[c], 0) + syncedVila.slice(0, 7).reduce((a, b) => a + b[c], 0));
+        const w2Totals = cats.map(c => syncedCar.slice(7).reduce((a, b) => a + b[c], 0) + syncedVila.slice(7).reduce((a, b) => a + b[c], 0));
+
+        if(charts.comparison) charts.comparison.destroy();
+        charts.comparison = new Chart(document.getElementById('comparisonChart'), { 
+            type: 'bar', 
+            data: { labels: catLabels, datasets: [ { label: 'Anterior', data: w1Totals, backgroundColor: theme === 'light' ? '#E8EAED' : '#475569', borderRadius: 6 }, { label: 'Atual', data: w2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 } ] }, 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } } } } 
+        });
+
+        const lastDay = syncedCar[syncedCar.length - 1];
+        const lastDayVila = syncedVila[syncedVila.length - 1];
+        const totalLastDay = { amarelo: lastDay.amarelo + lastDayVila.amarelo, erro: lastDay.erro + lastDayVila.erro, onhold: lastDay.onhold + lastDayVila.onhold, fleet: lastDay.fleet + lastDayVila.fleet, office: lastDay.office + lastDayVila.office, lhpiso: lastDay.lhpiso + lastDayVila.lhpiso, total: lastDay.total + lastDayVila.total };
+        const shareData = cats.map(c => totalLastDay[c]);
+        const totalShare = shareData.reduce((a,b)=>a+b,0);
+
+        if(charts.share) charts.share.destroy();
+        charts.share = new Chart(document.getElementById('shareChart'), { 
+            type: 'doughnut', 
+            data: { labels: catLabels, datasets: [{ data: shareData, backgroundColor: catColors, borderWidth: 2, borderColor: theme === 'light' ? '#fff' : '#1A1F2E' }] }, 
+            options: { ...commonOptions, cutout: '65%', plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } } } 
+        });
+
+        const allData = syncedCar.map((d, i) => ({
+            data: d.data, dia: d.dia,
+            amarelo: d.amarelo + syncedVila[i].amarelo, erro: d.erro + syncedVila[i].erro,
+            onhold: d.onhold + syncedVila[i].onhold, fleet: d.fleet + syncedVila[i].fleet,
+            office: d.office + syncedVila[i].office, lhpiso: d.lhpiso + syncedVila[i].lhpiso,
+            total: d.total + syncedVila[i].total
+        }));
+
+        if(charts.evolution) charts.evolution.destroy();
+        charts.evolution = new Chart(document.getElementById('categoryEvolutionChart'), { 
+            type: 'line', 
+            data: { 
+                labels: allData.map(d => d.data), 
+                datasets: cats.map((c, i) => ({ 
+                    label: catLabels[i], 
+                    data: allData.map(d => d[c]), 
+                    borderColor: catColors[i], 
+                    backgroundColor: catColors[i], 
+                    tension: 0.4, 
+                    pointRadius: 4, 
+                    pointHoverRadius: 6, 
+                    borderWidth: 2.5 
+                })) 
+            }, 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
+        });
+    }
+
+    function renderCarandiru() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
+        const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
+        const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
+
+        const currentTotal = dataCarandiru.length > 0 ? dataCarandiru[dataCarandiru.length - 1].total : 0;
+        const avgWeekly = dataCarandiru.length > 0 ? Math.round(dataCarandiru.reduce((a, b) => a + b.total, 0) / dataCarandiru.length) : 0;
+
+        document.getElementById('kpi-car-total').innerText = currentTotal.toLocaleString();
+        document.getElementById('kpi-car-avg').innerText = avgWeekly.toLocaleString();
+
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
+        const style = getComputedStyle(document.documentElement);
+        const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
+
+        const lastDay = dataCarandiru.length > 0 ? dataCarandiru[dataCarandiru.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
         let maxVal = -1; let bottleneck = "";
-        const catCardsContainer = document.getElementById('category-cards');
+        const catCardsContainer = document.getElementById('category-cards-car');
         catCardsContainer.innerHTML = '';
         cats.forEach((c, i) => {
             const val = lastDay[c];
@@ -974,149 +890,115 @@
             const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
             catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
         });
+        document.getElementById('kpi-car-bottleneck').innerText = bottleneck;
 
-        document.getElementById('kpi-bottleneck').innerText = bottleneck;
-        
-        renderTables(syncedCarandiru, syncedVila);
-        renderCharts(catLabels, cats, catColors, weekPrev, weekCurr, syncedCarandiru, syncedVila);
-    }
-
-    function renderTables(car, vila) {
-        const bodyCar = document.getElementById('table-carandiru');
-        const bodyVila = document.getElementById('table-vila');
-        bodyCar.innerHTML = bodyVila.innerHTML = '';
-        [...car].reverse().forEach(day => bodyCar.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
-        [...vila].reverse().forEach(day => bodyVila.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
-    }
-
-    function renderCharts(labels, cats, colors, week1, week2, car, vila) {
-        const theme = document.documentElement.getAttribute('data-theme');
-        const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
-        const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
-        const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
-        
         const commonOptions = { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            plugins: { 
-                legend: { display: false }, 
-                datalabels: { 
-                    display: true, 
-                    anchor: 'end', 
-                    align: 'top', 
-                    color: labelColor, 
-                    font: { weight: 'bold', size: 10 }, 
-                    formatter: (v) => v > 0 ? v.toLocaleString() : '' 
-                } 
-            }, 
-            scales: { 
-                y: { 
-                    beginAtZero: true, 
-                    grace: '15%', 
-                    ticks: { color: textColor, font: { size: 10 } }, 
-                    grid: { color: gridColor, drawBorder: false } 
-                }, 
-                x: { 
-                    ticks: { color: textColor, font: { size: 10 } }, 
-                    grid: { display: false } 
-                } 
-            } 
+            responsive: true, maintainAspectRatio: false, 
+            plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', color: labelColor, font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v.toLocaleString() : '' } }, 
+            scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
         };
-        
-        const w1Totals = cats.map(c => week1.reduce((a, b) => a + b[c], 0));
-        const w2Totals = cats.map(c => week2.reduce((a, b) => a + b[c], 0));
 
-        if(charts.comparison) charts.comparison.destroy();
-        charts.comparison = new Chart(document.getElementById('comparisonChart'), { 
-            type: 'bar', 
-            data: { 
-                labels, 
-                datasets: [ 
-                    { label: 'Anterior', data: w1Totals, backgroundColor: theme === 'light' ? '#E8EAED' : '#475569', borderRadius: 6 }, 
-                    { label: 'Atual', data: w2Totals, backgroundColor: '#EE4D2D', borderRadius: 6 } 
-                ] 
-            }, 
-            options: { 
-                ...commonOptions, 
-                plugins: { 
-                    ...commonOptions.plugins, 
-                    legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } } 
-                } 
-            } 
-        });
-        
-        const lastDay = dashboardData.length > 0 ? dashboardData[dashboardData.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
         const shareData = cats.map(c => lastDay[c]);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
-        
-        if(charts.share) charts.share.destroy();
-        charts.share = new Chart(document.getElementById('shareChart'), { 
+
+        if(charts.shareChartCar) charts.shareChartCar.destroy();
+        charts.shareChartCar = new Chart(document.getElementById('shareChartCar'), { 
             type: 'doughnut', 
-            data: { 
-                labels, 
-                datasets: [{ 
-                    data: shareData, 
-                    backgroundColor: colors, 
-                    borderWidth: 2, 
-                    borderColor: theme === 'light' ? '#fff' : '#1A1F2E' 
-                }] 
-            }, 
-            options: { 
-                ...commonOptions, 
-                cutout: '65%', 
-                plugins: { 
-                    ...commonOptions.plugins, 
-                    legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, 
-                    datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } 
-                } 
-            } 
+            data: { labels: catLabels, datasets: [{ data: shareData, backgroundColor: catColors, borderWidth: 2, borderColor: theme === 'light' ? '#fff' : '#1A1F2E' }] }, 
+            options: { ...commonOptions, cutout: '65%', plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } } } 
         });
-        
-        if(charts.evolution) charts.evolution.destroy();
-        charts.evolution = new Chart(document.getElementById('categoryEvolutionChart'), { 
+
+        if(charts.evolutionChartCar) charts.evolutionChartCar.destroy();
+        charts.evolutionChartCar = new Chart(document.getElementById('categoryEvolutionChartCar'), { 
             type: 'line', 
             data: { 
-                labels: dashboardData.map(d => d.data), 
+                labels: dataCarandiru.map(d => d.data), 
                 datasets: cats.map((c, i) => ({ 
-                    label: labels[i], 
-                    data: dashboardData.map(d => d[c]), 
-                    borderColor: colors[i], 
-                    backgroundColor: colors[i], 
+                    label: catLabels[i], 
+                    data: dataCarandiru.map(d => d[c]), 
+                    borderColor: catColors[i], 
+                    backgroundColor: catColors[i], 
                     tension: 0.4, 
                     pointRadius: 4, 
                     pointHoverRadius: 6, 
                     borderWidth: 2.5 
                 })) 
             }, 
-            options: { 
-                ...commonOptions, 
-                plugins: { 
-                    ...commonOptions.plugins, 
-                    legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, 
-                    datalabels: { display: false } 
-                } 
-            } 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
         });
 
-        if(charts.hubComparison) charts.hubComparison.destroy();
-        charts.hubComparison = new Chart(document.getElementById('hubComparisonChart'), { 
-            type: 'bar', 
-            data: { 
-                labels: car.map(d => d.data), 
-                datasets: [ 
-                    { label: 'Carandiru', data: car.map(d => d.total), backgroundColor: '#EE4D2D', borderRadius: 6 }, 
-                    { label: 'Vila Guilherme', data: vila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 6 } 
-                ] 
-            }, 
-            options: { 
-                ...commonOptions, 
-                plugins: { 
-                    ...commonOptions.plugins, 
-                    legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, 
-                    datalabels: { display: false } 
-                } 
-            } 
+        const bodyCar = document.getElementById('table-carandiru');
+        bodyCar.innerHTML = '';
+        [...dataCarandiru].reverse().forEach(day => bodyCar.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
+    }
+
+    function renderVila() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
+        const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
+        const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
+
+        const currentTotal = dataVilaGuilherme.length > 0 ? dataVilaGuilherme[dataVilaGuilherme.length - 1].total : 0;
+        const avgWeekly = dataVilaGuilherme.length > 0 ? Math.round(dataVilaGuilherme.reduce((a, b) => a + b.total, 0) / dataVilaGuilherme.length) : 0;
+
+        document.getElementById('kpi-vila-total').innerText = currentTotal.toLocaleString();
+        document.getElementById('kpi-vila-avg').innerText = avgWeekly.toLocaleString();
+
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
+        const style = getComputedStyle(document.documentElement);
+        const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
+
+        const lastDay = dataVilaGuilherme.length > 0 ? dataVilaGuilherme[dataVilaGuilherme.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        let maxVal = -1; let bottleneck = "";
+        const catCardsContainer = document.getElementById('category-cards-vila');
+        catCardsContainer.innerHTML = '';
+        cats.forEach((c, i) => {
+            const val = lastDay[c];
+            if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
+            const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
+            catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
         });
+        document.getElementById('kpi-vila-bottleneck').innerText = bottleneck;
+
+        const commonOptions = { 
+            responsive: true, maintainAspectRatio: false, 
+            plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', color: labelColor, font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v.toLocaleString() : '' } }, 
+            scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
+        };
+
+        const shareData = cats.map(c => lastDay[c]);
+        const totalShare = shareData.reduce((a,b)=>a+b,0);
+
+        if(charts.shareChartVila) charts.shareChartVila.destroy();
+        charts.shareChartVila = new Chart(document.getElementById('shareChartVila'), { 
+            type: 'doughnut', 
+            data: { labels: catLabels, datasets: [{ data: shareData, backgroundColor: catColors, borderWidth: 2, borderColor: theme === 'light' ? '#fff' : '#1A1F2E' }] }, 
+            options: { ...commonOptions, cutout: '65%', plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } } } 
+        });
+
+        if(charts.evolutionChartVila) charts.evolutionChartVila.destroy();
+        charts.evolutionChartVila = new Chart(document.getElementById('categoryEvolutionChartVila'), { 
+            type: 'line', 
+            data: { 
+                labels: dataVilaGuilherme.map(d => d.data), 
+                datasets: cats.map((c, i) => ({ 
+                    label: catLabels[i], 
+                    data: dataVilaGuilherme.map(d => d[c]), 
+                    borderColor: catColors[i], 
+                    backgroundColor: catColors[i], 
+                    tension: 0.4, 
+                    pointRadius: 4, 
+                    pointHoverRadius: 6, 
+                    borderWidth: 2.5 
+                })) 
+            }, 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
+        });
+
+        const bodyVila = document.getElementById('table-vila');
+        bodyVila.innerHTML = '';
+        [...dataVilaGuilherme].reverse().forEach(day => bodyVila.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
     }
 
     if (db) {
@@ -1135,32 +1017,14 @@
         e.preventDefault();
         const hub = document.getElementById('form-hub').value;
         const newItem = {
-            hub: hub, 
-            data: document.getElementById('form-data').value, 
-            dia: document.getElementById('form-dia').value,
-            amarelo: parseInt(document.getElementById('form-amarelo').value) || 0, 
-            erro: parseInt(document.getElementById('form-erro').value) || 0,
-            onhold: parseInt(document.getElementById('form-onhold').value) || 0, 
-            fleet: parseInt(document.getElementById('form-fleet').value) || 0,
-            office: parseInt(document.getElementById('form-office').value) || 0, 
-            lhpiso: parseInt(document.getElementById('form-lhpiso').value) || 0
+            hub: hub, data: document.getElementById('form-data').value, dia: document.getElementById('form-dia').value,
+            amarelo: parseInt(document.getElementById('form-amarelo').value) || 0, erro: parseInt(document.getElementById('form-erro').value) || 0,
+            onhold: parseInt(document.getElementById('form-onhold').value) || 0, fleet: parseInt(document.getElementById('form-fleet').value) || 0,
+            office: parseInt(document.getElementById('form-office').value) || 0, lhpiso: parseInt(document.getElementById('form-lhpiso').value) || 0
         };
         newItem.total = newItem.amarelo + newItem.erro + newItem.onhold + newItem.fleet + newItem.office + newItem.lhpiso;
-        
-        if (db) {
-            db.ref('backlog_data').push(newItem).then(() => { 
-                alert("Sincronizado com sucesso!"); 
-                closeModal('addModal'); 
-            }).catch(err => {
-                alert("Erro ao sincronizar: " + err.message);
-            });
-        } else { 
-            if (hub === 'carandiru') dataCarandiru.push(newItem); 
-            else dataVilaGuilherme.push(newItem); 
-            updateDashboard(); 
-            alert("Salvo localmente!"); 
-            closeModal('addModal'); 
-        }
+        if (db) db.ref('backlog_data').push(newItem).then(() => { alert("Sincronizado!"); closeModal('addModal'); });
+        else { if (hub === 'carandiru') dataCarandiru.push(newItem); else dataVilaGuilherme.push(newItem); updateDashboard(); alert("Salvo local!"); closeModal('addModal'); }
         this.reset();
     };
 
