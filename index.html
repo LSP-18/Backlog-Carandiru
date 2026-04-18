@@ -812,8 +812,16 @@
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
 
-        const w1Totals = cats.map(c => syncedCar.slice(0, 7).reduce((a, b) => a + b[c], 0) + syncedVila.slice(0, 7).reduce((a, b) => a + b[c], 0));
-        const w2Totals = cats.map(c => syncedCar.slice(7).reduce((a, b) => a + b[c], 0) + syncedVila.slice(7).reduce((a, b) => a + b[c], 0));
+        const w1Totals = cats.map(c => {
+            const carSum = syncedCar.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
+            const vilaSum = syncedVila.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum;
+        });
+        const w2Totals = cats.map(c => {
+            const carSum = syncedCar.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
+            const vilaSum = syncedVila.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum;
+        });
 
         if(charts.comparison) charts.comparison.destroy();
         charts.comparison = new Chart(document.getElementById('comparisonChart'), { 
@@ -822,10 +830,18 @@
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } } } } 
         });
 
-        const lastDay = syncedCar[syncedCar.length - 1];
-        const lastDayVila = syncedVila[syncedVila.length - 1];
-        const totalLastDay = { amarelo: lastDay.amarelo + lastDayVila.amarelo, erro: lastDay.erro + lastDayVila.erro, onhold: lastDay.onhold + lastDayVila.onhold, fleet: lastDay.fleet + lastDayVila.fleet, office: lastDay.office + lastDayVila.office, lhpiso: lastDay.lhpiso + lastDayVila.lhpiso, total: lastDay.total + lastDayVila.total };
-        const shareData = cats.map(c => totalLastDay[c]);
+        const lastDay = syncedCar[syncedCar.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        const lastDayVila = syncedVila[syncedVila.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        const totalLastDay = { 
+            amarelo: (lastDay.amarelo || 0) + (lastDayVila.amarelo || 0), 
+            erro: (lastDay.erro || 0) + (lastDayVila.erro || 0), 
+            onhold: (lastDay.onhold || 0) + (lastDayVila.onhold || 0), 
+            fleet: (lastDay.fleet || 0) + (lastDayVila.fleet || 0), 
+            office: (lastDay.office || 0) + (lastDayVila.office || 0), 
+            lhpiso: (lastDay.lhpiso || 0) + (lastDayVila.lhpiso || 0), 
+            total: (lastDay.total || 0) + (lastDayVila.total || 0) 
+        };
+        const shareData = cats.map(c => totalLastDay[c] || 0);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
 
         if(charts.share) charts.share.destroy();
@@ -933,13 +949,18 @@
     }
 
     function renderVila() {
+        if (!dataVilaGuilherme || dataVilaGuilherme.length === 0) {
+            console.warn('Dados de Vila Guilherme não carregados');
+            return;
+        }
+
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
         const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
         const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
 
-        const currentTotal = dataVilaGuilherme.length > 0 ? dataVilaGuilherme[dataVilaGuilherme.length - 1].total : 0;
-        const avgWeekly = dataVilaGuilherme.length > 0 ? Math.round(dataVilaGuilherme.reduce((a, b) => a + b.total, 0) / dataVilaGuilherme.length) : 0;
+        const currentTotal = dataVilaGuilherme[dataVilaGuilherme.length - 1].total;
+        const avgWeekly = Math.round(dataVilaGuilherme.reduce((a, b) => a + b.total, 0) / dataVilaGuilherme.length);
 
         document.getElementById('kpi-vila-total').innerText = currentTotal.toLocaleString();
         document.getElementById('kpi-vila-avg').innerText = avgWeekly.toLocaleString();
@@ -1006,11 +1027,20 @@
             const val = snapshot.val();
             if (val) {
                 const items = Object.values(val);
-                dataCarandiru = [...initialDataCarandiru, ...items.filter(i => (i.hub === 'carandiru' || !i.hub))];
-                dataVilaGuilherme = [...initialDataVilaGuilherme, ...items.filter(i => i.hub === 'vila-guilherme')];
+                const newCarandiru = items.filter(i => (i.hub === 'carandiru' || !i.hub));
+                const newVila = items.filter(i => i.hub === 'vila-guilherme');
+                dataCarandiru = newCarandiru.length > 0 ? [...initialDataCarandiru, ...newCarandiru] : [...initialDataCarandiru];
+                dataVilaGuilherme = newVila.length > 0 ? [...initialDataVilaGuilherme, ...newVila] : [...initialDataVilaGuilherme];
+                updateDashboard();
+            } else {
+                dataCarandiru = [...initialDataCarandiru];
+                dataVilaGuilherme = [...initialDataVilaGuilherme];
                 updateDashboard();
             }
         });
+    } else {
+        dataCarandiru = [...initialDataCarandiru];
+        dataVilaGuilherme = [...initialDataVilaGuilherme];
     }
 
     document.getElementById('dataForm').onsubmit = function(e) {
