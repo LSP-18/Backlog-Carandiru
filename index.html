@@ -35,6 +35,7 @@
             --color-fleet: #10B981;
             --color-office: #6366F1;
             --color-lhpiso: #FF8C00;
+            --color-noshow: #94A3B8;
         }
 
         [data-theme="dark"] {
@@ -55,6 +56,7 @@
             --color-fleet: #34D399;
             --color-office: #818CF8;
             --color-lhpiso: #FFA500;
+            --color-noshow: #64748B;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,9 +69,201 @@
             padding: 20px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         .container { max-width: 1520px; margin: 0 auto; }
+
+        /* WELCOME SCREEN - PREMIUM REDESIGN */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #EE4D2D 0%, #d73211 50%, #c41e0a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            transition: opacity 0.8s ease, visibility 0.8s;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #welcome-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        #welcome-screen::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
+        }
+
+        #welcome-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .welcome-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-logo {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-logo img {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .welcome-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .welcome-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            line-height: 1.1;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.95;
+            margin: 0;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .welcome-description {
+            font-size: 14px;
+            opacity: 0.85;
+            margin-top: 8px;
+            max-width: 400px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .welcome-features {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .welcome-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .welcome-feature:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .welcome-btn {
+            background: white;
+            color: #EE4D2D;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            background: #f5f5f5;
+        }
+
+        .welcome-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .welcome-btn i {
+            width: 18px;
+            height: 18px;
+        }
 
         /* HEADER */
         header {
@@ -334,6 +528,14 @@
             padding: 24px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
+            min-width: 0; /* Prevent flex/grid items from overflowing */
+            width: 100%;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 320px;
         }
 
         .card-header {
@@ -387,6 +589,27 @@
 
         .td-bold { font-weight: 700; }
         .td-total { font-weight: 800; color: var(--shopee-orange); }
+
+        /* ADMIN EDIT STYLES */
+        .admin-editable {
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .admin-editable:hover {
+            background: var(--shopee-orange-light) !important;
+        }
+        .admin-editable::after {
+            content: '\270E';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            opacity: 0;
+            color: var(--shopee-orange);
+        }
+        .admin-editable:hover::after { opacity: 1; }
 
         /* MODAL */
         .modal {
@@ -458,22 +681,84 @@
 
         @media (max-width: 768px) {
             body { padding: 10px; }
-            header { padding: 16px; }
-            .tab-button { padding: 12px; font-size: 12px; }
-            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            header { 
+                padding: 16px; 
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .header-info { order: 2; }
+            .shopee-logo { order: 1; margin-bottom: 10px; }
+            .header-actions { order: 3; width: 100%; justify-content: center; }
+
+            .tab-button { 
+                padding: 12px 8px; 
+                font-size: 11px; 
+                flex-direction: column;
+                gap: 4px;
+            }
+            .tab-button i { width: 16px; height: 16px; }
+
+            .kpi-grid { grid-template-columns: 1fr; }
             .category-grid { grid-template-columns: 1fr 1fr; }
+            
+            .card-container { padding: 16px; }
+            .chart-wrapper { height: 250px; }
+            
+            .welcome-title { font-size: 32px; }
+            .welcome-subtitle { font-size: 16px; }
+            .welcome-features { gap: 10px; }
+            .welcome-feature { padding: 6px 12px; font-size: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .category-grid { grid-template-columns: 1fr; }
+            .welcome-title { font-size: 28px; }
+            .welcome-btn { padding: 14px 32px; width: 90%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+<!-- WELCOME SCREEN -->
+<div id="welcome-screen">
+    <div class="welcome-container">
+        <div class="welcome-logo">
+            <img src="https://freelogopng.com/images/all_img/1656181355shopee-icon-white.png" alt="Shopee">
+        </div>
+        <div class="welcome-content">
+            <h1 class="welcome-title">Bem-vindo ao Dashboard</h1>
+            <p class="welcome-subtitle">Monitoramento de Backlog dos Hubs Carandiru e Vila Guilherme</p>
+            <p class="welcome-description">Acompanhe em tempo real o desempenho dos hubs com analises detalhadas e insights acionaveis</p>
+        </div>
+        <div class="welcome-features">
+            <div class="welcome-feature">
+                <i data-lucide="zap" size="14"></i>
+                <span>Tempo Real</span>
+            </div>
+            <div class="welcome-feature">
+                <i data-lucide="bar-chart-3" size="14"></i>
+                <span>Analises Avancadas</span>
+            </div>
+            <div class="welcome-feature">
+                <i data-lucide="shield-check" size="14"></i>
+                <span>Seguro</span>
+            </div>
+        </div>
+        <button class="welcome-btn" onclick="closeWelcome()">
+            <i data-lucide="arrow-right" size="18"></i>
+            Acessar Painel
+        </button>
+    </div>
+</div>
+
 <div class="container">
     <header>
         <div class="header-info">
-            <h1>Dashboard Backlog Shopee</h1>
-            <p><i data-lucide="calendar" size="14"></i> <span id="current-date">--/--/----</span> • <i data-lucide="map-pin" size="14"></i> Todos os Hubs</p>
+            <h1>Dashboard Backlog </h1>
+            <p><i data-lucide="calendar" size="14"></i> <span id="current-date">--/--/----</span> • <i data-lucide="map-pin" size="14"></i> Zona norte - SP</p>
         </div>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyvA3vZ0IfTZxR7YqIMMyBdAzOjz6-GPI8PQ&s" alt="Shopee" class="shopee-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="Shopee" class="shopee-logo">
         <div class="header-actions">
             <div id="admin-status-box" class="admin-status">
                 <i data-lucide="lock" size="14"></i> Modo Visualização
@@ -498,22 +783,22 @@
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="bar-chart-3" size="16"></i> Comparativo entre Hubs (Total)</div></div>
-                <div style="height: 320px;"><canvas id="hubComparisonChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="hubComparisonChart"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="layers" size="16"></i> Performance por Categoria</div></div>
-                <div style="height: 320px;"><canvas id="comparisonChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="comparisonChart"></canvas></div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução Geral</div></div>
-                <div style="height: 320px;"><canvas id="categoryEvolutionChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="categoryEvolutionChart"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog (Total)</div></div>
-                <div style="height: 280px;"><canvas id="shareChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="shareChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -549,11 +834,11 @@
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
-                <div style="height: 280px;"><canvas id="shareChartCar"></canvas></div>
+                <div class="chart-wrapper"><canvas id="shareChartCar"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
-                <div style="height: 280px;"><canvas id="categoryEvolutionChartCar"></canvas></div>
+                <div class="chart-wrapper"><canvas id="categoryEvolutionChartCar"></canvas></div>
             </div>
         </div>
 
@@ -562,7 +847,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>Total</th></tr>
+                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>No Show</th><th>Total</th></tr>
                     </thead>
                     <tbody id="table-carandiru"></tbody>
                 </table>
@@ -601,11 +886,11 @@
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
-                <div style="height: 280px;"><canvas id="shareChartVila"></canvas></div>
+                <div class="chart-wrapper"><canvas id="shareChartVila"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
-                <div style="height: 280px;"><canvas id="categoryEvolutionChartVila"></canvas></div>
+                <div class="chart-wrapper"><canvas id="categoryEvolutionChartVila"></canvas></div>
             </div>
         </div>
 
@@ -614,7 +899,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>Total</th></tr>
+                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>No Show</th><th>Total</th></tr>
                     </thead>
                     <tbody id="table-vila"></tbody>
                 </table>
@@ -622,7 +907,7 @@
         </div>
     </div>
 
-    <footer>© 2026 Shopee • Gestão de Backlog • <strong>Analista Emanuel Brendon</strong></footer>
+    <footer>© 2026 Shopee • Dashboard de Backlog • <strong>Analista Emanuel Brendon</strong></footer>
 </div>
 
 <!-- MODAL: LOGIN -->
@@ -669,6 +954,7 @@
                 <div class="form-group"><label>Fleet</label><input type="number" id="form-fleet" class="form-input" value="0"></div>
                 <div class="form-group"><label>Office</label><input type="number" id="form-office" class="form-input" value="0"></div>
                 <div class="form-group"><label>LH Piso</label><input type="number" id="form-lhpiso" class="form-input" value="0"></div>
+                <div class="form-group"><label>No show</label><input type="number" id="form-noshow" class="form-input" value="0"></div>
             </div>
             <button type="submit" style="width:100%; margin-top:12px; padding:12px; font-size:13px; font-weight:700; background: var(--shopee-orange); color: white; border: none; border-radius: 8px; cursor: pointer;">Salvar</button>
         </form>
@@ -683,20 +969,20 @@
     try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e) {}
 
     let initialDataCarandiru = [
-        {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "lhpiso": 0, "total": 1156},
-        {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "lhpiso": 0, "total": 590},
-        {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "lhpiso": 0, "total": 527},
-        {"data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "lhpiso": 0, "total": 479},
-        {"data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "lhpiso": 0, "total": 5866},
-        {"data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "lhpiso": 0, "total": 2918},
-        {"data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "lhpiso": 0, "total": 1358},
-        {"data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "lhpiso": 0, "total": 671},
-        {"data": "07/04", "dia": "Terça", "amarelo": 156, "erro": 161, "onhold": 105, "fleet": 10, "office": 0, "lhpiso": 0, "total": 432},
-        {"data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 150, "onhold": 147, "fleet": 83, "office": 0, "lhpiso": 0, "total": 586},
-        {"data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "lhpiso": 0, "total": 518},
-        {"data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "lhpiso": 0, "total": 1350},
-        {"data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "lhpiso": 0, "total": 2143},
-        {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "lhpiso": 0, "total": 0}
+        {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "lhpiso": 0, "noshow": 0, "total": 1156},
+        {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "lhpiso": 0, "noshow": 0, "total": 590},
+        {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "lhpiso": 0, "noshow": 0, "total": 527},
+        {"data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "lhpiso": 0, "noshow": 0, "total": 479},
+        {"data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "lhpiso": 0, "noshow": 0, "total": 5866},
+        {"data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "lhpiso": 0, "noshow": 0, "total": 2918},
+        {"data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "lhpiso": 0, "noshow": 0, "total": 1358},
+        {"data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "lhpiso": 0, "noshow": 0, "total": 671},
+        {"data": "07/04", "dia": "Terça", "amarelo": 156, "erro": 161, "onhold": 105, "fleet": 10, "office": 0, "lhpiso": 0, "noshow": 0, "total": 432},
+        {"data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 150, "onhold": 147, "fleet": 83, "office": 0, "lhpiso": 0, "noshow": 0, "total": 586},
+        {"data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "lhpiso": 0, "noshow": 0, "total": 518},
+        {"data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "lhpiso": 0, "noshow": 0, "total": 1350},
+        {"data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "lhpiso": 0, "noshow": 0, "total": 2143},
+        {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "lhpiso": 0, "noshow": 0, "total": 0}
     ];
 
     let initialDataVilaGuilherme = [];
@@ -708,6 +994,10 @@
     let isAdmin = false;
 
     const users = { "emanuel.issa@shopee.com": "150311", "admin.hubs@shopee.com": "shopee2026" };
+
+    function closeWelcome() {
+        document.getElementById('welcome-screen').classList.add('hidden');
+    }
 
     function switchTab(tab, element) {
         currentTab = tab;
@@ -730,6 +1020,7 @@
             document.getElementById('btn-add-data').style.display = 'flex';
             closeModal('loginModal');
             lucide.createIcons();
+            updateDashboard(); // Refresh to show editable cells
         } else { document.getElementById('login-error').style.display = 'block'; }
     }
 
@@ -758,6 +1049,27 @@
         else if (currentTab === 'vila') renderVila();
     }
 
+    function editValue(hub, date, field) {
+        if (!isAdmin) return;
+        const source = hub === 'carandiru' ? dataCarandiru : dataVilaGuilherme;
+        const item = source.find(d => d.data === date);
+        if (!item) return;
+
+        const newVal = prompt(`Editar ${field} para o dia ${date}:`, item[field]);
+        if (newVal !== null) {
+            const val = parseInt(newVal) || 0;
+            item[field] = val;
+            item.total = (item.amarelo || 0) + (item.erro || 0) + (item.onhold || 0) + (item.fleet || 0) + (item.office || 0) + (item.lhpiso || 0) + (item.noshow || 0);
+            
+            if (db) {
+                // In a real scenario, we'd update the specific Firebase record. 
+                // For this demo, we'll just update local and alert.
+                alert("Valor atualizado! (Sincronização Firebase requer ID do registro)");
+            }
+            updateDashboard();
+        }
+    }
+
     function renderOverview() {
         const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data)])].sort((a,b) => {
             const [d1, m1] = a.split('/').map(Number);
@@ -769,7 +1081,7 @@
             const found = source.find(d => d.data === date);
             if (found) return found;
             const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date);
-            return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0 };
+            return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0 };
         });
 
         const syncedCar = syncData(dataCarandiru);
@@ -799,8 +1111,8 @@
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
         });
 
-        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
-        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso', 'noshow'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso', 'No Show'];
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
 
@@ -822,8 +1134,8 @@
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } } } } 
         });
 
-        const lastDay = syncedCar[syncedCar.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
-        const lastDayVila = syncedVila[syncedVila.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        const lastDay = syncedCar[syncedCar.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
+        const lastDayVila = syncedVila[syncedVila.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
         const totalLastDay = { 
             amarelo: (lastDay.amarelo || 0) + (lastDayVila.amarelo || 0), 
             erro: (lastDay.erro || 0) + (lastDayVila.erro || 0), 
@@ -831,6 +1143,7 @@
             fleet: (lastDay.fleet || 0) + (lastDayVila.fleet || 0), 
             office: (lastDay.office || 0) + (lastDayVila.office || 0), 
             lhpiso: (lastDay.lhpiso || 0) + (lastDayVila.lhpiso || 0), 
+            noshow: (lastDay.noshow || 0) + (lastDayVila.noshow || 0),
             total: (lastDay.total || 0) + (lastDayVila.total || 0) 
         };
         const shareData = cats.map(c => totalLastDay[c] || 0);
@@ -848,6 +1161,7 @@
             amarelo: d.amarelo + syncedVila[i].amarelo, erro: d.erro + syncedVila[i].erro,
             onhold: d.onhold + syncedVila[i].onhold, fleet: d.fleet + syncedVila[i].fleet,
             office: d.office + syncedVila[i].office, lhpiso: d.lhpiso + syncedVila[i].lhpiso,
+            noshow: d.noshow + syncedVila[i].noshow,
             total: d.total + syncedVila[i].total
         }));
 
@@ -883,17 +1197,17 @@
         document.getElementById('kpi-car-total').innerText = currentTotal.toLocaleString();
         document.getElementById('kpi-car-avg').innerText = avgWeekly.toLocaleString();
 
-        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
-        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso', 'noshow'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso', 'No Show'];
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
 
-        const lastDay = dataCarandiru.length > 0 ? dataCarandiru[dataCarandiru.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        const lastDay = dataCarandiru.length > 0 ? dataCarandiru[dataCarandiru.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
         let maxVal = -1; let bottleneck = "";
         const catCardsContainer = document.getElementById('category-cards-car');
         catCardsContainer.innerHTML = '';
         cats.forEach((c, i) => {
-            const val = lastDay[c];
+            const val = lastDay[c] || 0;
             if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
             const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
             catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
@@ -906,7 +1220,7 @@
             scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
         };
 
-        const shareData = cats.map(c => lastDay[c]);
+        const shareData = cats.map(c => lastDay[c] || 0);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
 
         if(charts.shareChartCar) charts.shareChartCar.destroy();
@@ -937,7 +1251,21 @@
 
         const bodyCar = document.getElementById('table-carandiru');
         bodyCar.innerHTML = '';
-        [...dataCarandiru].reverse().forEach(day => bodyCar.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
+        const editableClass = isAdmin ? ' admin-editable' : '';
+        [...dataCarandiru].reverse().forEach(day => {
+            bodyCar.innerHTML += `<tr>
+                <td class="td-bold">${day.data}</td>
+                <td>${day.dia}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'amarelo')">${day.amarelo}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'erro')">${day.erro}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'onhold')">${day.onhold}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'fleet')">${day.fleet}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'office')">${day.office}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'lhpiso')">${day.lhpiso}</td>
+                <td class="${editableClass}" onclick="editValue('carandiru', '${day.data}', 'noshow')">${day.noshow || 0}</td>
+                <td class="td-total">${day.total.toLocaleString()}</td>
+            </tr>`;
+        });
     }
 
     function renderVila() {
@@ -952,17 +1280,17 @@
         document.getElementById('kpi-vila-total').innerText = currentTotal.toLocaleString();
         document.getElementById('kpi-vila-avg').innerText = avgWeekly.toLocaleString();
 
-        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso'];
-        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso'];
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso', 'noshow'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso', 'No Show'];
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
 
-        const lastDay = dataVilaGuilherme.length > 0 ? dataVilaGuilherme[dataVilaGuilherme.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, total:0};
+        const lastDay = dataVilaGuilherme.length > 0 ? dataVilaGuilherme[dataVilaGuilherme.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
         let maxVal = -1; let bottleneck = "";
         const catCardsContainer = document.getElementById('category-cards-vila');
         catCardsContainer.innerHTML = '';
         cats.forEach((c, i) => {
-            const val = lastDay[c];
+            const val = lastDay[c] || 0;
             if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
             const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
             catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
@@ -975,7 +1303,7 @@
             scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
         };
 
-        const shareData = cats.map(c => lastDay[c]);
+        const shareData = cats.map(c => lastDay[c] || 0);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
 
         if(charts.shareChartVila) charts.shareChartVila.destroy();
@@ -1006,7 +1334,21 @@
 
         const bodyVila = document.getElementById('table-vila');
         bodyVila.innerHTML = '';
-        [...dataVilaGuilherme].reverse().forEach(day => bodyVila.innerHTML += `<tr><td class="td-bold">${day.data}</td><td>${day.dia}</td><td>${day.amarelo}</td><td>${day.erro}</td><td>${day.onhold}</td><td>${day.fleet}</td><td>${day.office}</td><td>${day.lhpiso}</td><td class="td-total">${day.total.toLocaleString()}</td></tr>`);
+        const editableClass = isAdmin ? ' admin-editable' : '';
+        [...dataVilaGuilherme].reverse().forEach(day => {
+            bodyVila.innerHTML += `<tr>
+                <td class="td-bold">${day.data}</td>
+                <td>${day.dia}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'amarelo')">${day.amarelo}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'erro')">${day.erro}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'onhold')">${day.onhold}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'fleet')">${day.fleet}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'office')">${day.office}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'lhpiso')">${day.lhpiso}</td>
+                <td class="${editableClass}" onclick="editValue('vila', '${day.data}', 'noshow')">${day.noshow || 0}</td>
+                <td class="td-total">${day.total.toLocaleString()}</td>
+            </tr>`;
+        });
     }
 
     if (db) {
@@ -1037,11 +1379,14 @@
             hub: hub, data: document.getElementById('form-data').value, dia: document.getElementById('form-dia').value,
             amarelo: parseInt(document.getElementById('form-amarelo').value) || 0, erro: parseInt(document.getElementById('form-erro').value) || 0,
             onhold: parseInt(document.getElementById('form-onhold').value) || 0, fleet: parseInt(document.getElementById('form-fleet').value) || 0,
-            office: parseInt(document.getElementById('form-office').value) || 0, lhpiso: parseInt(document.getElementById('form-lhpiso').value) || 0
+            office: parseInt(document.getElementById('form-office').value) || 0, lhpiso: parseInt(document.getElementById('form-lhpiso').value) || 0,
+            noshow: parseInt(document.getElementById('form-noshow').value) || 0
         };
-        newItem.total = newItem.amarelo + newItem.erro + newItem.onhold + newItem.fleet + newItem.office + newItem.lhpiso;
-        if (db) db.ref('backlog_data').push(newItem).then(() => { alert("Sincronizado!"); closeModal('addModal'); });
-        else { if (hub === 'carandiru') dataCarandiru.push(newItem); else dataVilaGuilherme.push(newItem); updateDashboard(); alert("Salvo local!"); closeModal('addModal'); }
+        newItem.total = newItem.amarelo + newItem.erro + newItem.onhold + newItem.fleet + newItem.office + newItem.lhpiso + newItem.noshow;
+        if (hub === 'carandiru') dataCarandiru.push(newItem); else dataVilaGuilherme.push(newItem); 
+        updateDashboard(); 
+        alert("Salvo local!"); 
+        closeModal('addModal');
         this.reset();
     };
 
