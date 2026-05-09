@@ -1323,13 +1323,31 @@
     let charts = {};
     let isAdmin = false;
 
-    const users = { "emanuel.issa@shopee.com": "150311", "admin.hubs@shopee.com": "shopee2026" };
+    // MAPEAMENTO DE USUÁRIOS COM CONTROLE DE HUB
+    const users = { 
+        "emanuel.issa@shopee.com": { pass: "150311", hub: "vila" },
+        "usuario.carandiru@shopee.com": { pass: "shopee123", hub: "carandiru" },
+        "admin.hubs@shopee.com": { pass: "shopee2026", hub: "all" }
+    };
+    let currentUserHub = null;
 
     function closeWelcome() {
         document.getElementById('welcome-screen').classList.add('hidden');
     }
 
     function switchTab(tab, element) {
+        // Bloqueio de segurança: impede acessar via console ou clique se não tiver permissão
+        if (currentUserHub !== 'all' && currentUserHub !== null) {
+            if (currentUserHub === 'vila' && tab !== 'vila') {
+                showToast('! Acesso restrito ao Hub Vila Guilherme', 'warning');
+                return;
+            }
+            if (currentUserHub === 'carandiru' && tab !== 'carandiru') {
+                showToast('! Acesso restrito ao Hub Carandiru', 'warning');
+                return;
+            }
+        }
+
         currentTab = tab;
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
         element.classList.add('active');
@@ -1343,23 +1361,81 @@
     function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
-        if (users[email] && users[email] === pass) {
+        
+        const user = users[email];
+
+        if (user && user.pass === pass) {
             isAdmin = true;
-            document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="14"></i> Admin (${email.split('@')[0]}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
+            currentUserHub = user.hub; // Define o hub do usuário
+
+            // Atualiza interface de status
+            document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="14"></i> ${user.hub === 'all' ? 'Admin' : 'Hub ' + user.hub.toUpperCase()} (${email.split('@')[0]}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
             document.getElementById('admin-status-box').className = 'admin-status admin-logged';
             document.getElementById('btn-add-data').style.display = 'flex';
+            
+            // APLICA RESTRIÇÃO VISUAL NAS ABAS
+            applyHubRestrictions(user.hub);
+
             closeModal('loginModal');
             lucide.createIcons();
-            showToast('✓ Login realizado com sucesso!', 'success');
-            updateDashboard();
+            showToast(`✓ Bem-vindo! Acesso: ${user.hub === 'all' ? 'Geral' : 'Hub ' + user.hub}`, 'success');
+            
+            // Redireciona para a aba permitida se necessário
+            if (user.hub === 'vila') {
+                const btnVila = document.querySelector('[onclick*="switchTab(\'vila\')"');
+                if (btnVila) switchTab('vila', btnVila);
+            } else if (user.hub === 'carandiru') {
+                const btnCar = document.querySelector('[onclick*="switchTab(\'carandiru\')"');
+                if (btnCar) switchTab('carandiru', btnCar);
+            } else {
+                updateDashboard();
+            }
+
         } else { 
             document.getElementById('login-error').style.display = 'block';
             showToast('✗ Credenciais inválidas!', 'error');
         }
     }
 
+    // FUNÇÃO PARA ESCONDER/MOSTRAR ABAS BASEADO NO HUB
+    function applyHubRestrictions(hub) {
+        const btnOverview = document.querySelector('[onclick*="switchTab(\'overview\')"');
+        const btnCarandiru = document.querySelector('[onclick*="switchTab(\'carandiru\')"');
+        const btnVila = document.querySelector('[onclick*="switchTab(\'vila\')"');
+
+        if (hub === 'vila') {
+            if (btnOverview) btnOverview.style.display = 'none';
+            if (btnCarandiru) btnCarandiru.style.display = 'none';
+            if (btnVila) btnVila.style.display = 'flex';
+        } else if (hub === 'carandiru') {
+            if (btnOverview) btnOverview.style.display = 'none';
+            if (btnVila) btnVila.style.display = 'none';
+            if (btnCarandiru) btnCarandiru.style.display = 'flex';
+        } else {
+            // Admin vê tudo
+            if (btnOverview) btnOverview.style.display = 'flex';
+            if (btnCarandiru) btnCarandiru.style.display = 'flex';
+            if (btnVila) btnVila.style.display = 'flex';
+        }
+    }
+
     function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
-    function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+    function openAddModal() { 
+        document.getElementById('addModal').style.display = 'flex';
+        const selectHub = document.getElementById('form-hub');
+        
+        // Trava o campo de hub se o usuário não for admin
+        if (currentUserHub === 'vila') {
+            selectHub.value = 'vila-guilherme';
+            selectHub.disabled = true;
+        } else if (currentUserHub === 'carandiru') {
+            selectHub.value = 'carandiru';
+            selectHub.disabled = true;
+        } else {
+            // Admin pode escolher qualquer hub
+            selectHub.disabled = false;
+        }
+    }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function toggleTheme() {
