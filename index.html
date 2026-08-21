@@ -1133,7 +1133,7 @@
         </div>
     </div>
 
-    <!-- TAB: VILA -->
+<!-- TAB: VILA -->
     <div id="tab-guarulhos" class="tab-content">
         <div class="kpi-grid">
             <div class="kpi-card">
@@ -1373,6 +1373,7 @@
 
     let dataCarandiru = [...initialDataCarandiru];
     let dataVilaGuilherme = [...initialDataVilaGuilherme];
+                dataGuarulhos = [...initialDataGuarulhos];
     let dataGuarulhos = [...initialDataGuarulhos];
     let firebaseRawData = {};
     let currentTab = 'overview';
@@ -1383,7 +1384,7 @@
     const users = { 
         "emanuel.issa@shopee.com": { pass: "150311", hub: "vila" },
         "usuario.carandiru@shopee.com": { pass: "shopee123", hub: "carandiru" },
-        "guarulhos@shopee.com": { pass: "Shopee123", hub: "guarulhos" },
+        "usuario.guarulhos@shopee.com": { pass: "shopee123", hub: "guarulhos" },
         "admin.hubs@shopee.com": { pass: "shopee2026", hub: "all" }
     };
     let currentUserHub = null;
@@ -1448,6 +1449,9 @@
             } else if (user.hub === 'carandiru') {
                 const btnCar = document.querySelector('[onclick*="switchTab(\'carandiru\')"');
                 if (btnCar) switchTab('carandiru', btnCar);
+            } else if (user.hub === 'guarulhos') {
+                const btnGuar = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
+                if (btnGuar) switchTab('guarulhos', btnGuar);
             } else {
                 updateDashboard();
             }
@@ -1469,13 +1473,13 @@
             if (btnCarandiru) btnCarandiru.style.display = 'none';
             if (btnVila) btnVila.style.display = 'flex';
         } else if (hub === 'carandiru') {
-            const btnGuarulhos = document.querySelector('[onclick*="switchTab('guarulhos')"');
+            const btnGuarulhos = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
             if (btnOverview) btnOverview.style.display = 'none';
             if (btnVila) btnVila.style.display = 'none';
             if (btnGuarulhos) btnGuarulhos.style.display = 'none';
             if (btnCarandiru) btnCarandiru.style.display = 'flex';
         } else if (hub === 'guarulhos') {
-            const btnGuarulhos = document.querySelector('[onclick*="switchTab('guarulhos')"');
+            const btnGuarulhos = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
             if (btnOverview) btnOverview.style.display = 'none';
             if (btnCarandiru) btnCarandiru.style.display = 'none';
             if (btnVila) btnVila.style.display = 'none';
@@ -1531,6 +1535,7 @@
             renderOverview();
         } else if (currentTab === 'carandiru') renderCarandiru();
         else if (currentTab === 'vila') renderVila();
+        else if (currentTab === 'guarulhos') renderGuarulhos();
     }
 
     function editValue(hub, date, field) {
@@ -1547,7 +1552,7 @@
             }
         }
 
-        const source = hub === 'carandiru' ? dataCarandiru : dataVilaGuilherme;
+        const source = hub === 'carandiru' ? dataCarandiru : (hub === 'guarulhos' ? dataGuarulhos : dataVilaGuilherme);
         const item = source.find(d => d.data === date);
         if (!item) return;
 
@@ -1868,7 +1873,7 @@
         });
     }
 
-    function renderGuarulhos() {
+function renderGuarulhos() {
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
         const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
@@ -1968,14 +1973,12 @@
             } else {
                 dataCarandiru = [...initialDataCarandiru];
                 dataVilaGuilherme = [...initialDataVilaGuilherme];
-                dataGuarulhos = [...initialDataGuarulhos];
                 updateDashboard();
             }
         });
     } else {
         dataCarandiru = [...initialDataCarandiru];
         dataVilaGuilherme = [...initialDataVilaGuilherme];
-        dataGuarulhos = [...initialDataGuarulhos];
     }
 
     document.getElementById('dataForm').onsubmit = function(e) {
