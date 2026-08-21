@@ -947,7 +947,7 @@
         </div>
         <div class="welcome-content">
             <h1 class="welcome-title">Bem-vindo ao Dashboard</h1>
-            <p class="welcome-subtitle">Monitoramento de Backlog dos Hubs Carandiru e Vila Guilherme</p>
+            <p class="welcome-subtitle">Monitoramento de Backlog dos Hubs Carandiru, Vila Guilherme e Guarulhos</p>
             <p class="welcome-description">Acompanhe em tempo real o desempenho dos hubs com análises detalhadas e insights acionáveis</p>
             <p class="welcome-developer">Desenvolvido por <strong>Emanuel Brendon</strong></p>
         </div>
@@ -992,6 +992,7 @@
         <button class="tab-button active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" size="18"></i> Geral</button>
         <button class="tab-button" onclick="switchTab('carandiru', this)"><i data-lucide="warehouse" size="18"></i> Carandiru</button>
         <button class="tab-button" onclick="switchTab('vila', this)"><i data-lucide="warehouse" size="18"></i> Vila Guilherme</button>
+        <button class="tab-button" onclick="switchTab('guarulhos', this)"><i data-lucide="warehouse" size="18"></i> Guarulhos</button>
     </nav>
 
     <div class="action-bar">
@@ -1132,6 +1133,58 @@
         </div>
     </div>
 
+    <!-- TAB: VILA -->
+    <div id="tab-guarulhos" class="tab-content">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Backlog Atual</div>
+                    <div class="kpi-icon"><i data-lucide="package" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-guarulhos-total">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Média Semanal</div>
+                    <div class="kpi-icon"><i data-lucide="trending-up" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-guarulhos-avg">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-title">Maior Gargalo</div>
+                    <div class="kpi-icon"><i data-lucide="alert-triangle" size="18"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-guarulhos-bottleneck" style="font-size: 18px;">--</div>
+            </div>
+        </div>
+
+        <div class="category-grid" id="category-cards-guarulhos"></div>
+
+        <div class="main-grid">
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
+                <div class="chart-wrapper"><canvas id="shareChartGuarulhos"></canvas></div>
+            </div>
+            <div class="card-container">
+                <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
+                <div class="chart-wrapper"><canvas id="categoryEvolutionChartGuarulhos"></canvas></div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-header"><div class="card-title"><i data-lucide="history" size="16"></i> Histórico Completo</div></div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>No Show</th><th>Total</th></tr>
+                    </thead>
+                    <tbody id="table-guarulhos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div>© 2026 Shopee • Dashboard de Backlog</div>
         <div class="footer-developer">Desenvolvido por Emanuel Brendon</div>
@@ -1171,6 +1224,7 @@
                 <select id="form-hub" class="form-input" required>
                     <option value="carandiru">Carandiru</option>
                     <option value="vila-guilherme">Vila Guilherme</option>
+                    <option value="guarulhos">Guarulhos</option>
                 </select>
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px">
@@ -1234,7 +1288,7 @@
     // INSIGHTS CALCULATION
     function generateInsights() {
         const container = document.getElementById('insightsContainer');
-        const allData = [...dataCarandiru, ...dataVilaGuilherme];
+        const allData = [...dataCarandiru, ...dataVilaGuilherme, ...dataGuarulhos];
         
         if (allData.length < 2) {
             container.innerHTML = '';
@@ -1315,9 +1369,11 @@
     ];
 
     const initialDataVilaGuilherme = [];
+    const initialDataGuarulhos = [];
 
     let dataCarandiru = [...initialDataCarandiru];
     let dataVilaGuilherme = [...initialDataVilaGuilherme];
+    let dataGuarulhos = [...initialDataGuarulhos];
     let firebaseRawData = {};
     let currentTab = 'overview';
     let charts = {};
@@ -1327,6 +1383,7 @@
     const users = { 
         "emanuel.issa@shopee.com": { pass: "150311", hub: "vila" },
         "usuario.carandiru@shopee.com": { pass: "shopee123", hub: "carandiru" },
+        "guarulhos@shopee.com": { pass: "Shopee123", hub: "guarulhos" },
         "admin.hubs@shopee.com": { pass: "shopee2026", hub: "all" }
     };
     let currentUserHub = null;
@@ -1344,6 +1401,10 @@
             }
             if (currentUserHub === 'carandiru' && tab !== 'carandiru') {
                 showToast('! Acesso restrito ao Hub Carandiru', 'warning');
+                return;
+            }
+            if (currentUserHub === 'guarulhos' && tab !== 'guarulhos') {
+                showToast('! Acesso restrito ao Hub Guarulhos', 'warning');
                 return;
             }
         }
@@ -1408,9 +1469,17 @@
             if (btnCarandiru) btnCarandiru.style.display = 'none';
             if (btnVila) btnVila.style.display = 'flex';
         } else if (hub === 'carandiru') {
+            const btnGuarulhos = document.querySelector('[onclick*="switchTab('guarulhos')"');
             if (btnOverview) btnOverview.style.display = 'none';
             if (btnVila) btnVila.style.display = 'none';
+            if (btnGuarulhos) btnGuarulhos.style.display = 'none';
             if (btnCarandiru) btnCarandiru.style.display = 'flex';
+        } else if (hub === 'guarulhos') {
+            const btnGuarulhos = document.querySelector('[onclick*="switchTab('guarulhos')"');
+            if (btnOverview) btnOverview.style.display = 'none';
+            if (btnCarandiru) btnCarandiru.style.display = 'none';
+            if (btnVila) btnVila.style.display = 'none';
+            if (btnGuarulhos) btnGuarulhos.style.display = 'flex';
         } else {
             // Admin vê tudo
             if (btnOverview) btnOverview.style.display = 'flex';
@@ -1430,6 +1499,9 @@
             selectHub.disabled = true;
         } else if (currentUserHub === 'carandiru') {
             selectHub.value = 'carandiru';
+            selectHub.disabled = true;
+        } else if (currentUserHub === 'guarulhos') {
+            selectHub.value = 'guarulhos';
             selectHub.disabled = true;
         } else {
             // Admin pode escolher qualquer hub
@@ -1468,7 +1540,7 @@
         for (const key in firebaseRawData) {
             const item = firebaseRawData[key];
             const itemHub = item.hub || 'carandiru';
-            const targetHub = hub === 'carandiru' ? 'carandiru' : 'vila-guilherme';
+            const targetHub = hub === 'carandiru' ? 'carandiru' : (hub === 'guarulhos' ? 'guarulhos' : 'vila-guilherme');
             if (itemHub === targetHub && item.data === date) {
                 fbKey = key;
                 break;
@@ -1495,7 +1567,7 @@
                     .catch(e => showToast('✗ Erro ao sincronizar', 'error'));
             } else if (db) {
                 const newItem = {...item};
-                newItem.hub = hub === 'carandiru' ? 'carandiru' : 'vila-guilherme';
+                newItem.hub = hub === 'carandiru' ? 'carandiru' : (hub === 'guarulhos' ? 'guarulhos' : 'vila-guilherme');
                 newItem[field] = val;
                 newItem.total = (newItem.amarelo || 0) + (newItem.erro || 0) + (newItem.onhold || 0) + 
                                (newItem.fleet || 0) + (newItem.office || 0) + (newItem.lhpiso || 0) + (newItem.noshow || 0);
@@ -1512,7 +1584,7 @@
     }
 
     function renderOverview() {
-        const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data)])].sort((a,b) => {
+        const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data), ...dataGuarulhos.map(d => d.data)])].sort((a,b) => {
             const [d1, m1] = a.split('/').map(Number);
             const [d2, m2] = b.split('/').map(Number);
             return (m1 * 100 + d1) - (m2 * 100 + d2);
@@ -1521,12 +1593,13 @@
         const syncData = (source) => allDates.map(date => {
             const found = source.find(d => d.data === date);
             if (found) return found;
-            const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date);
+            const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date) || dataGuarulhos.find(g => g.data === date);
             return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0 };
         });
 
         const syncedCar = syncData(dataCarandiru);
         const syncedVila = syncData(dataVilaGuilherme);
+        const syncedGuarulhos = syncData(dataGuarulhos);
 
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
@@ -1546,7 +1619,8 @@
                 labels: syncedCar.map(d => d.data), 
                 datasets: [ 
                     { label: 'Carandiru', data: syncedCar.map(d => d.total), backgroundColor: '#EE4D2D', borderRadius: 6 }, 
-                    { label: 'Vila Guilherme', data: syncedVila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 6 } 
+                    { label: 'Vila Guilherme', data: syncedVila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 6 },
+                    { label: 'Guarulhos', data: syncedGuarulhos.map(d => d.total), backgroundColor: '#10B981', borderRadius: 6 } 
                 ] 
             }, 
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
@@ -1560,12 +1634,14 @@
         const w1Totals = cats.map(c => {
             const carSum = syncedCar.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
             const vilaSum = syncedVila.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
-            return carSum + vilaSum;
+            const guarSum = syncedGuarulhos.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum + guarSum;
         });
         const w2Totals = cats.map(c => {
             const carSum = syncedCar.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
             const vilaSum = syncedVila.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
-            return carSum + vilaSum;
+            const guarSum = syncedGuarulhos.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum + guarSum;
         });
 
         if(charts.comparison) charts.comparison.destroy();
@@ -1792,6 +1868,89 @@
         });
     }
 
+    function renderGuarulhos() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
+        const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
+        const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
+
+        const currentTotal = dataGuarulhosGuilherme.length > 0 ? dataGuarulhosGuilherme[dataGuarulhosGuilherme.length - 1].total : 0;
+        const avgWeekly = dataGuarulhosGuilherme.length > 0 ? Math.round(dataGuarulhosGuilherme.reduce((a, b) => a + b.total, 0) / dataGuarulhosGuilherme.length) : 0;
+
+        document.getElementById('kpi-guarulhos-total').innerText = currentTotal.toLocaleString();
+        document.getElementById('kpi-guarulhos-avg').innerText = avgWeekly.toLocaleString();
+
+        const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso', 'noshow'];
+        const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso', 'No Show'];
+        const style = getComputedStyle(document.documentElement);
+        const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
+
+        const lastDay = dataGuarulhosGuilherme.length > 0 ? dataGuarulhosGuilherme[dataGuarulhosGuilherme.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
+        let maxVal = -1; let bottleneck = "";
+        const catCardsContainer = document.getElementById('category-cards-guarulhos');
+        catCardsContainer.innerHTML = '';
+        cats.forEach((c, i) => {
+            const val = lastDay[c] || 0;
+            if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
+            const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
+            catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
+        });
+        document.getElementById('kpi-guarulhos-bottleneck').innerText = bottleneck;
+
+        const commonOptions = { 
+            responsive: true, maintainAspectRatio: false, 
+            plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', color: labelColor, font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v.toLocaleString() : '' } }, 
+            scales: { y: { beginAtZero: true, grace: '15%', ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor, drawBorder: false } }, x: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } } } 
+        };
+
+        const shareData = cats.map(c => lastDay[c] || 0);
+        const totalShare = shareData.reduce((a,b)=>a+b,0);
+
+        if(charts.shareChartGuarulhos) charts.shareChartGuarulhos.destroy();
+        charts.shareChartGuarulhos = new Chart(document.getElementById('shareChartGuarulhos'), { 
+            type: 'doughnut', 
+            data: { labels: catLabels, datasets: [{ data: shareData, backgroundColor: catColors, borderWidth: 2, borderColor: theme === 'light' ? '#fff' : '#1A1F2E' }] }, 
+            options: { ...commonOptions, cutout: '65%', plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } } } 
+        });
+
+        if(charts.evolutionChartGuarulhos) charts.evolutionChartGuarulhos.destroy();
+        charts.evolutionChartGuarulhos = new Chart(document.getElementById('categoryEvolutionChartGuarulhos'), { 
+            type: 'line', 
+            data: { 
+                labels: dataGuarulhosGuilherme.map(d => d.data), 
+                datasets: cats.map((c, i) => ({ 
+                    label: catLabels[i], 
+                    data: dataGuarulhosGuilherme.map(d => d[c]), 
+                    borderColor: catColors[i], 
+                    backgroundColor: catColors[i], 
+                    tension: 0.4, 
+                    pointRadius: 4, 
+                    pointHoverRadius: 6, 
+                    borderWidth: 2.5 
+                })) 
+            }, 
+            options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
+        });
+
+        const bodyGuarulhos = document.getElementById('table-guarulhos');
+        bodyGuarulhos.innerHTML = '';
+        const editableClass = isAdmin ? ' admin-editable' : '';
+        [...dataGuarulhosGuilherme].reverse().forEach(day => {
+            bodyGuarulhos.innerHTML += `<tr>
+                <td class="td-bold">${day.data}</td>
+                <td>${day.dia}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'amarelo')">${day.amarelo}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'erro')">${day.erro}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'onhold')">${day.onhold}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'fleet')">${day.fleet}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'office')">${day.office}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'lhpiso')">${day.lhpiso}</td>
+                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'noshow')">${day.noshow || 0}</td>
+                <td class="td-total">${day.total.toLocaleString()}</td>
+            </tr>`;
+        });
+    }
+
     if (db) {
         db.ref('backlog_data').on('value', (snapshot) => {
             const val = snapshot.val();
@@ -1800,19 +1959,23 @@
                 const items = Object.values(val);
                 const newCarandiru = items.filter(i => (i.hub === 'carandiru' || !i.hub));
                 const newVila = items.filter(i => i.hub === 'vila-guilherme');
+                const newGuarulhos = items.filter(i => i.hub === 'guarulhos');
                 
                 dataCarandiru = [...initialDataCarandiru, ...newCarandiru];
                 dataVilaGuilherme = [...initialDataVilaGuilherme, ...newVila];
+                dataGuarulhos = [...initialDataGuarulhos, ...newGuarulhos];
                 updateDashboard();
             } else {
                 dataCarandiru = [...initialDataCarandiru];
                 dataVilaGuilherme = [...initialDataVilaGuilherme];
+                dataGuarulhos = [...initialDataGuarulhos];
                 updateDashboard();
             }
         });
     } else {
         dataCarandiru = [...initialDataCarandiru];
         dataVilaGuilherme = [...initialDataVilaGuilherme];
+        dataGuarulhos = [...initialDataGuarulhos];
     }
 
     document.getElementById('dataForm').onsubmit = function(e) {
@@ -1841,7 +2004,7 @@
                 })
                 .catch(e => showToast('✗ Erro ao salvar', 'error'));
         } else {
-            if (hub === 'carandiru') dataCarandiru.push(newItem); else dataVilaGuilherme.push(newItem); 
+            if (hub === 'carandiru') dataCarandiru.push(newItem); else if (hub === 'guarulhos') dataGuarulhos.push(newItem); else dataVilaGuilherme.push(newItem); 
             updateDashboard(); 
             showToast('✓ Salvo localmente!', 'success'); 
             closeModal('addModal');
