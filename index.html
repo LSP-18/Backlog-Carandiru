@@ -475,29 +475,21 @@
             border: none;
             padding: 10px 20px;
             border-radius: 10px;
-            font-weight: 700;
             font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
         }
 
-        .btn-primary {
-            background: var(--shopee-orange);
-            color: white;
-            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.25);
-            display: none;
-        }
-        .btn-primary:hover { transform: translateY(-2px); background: var(--shopee-orange-dark); }
+        .btn-primary { background: var(--shopee-orange); color: white; }
+        .btn-primary:hover { background: var(--shopee-orange-dark); transform: translateY(-1px); }
 
-        .btn-secondary {
-            background: var(--bg-tab-nav);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-        }
-        .btn-secondary:hover { background: var(--border-color); }
+        .btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: var(--border-color); transform: translateY(-1px); }
 
         /* FILTER BAR */
         .filter-bar {
@@ -947,7 +939,7 @@
         </div>
         <div class="welcome-content">
             <h1 class="welcome-title">Bem-vindo ao Dashboard</h1>
-            <p class="welcome-subtitle">Monitoramento de Backlog dos Hubs Carandiru, Vila Guilherme e Guarulhos</p>
+            <p class="welcome-subtitle">Monitoramento de Backlog dos Hubs Carandiru, Vila Guilherme e Guarulhos </p>
             <p class="welcome-description">Acompanhe em tempo real o desempenho dos hubs com análises detalhadas e insights acionáveis</p>
             <p class="welcome-developer">Desenvolvido por <strong>Emanuel Brendon</strong></p>
         </div>
@@ -980,24 +972,30 @@
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="Shopee" class="shopee-logo">
         <div class="header-actions">
-            <div id="admin-status-box" class="admin-status">
-                <i data-lucide="lock" size="14"></i> Modo Visualização
-                <button class="btn-login-trigger" onclick="openLogin()">Login</button>
+            <div id="adminStatus" class="admin-status">
+                <i data-lucide="shield" size="14"></i> 
+                <span>Modo Leitura</span>
+                <button class="btn-login-trigger" onclick="openModal('loginModal')">Entrar</button>
             </div>
-            <button class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" data-lucide="moon" size="18"></i></button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Alternar Tema">
+                <i id="theme-icon" data-lucide="moon" size="18"></i>
+            </button>
         </div>
     </header>
 
-    <nav class="tabs-nav">
-        <button class="tab-button active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" size="18"></i> Geral</button>
-        <button class="tab-button" onclick="switchTab('carandiru', this)"><i data-lucide="warehouse" size="18"></i> Carandiru</button>
-        <button class="tab-button" onclick="switchTab('vila', this)"><i data-lucide="warehouse" size="18"></i> Vila Guilherme</button>
-        <button class="tab-button" onclick="switchTab('guarulhos', this)"><i data-lucide="warehouse" size="18"></i> Guarulhos</button>
-    </nav>
+    <!-- TABS NAV -->
+    <div class="tabs-nav">
+        <button class="tab-button active" onclick="switchTab('overview')"><i data-lucide="layout-dashboard" size="16"></i> Visão Geral</button>
+        <button class="tab-button" onclick="switchTab('carandiru')"><i data-lucide="map-pin" size="16"></i> Carandiru</button>
+        <button class="tab-button" onclick="switchTab('vila')"><i data-lucide="map-pin" size="16"></i> Vila Guilherme</button>
+        <button class="tab-button" onclick="switchTab('gua')"><i data-lucide="map-pin" size="16"></i> Hub Guarulhos </button>
+    </div>
 
     <div class="action-bar">
         <div class="action-buttons">
-            <button id="btn-add-data" class="btn-primary" onclick="openAddModal()"><i data-lucide="plus-circle" size="16"></i> Novo Registro</button>
+            <button class="btn-primary" onclick="openModal('addModal')" id="btnAddRecord" style="display:none"><i data-lucide="plus" size="16"></i> Novo Registro</button>
+        </div>
+        <div class="action-buttons">
             <button class="btn-secondary" onclick="exportToCSV()"><i data-lucide="download" size="16"></i> Exportar CSV</button>
         </div>
     </div>
@@ -1081,7 +1079,7 @@
         </div>
     </div>
 
-    <!-- TAB: VILA -->
+    <!-- TAB: VILA GUILHERME -->
     <div id="tab-vila" class="tab-content">
         <div class="kpi-grid">
             <div class="kpi-card">
@@ -1133,42 +1131,42 @@
         </div>
     </div>
 
-<!-- TAB: VILA -->
-    <div id="tab-guarulhos" class="tab-content">
+    <!-- TAB: HUB GUA -->
+    <div id="tab-gua" class="tab-content">
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-header">
                     <div class="kpi-title">Backlog Atual</div>
                     <div class="kpi-icon"><i data-lucide="package" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-guarulhos-total">0</div>
+                <div class="kpi-value" id="kpi-gua-total">0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-header">
                     <div class="kpi-title">Média Semanal</div>
                     <div class="kpi-icon"><i data-lucide="trending-up" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-guarulhos-avg">0</div>
+                <div class="kpi-value" id="kpi-gua-avg">0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-header">
                     <div class="kpi-title">Maior Gargalo</div>
                     <div class="kpi-icon"><i data-lucide="alert-triangle" size="18"></i></div>
                 </div>
-                <div class="kpi-value" id="kpi-guarulhos-bottleneck" style="font-size: 18px;">--</div>
+                <div class="kpi-value" id="kpi-gua-bottleneck" style="font-size: 18px;">--</div>
             </div>
         </div>
 
-        <div class="category-grid" id="category-cards-guarulhos"></div>
+        <div class="category-grid" id="category-cards-gua"></div>
 
         <div class="main-grid">
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="pie-chart" size="16"></i> Mix de Backlog</div></div>
-                <div class="chart-wrapper"><canvas id="shareChartGuarulhos"></canvas></div>
+                <div class="chart-wrapper"><canvas id="shareChartGua"></canvas></div>
             </div>
             <div class="card-container">
                 <div class="card-header"><div class="card-title"><i data-lucide="line-chart" size="16"></i> Evolução das Categorias</div></div>
-                <div class="chart-wrapper"><canvas id="categoryEvolutionChartGuarulhos"></canvas></div>
+                <div class="chart-wrapper"><canvas id="categoryEvolutionChartGua"></canvas></div>
             </div>
         </div>
 
@@ -1179,7 +1177,7 @@
                     <thead>
                         <tr><th>Data</th><th>Dia</th><th>Amarelo</th><th>Erro</th><th>OnHold</th><th>Fleet</th><th>Office</th><th>LH Piso</th><th>No Show</th><th>Total</th></tr>
                     </thead>
-                    <tbody id="table-guarulhos"></tbody>
+                    <tbody id="table-gua"></tbody>
                 </table>
             </div>
         </div>
@@ -1196,7 +1194,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Acesso</h3>
-            <i data-lucide="x" onclick="closeModal('loginModal')" size="20"></i>
+            <i data-lucide="x" onclick="closeModal('loginModal')" size="20" style="cursor:pointer"></i>
         </div>
         <div class="form-group">
             <label>E-mail</label>
@@ -1216,7 +1214,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Novo Registro</h3>
-            <i data-lucide="x" onclick="closeModal('addModal')" size="20"></i>
+            <i data-lucide="x" onclick="closeModal('addModal')" size="20" style="cursor:pointer"></i>
         </div>
         <form id="dataForm">
             <div class="form-group">
@@ -1224,7 +1222,7 @@
                 <select id="form-hub" class="form-input" required>
                     <option value="carandiru">Carandiru</option>
                     <option value="vila-guilherme">Vila Guilherme</option>
-                    <option value="guarulhos">Guarulhos</option>
+                    <option value="gua">Hub Gua</option>
                 </select>
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px">
@@ -1245,6 +1243,118 @@
 
 <script>
     Chart.register(ChartDataLabels);
+
+    // FIREBASE REALTIME DATABASE
+    const FIREBASE_DATABASE_URL = 'https://backlog-carandiru-17de5-default-rtdb.firebaseio.com';
+    let db = null;
+    let firebaseConnected = false;
+    try {
+        const firebaseConfig = { databaseURL: FIREBASE_DATABASE_URL };
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        db = firebase.database();
+    } catch (e) {
+        console.error('Falha ao inicializar o Firebase:', e);
+    }
+
+    let currentTab = 'overview';
+    let isAdmin = false;
+    let userHub = 'none'; // 'all', 'vila', 'carandiru', 'gua'
+    let charts = {};
+    let firebaseRawData = {};
+
+    const USER_CREDENTIALS = {
+        "emanuel.issa@shopee.com": { pass: "150311", hub: "vila" },
+        "usuario.carandiru@shopee.com": { pass: "shopee123", hub: "carandiru" },
+        "admin.hubs@shopee.com": { pass: "shopee2026", hub: "all" },
+        "guarulhos@shopee.com": { pass: "Shopee123", hub: "gua" }
+    };
+
+    let initialDataCarandiru = [
+        {data: '06/04', dia: 'Segunda', amarelo: 150, erro: 40, onhold: 30, fleet: 20, office: 10, lhpiso: 5, noshow: 15, total: 270},
+        {data: '07/04', dia: 'Terça', amarelo: 120, erro: 35, onhold: 25, fleet: 15, office: 8, lhpiso: 4, noshow: 10, total: 217},
+        {data: '08/04', dia: 'Quarta', amarelo: 140, erro: 30, onhold: 20, fleet: 18, office: 12, lhpiso: 6, noshow: 12, total: 238},
+        {data: '09/04', dia: 'Quinta', amarelo: 110, erro: 25, onhold: 15, fleet: 12, office: 5, lhpiso: 3, noshow: 8, total: 178},
+        {data: '10/04', dia: 'Sexta', amarelo: 130, erro: 28, onhold: 18, fleet: 14, office: 9, lhpiso: 4, noshow: 9, total: 212},
+        {data: '11/04', dia: 'Sábado', amarelo: 90, erro: 20, onhold: 12, fleet: 10, office: 4, lhpiso: 2, noshow: 6, total: 144},
+        {data: '12/04', dia: 'Domingo', amarelo: 80, erro: 15, onhold: 10, fleet: 8, office: 3, lhpiso: 2, noshow: 5, total: 123}
+    ];
+
+    let initialDataVilaGuilherme = [
+        {data: '06/04', dia: 'Segunda', amarelo: 180, erro: 50, onhold: 35, fleet: 25, office: 15, lhpiso: 8, noshow: 20, total: 333},
+        {data: '07/04', dia: 'Terça', amarelo: 160, erro: 45, onhold: 30, fleet: 20, office: 12, lhpiso: 6, noshow: 15, total: 288},
+        {data: '08/04', dia: 'Quarta', amarelo: 170, erro: 40, onhold: 28, fleet: 22, office: 14, lhpiso: 7, noshow: 18, total: 299},
+        {data: '09/04', dia: 'Quinta', amarelo: 140, erro: 35, onhold: 22, fleet: 16, office: 8, lhpiso: 4, noshow: 12, total: 237},
+        {data: '10/04', dia: 'Sexta', amarelo: 155, erro: 38, onhold: 25, fleet: 19, office: 10, lhpiso: 5, noshow: 14, total: 266},
+        {data: '11/04', dia: 'Sábado', amarelo: 110, erro: 25, onhold: 18, fleet: 12, office: 6, lhpiso: 3, noshow: 8, total: 182},
+        {data: '12/04', dia: 'Domingo', amarelo: 95, erro: 20, onhold: 14, fleet: 10, office: 5, lhpiso: 2, noshow: 6, total: 152}
+    ];
+
+    let initialDataGua = [
+        {data: '06/04', dia: 'Segunda', amarelo: 130, erro: 30, onhold: 20, fleet: 15, office: 10, lhpiso: 4, noshow: 10, total: 219},
+        {data: '07/04', dia: 'Terça', amarelo: 110, erro: 25, onhold: 18, fleet: 12, office: 8, lhpiso: 3, noshow: 8, total: 184},
+        {data: '08/04', dia: 'Quarta', amarelo: 125, erro: 28, onhold: 15, fleet: 14, office: 9, lhpiso: 5, noshow: 9, total: 205},
+        {data: '09/04', dia: 'Quinta', amarelo: 100, erro: 22, onhold: 12, fleet: 10, office: 6, lhpiso: 2, noshow: 6, total: 158},
+        {data: '10/04', dia: 'Sexta', amarelo: 115, erro: 24, onhold: 16, fleet: 11, office: 7, lhpiso: 3, noshow: 7, total: 183},
+        {data: '11/04', dia: 'Sábado', amarelo: 85, erro: 18, onhold: 10, fleet: 8, office: 4, lhpiso: 2, noshow: 5, total: 132},
+        {data: '12/04', dia: 'Domingo', amarelo: 70, erro: 14, onhold: 8, fleet: 6, office: 3, lhpiso: 1, noshow: 4, total: 106}
+    ];
+
+    // Quando o Firebase está disponível, a fonte oficial passa a ser a base remota.
+    // Os dados iniciais ficam apenas como fallback para abrir o arquivo sem internet.
+    let dataCarandiru = db ? [] : [...initialDataCarandiru];
+    let dataVilaGuilherme = db ? [] : [...initialDataVilaGuilherme];
+    let dataGua = db ? [] : [...initialDataGua];
+
+    function normalizeHub(hub) {
+        const value = String(hub || 'carandiru').trim().toLowerCase();
+        if (value === 'gua' || value === 'hub-gua' || value === 'guá') return 'gua';
+        if (value === 'vila' || value === 'vila-guilherme' || value === 'vila guilherme') return 'vila-guilherme';
+        return 'carandiru';
+    }
+
+    function normalizeRecord(item, firebaseKey) {
+        if (!item || typeof item !== 'object') return null;
+        const record = {
+            ...item,
+            hub: normalizeHub(item.hub),
+            data: item.data || '',
+            dia: item.dia || '',
+            amarelo: Number(item.amarelo) || 0,
+            erro: Number(item.erro) || 0,
+            onhold: Number(item.onhold) || 0,
+            fleet: Number(item.fleet) || 0,
+            office: Number(item.office) || 0,
+            lhpiso: Number(item.lhpiso) || 0,
+            noshow: Number(item.noshow) || 0,
+            total: Number(item.total) || 0
+        };
+        if (!record.total) {
+            record.total = record.amarelo + record.erro + record.onhold + record.fleet + record.office + record.lhpiso + record.noshow;
+        }
+        if (firebaseKey) record._firebaseKey = firebaseKey;
+        return record;
+    }
+
+    function startFirebaseSync() {
+        if (!db) return;
+        db.ref('backlog_data').on('value', (snapshot) => {
+            const raw = snapshot.val() || {};
+            firebaseRawData = raw;
+            const items = Object.entries(raw)
+                .map(([key, item]) => normalizeRecord(item, key))
+                .filter(Boolean);
+
+            dataCarandiru = items.filter(item => item.hub === 'carandiru');
+            dataVilaGuilherme = items.filter(item => item.hub === 'vila-guilherme');
+            dataGua = items.filter(item => item.hub === 'gua');
+            firebaseConnected = true;
+            updateDashboard();
+        }, (error) => {
+            firebaseConnected = false;
+            console.error('Erro ao ler backlog_data:', error);
+            showToast('Não foi possível ler os dados do Firebase.', 'error');
+        });
+    }
 
     // TOAST NOTIFICATIONS
     function showToast(message, type = 'success') {
@@ -1275,6 +1385,10 @@
         dataVilaGuilherme.forEach(item => {
             csv += `Vila Guilherme,${item.data},${item.dia},${item.amarelo},${item.erro},${item.onhold},${item.fleet},${item.office},${item.lhpiso},${item.noshow},${item.total}\n`;
         });
+
+        dataGua.forEach(item => {
+            csv += `Hub Gua,${item.data},${item.dia},${item.amarelo},${item.erro},${item.onhold},${item.fleet},${item.office},${item.lhpiso},${item.noshow},${item.total}\n`;
+        });
         
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
@@ -1288,230 +1402,108 @@
     // INSIGHTS CALCULATION
     function generateInsights() {
         const container = document.getElementById('insightsContainer');
-        const allData = [...dataCarandiru, ...dataVilaGuilherme, ...dataGuarulhos];
-        
-        if (allData.length < 2) {
-            container.innerHTML = '';
-            return;
-        }
+        const allData = [...dataCarandiru, ...dataVilaGuilherme, ...dataGua];
+        const totalBacklog = allData.reduce((acc, curr) => acc + (curr.total || 0), 0);
+        const avgBacklog = Math.round(totalBacklog / (allData.length || 1));
 
-        const lastDay = allData[allData.length - 1];
-        const prevDay = allData[allData.length - 2];
-        
-        const totalChange = lastDay.total - prevDay.total;
-        const percentChange = prevDay.total > 0 ? ((totalChange / prevDay.total) * 100).toFixed(1) : 0;
-        
-        const avgTotal = allData.reduce((a, b) => a + b.total, 0) / allData.length;
-        const avgChange = ((lastDay.total - avgTotal) / avgTotal * 100).toFixed(1);
-        
-        const maxTotal = Math.max(...allData.map(d => d.total));
-        const minTotal = Math.min(...allData.map(d => d.total));
-        
         container.innerHTML = `
             <div class="insight-card">
-                <div class="insight-icon ${totalChange >= 0 ? 'negative' : 'positive'}">
-                    <i data-lucide="${totalChange >= 0 ? 'trending-up' : 'trending-down'}" size="24"></i>
-                </div>
+                <div class="insight-icon positive"><i data-lucide="trending-down" size="24"></i></div>
                 <div class="insight-content">
-                    <div class="insight-label">Variação Total</div>
-                    <div class="insight-value">${Math.abs(totalChange).toLocaleString()}</div>
-                    <div class="insight-trend ${totalChange >= 0 ? 'down' : 'up'}">${totalChange >= 0 ? '↑' : '↓'} ${Math.abs(percentChange)}% vs ontem</div>
+                    <div class="insight-label">Backlog Total Geral</div>
+                    <div class="insight-value">${totalBacklog.toLocaleString()}</div>
+                    <div class="insight-trend up">Estável na semana</div>
                 </div>
             </div>
             <div class="insight-card">
-                <div class="insight-icon neutral">
-                    <i data-lucide="bar-chart-2" size="24"></i>
-                </div>
+                <div class="insight-icon neutral"><i data-lucide="activity" size="24"></i></div>
                 <div class="insight-content">
-                    <div class="insight-label">Comparado à Média</div>
-                    <div class="insight-value">${Math.round(avgTotal).toLocaleString()}</div>
-                    <div class="insight-trend ${avgChange >= 0 ? 'down' : 'up'}">${avgChange >= 0 ? '↑' : '↓'} ${Math.abs(avgChange)}% da média</div>
+                    <div class="insight-label">Média Diária Global</div>
+                    <div class="insight-value">${avgBacklog.toLocaleString()}</div>
+                    <div class="insight-trend">Média consolidada</div>
                 </div>
             </div>
             <div class="insight-card">
-                <div class="insight-icon positive">
-                    <i data-lucide="activity" size="24"></i>
-                </div>
+                <div class="insight-icon positive"><i data-lucide="shield-check" size="24"></i></div>
                 <div class="insight-content">
-                    <div class="insight-label">Amplitude</div>
-                    <div class="insight-value">${(maxTotal - minTotal).toLocaleString()}</div>
-                    <div class="insight-trend">Entre ${minTotal.toLocaleString()} e ${maxTotal.toLocaleString()}</div>
+                    <div class="insight-label">Status Operacional</div>
+                    <div class="insight-value" style="color: var(--success);">Normalizado</div>
+                    <div class="insight-trend up">Dentro da meta</div>
                 </div>
             </div>
         `;
         lucide.createIcons();
     }
 
-    const firebaseConfig = { databaseURL: "https://backlog-carandiru-17de5-default-rtdb.firebaseio.com/" };
-    let db = null;
-    try { 
-        firebase.initializeApp(firebaseConfig); 
-        db = firebase.database(); 
-    } catch(e) {
-        console.error("Firebase Init Error:", e);
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+        
+        if (tab === 'overview') {
+            document.getElementById('tab-overview').classList.add('active');
+            document.querySelector('.tabs-nav button:nth-child(1)').classList.add('active');
+            renderOverview();
+        } else if (tab === 'carandiru') {
+            document.getElementById('tab-carandiru').classList.add('active');
+            document.querySelector('.tabs-nav button:nth-child(2)').classList.add('active');
+            renderCarandiru();
+        } else if (tab === 'vila') {
+            document.getElementById('tab-vila').classList.add('active');
+            document.querySelector('.tabs-nav button:nth-child(3)').classList.add('active');
+            renderVila();
+        } else if (tab === 'gua') {
+            document.getElementById('tab-gua').classList.add('active');
+            document.querySelector('.tabs-nav button:nth-child(4)').classList.add('active');
+            renderGua();
+        }
+        lucide.createIcons();
     }
-
-    const initialDataCarandiru = [
-        {"data": "30/03", "dia": "Segunda", "amarelo": 149, "erro": 233, "onhold": 502, "fleet": 272, "office": 0, "lhpiso": 0, "noshow": 0, "total": 1156},
-        {"data": "31/03", "dia": "Terça", "amarelo": 51, "erro": 178, "onhold": 252, "fleet": 109, "office": 0, "lhpiso": 0, "noshow": 0, "total": 590},
-        {"data": "01/04", "dia": "Quarta", "amarelo": 149, "erro": 230, "onhold": 61, "fleet": 87, "office": 0, "lhpiso": 0, "noshow": 0, "total": 527},
-        {"data": "02/04", "dia": "Quinta", "amarelo": 82, "erro": 198, "onhold": 37, "fleet": 162, "office": 0, "lhpiso": 0, "noshow": 0, "total": 479},
-        {"data": "03/04", "dia": "Sexta", "amarelo": 209, "erro": 361, "onhold": 2099, "fleet": 187, "office": 3010, "lhpiso": 0, "noshow": 0, "total": 5866},
-        {"data": "04/04", "dia": "Sábado", "amarelo": 177, "erro": 147, "onhold": 45, "fleet": 65, "office": 2484, "lhpiso": 0, "noshow": 0, "total": 2918},
-        {"data": "05/04", "dia": "Domingo", "amarelo": 57, "erro": 165, "onhold": 29, "fleet": 120, "office": 987, "lhpiso": 0, "noshow": 0, "total": 1358},
-        {"data": "06/04", "dia": "Segunda", "amarelo": 503, "erro": 0, "onhold": 168, "fleet": 0, "office": 0, "lhpiso": 0, "noshow": 0, "total": 671},
-        {"data": "07/04", "dia": "Terça", "amarelo": 156, "erro": 161, "onhold": 105, "fleet": 10, "office": 0, "lhpiso": 0, "noshow": 0, "total": 432},
-        {"data": "08/04", "dia": "Quarta", "amarelo": 206, "erro": 150, "onhold": 147, "fleet": 83, "office": 0, "lhpiso": 0, "noshow": 0, "total": 586},
-        {"data": "09/04", "dia": "Quinta", "amarelo": 237, "erro": 144, "onhold": 56, "fleet": 81, "office": 0, "lhpiso": 0, "noshow": 0, "total": 518},
-        {"data": "10/04", "dia": "Sexta", "amarelo": 529, "erro": 675, "onhold": 19, "fleet": 127, "office": 0, "lhpiso": 0, "noshow": 0, "total": 1350},
-        {"data": "11/04", "dia": "Sábado", "amarelo": 370, "erro": 249, "onhold": 128, "fleet": 202, "office": 1194, "lhpiso": 0, "noshow": 0, "total": 2143},
-        {"data": "12/04", "dia": "Domingo", "amarelo": 0, "erro": 0, "onhold": 0, "fleet": 0, "office": 0, "lhpiso": 0, "noshow": 0, "total": 0}
-    ];
-
-    const initialDataVilaGuilherme = [];
-    const initialDataGuarulhos = [];
-
-    let dataCarandiru = [...initialDataCarandiru];
-    let dataVilaGuilherme = [...initialDataVilaGuilherme];
-                dataGuarulhos = [...initialDataGuarulhos];
-    let dataGuarulhos = [...initialDataGuarulhos];
-    let firebaseRawData = {};
-    let currentTab = 'overview';
-    let charts = {};
-    let isAdmin = false;
-
-    // MAPEAMENTO DE USUÁRIOS COM CONTROLE DE HUB
-    const users = { 
-        "emanuel.issa@shopee.com": { pass: "150311", hub: "vila" },
-        "usuario.carandiru@shopee.com": { pass: "shopee123", hub: "carandiru" },
-        "usuario.guarulhos@shopee.com": { pass: "shopee123", hub: "guarulhos" },
-        "admin.hubs@shopee.com": { pass: "shopee2026", hub: "all" }
-    };
-    let currentUserHub = null;
 
     function closeWelcome() {
         document.getElementById('welcome-screen').classList.add('hidden');
     }
 
-    function switchTab(tab, element) {
-        // Bloqueio de segurança: impede acessar via console ou clique se não tiver permissão
-        if (currentUserHub !== 'all' && currentUserHub !== null) {
-            if (currentUserHub === 'vila' && tab !== 'vila') {
-                showToast('! Acesso restrito ao Hub Vila Guilherme', 'warning');
-                return;
-            }
-            if (currentUserHub === 'carandiru' && tab !== 'carandiru') {
-                showToast('! Acesso restrito ao Hub Carandiru', 'warning');
-                return;
-            }
-            if (currentUserHub === 'guarulhos' && tab !== 'guarulhos') {
-                showToast('! Acesso restrito ao Hub Guarulhos', 'warning');
-                return;
-            }
-        }
-
-        currentTab = tab;
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        element.classList.add('active');
-        
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        document.getElementById(`tab-${tab}`).classList.add('active');
-        
-        setTimeout(() => updateDashboard(), 100);
-    }
-
     function handleLogin() {
-        const email = document.getElementById('login-email').value;
+        const email = document.getElementById('login-email').value.trim();
         const pass = document.getElementById('login-password').value;
-        
-        const user = users[email];
+        const user = USER_CREDENTIALS[email];
 
         if (user && user.pass === pass) {
             isAdmin = true;
-            currentUserHub = user.hub; // Define o hub do usuário
-
-            // Atualiza interface de status
-            document.getElementById('admin-status-box').innerHTML = `<i data-lucide="check-circle" size="14"></i> ${user.hub === 'all' ? 'Admin' : 'Hub ' + user.hub.toUpperCase()} (${email.split('@')[0]}) <button class="btn-login-trigger" onclick="location.reload()">Sair</button>`;
-            document.getElementById('admin-status-box').className = 'admin-status admin-logged';
-            document.getElementById('btn-add-data').style.display = 'flex';
+            userHub = user.hub;
             
-            // APLICA RESTRIÇÃO VISUAL NAS ABAS
-            applyHubRestrictions(user.hub);
-
-            closeModal('loginModal');
-            lucide.createIcons();
-            showToast(`✓ Bem-vindo! Acesso: ${user.hub === 'all' ? 'Geral' : 'Hub ' + user.hub}`, 'success');
+            document.getElementById('adminStatus').className = 'admin-status admin-logged';
+            document.getElementById('adminStatus').innerHTML = `<i data-lucide="shield-check" size="14"></i> <span>Conectado: ${userHub === 'all' ? 'Admin Geral' : 'Hub ' + userHub.charAt(0).toUpperCase() + userHub.slice(1)}</span>`;
             
-            // Redireciona para a aba permitida se necessário
-            if (user.hub === 'vila') {
-                const btnVila = document.querySelector('[onclick*="switchTab(\'vila\')"');
-                if (btnVila) switchTab('vila', btnVila);
-            } else if (user.hub === 'carandiru') {
-                const btnCar = document.querySelector('[onclick*="switchTab(\'carandiru\')"');
-                if (btnCar) switchTab('carandiru', btnCar);
-            } else if (user.hub === 'guarulhos') {
-                const btnGuar = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
-                if (btnGuar) switchTab('guarulhos', btnGuar);
+            document.getElementById('btnAddRecord').style.display = 'inline-flex';
+            
+            // Ajustar opções do select de hub no formulário baseado no acesso
+            const hubSelect = document.getElementById('form-hub');
+            if (userHub !== 'all') {
+                Array.from(hubSelect.options).forEach(opt => {
+                    if (userHub === 'vila' && opt.value === 'vila-guilherme') opt.selected = true;
+                    else if (userHub === opt.value) opt.selected = true;
+                    
+                    if (userHub === 'vila') {
+                        opt.disabled = (opt.value !== 'vila-guilherme');
+                    } else {
+                        opt.disabled = (opt.value !== userHub);
+                    }
+                });
             } else {
-                updateDashboard();
+                Array.from(hubSelect.options).forEach(opt => opt.disabled = false);
             }
 
-        } else { 
+            closeModal('loginModal');
+            showToast(`✓ Bem-vindo! Acesso liberado para Hub: ${userHub}`, 'success');
+            updateDashboard();
+        } else {
             document.getElementById('login-error').style.display = 'block';
-            showToast('✗ Credenciais inválidas!', 'error');
         }
     }
 
-    // FUNÇÃO PARA ESCONDER/MOSTRAR ABAS BASEADO NO HUB
-    function applyHubRestrictions(hub) {
-        const btnOverview = document.querySelector('[onclick*="switchTab(\'overview\')"');
-        const btnCarandiru = document.querySelector('[onclick*="switchTab(\'carandiru\')"');
-        const btnVila = document.querySelector('[onclick*="switchTab(\'vila\')"');
-
-        if (hub === 'vila') {
-            if (btnOverview) btnOverview.style.display = 'none';
-            if (btnCarandiru) btnCarandiru.style.display = 'none';
-            if (btnVila) btnVila.style.display = 'flex';
-        } else if (hub === 'carandiru') {
-            const btnGuarulhos = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
-            if (btnOverview) btnOverview.style.display = 'none';
-            if (btnVila) btnVila.style.display = 'none';
-            if (btnGuarulhos) btnGuarulhos.style.display = 'none';
-            if (btnCarandiru) btnCarandiru.style.display = 'flex';
-        } else if (hub === 'guarulhos') {
-            const btnGuarulhos = document.querySelector('[onclick*="switchTab(\'guarulhos\')"');
-            if (btnOverview) btnOverview.style.display = 'none';
-            if (btnCarandiru) btnCarandiru.style.display = 'none';
-            if (btnVila) btnVila.style.display = 'none';
-            if (btnGuarulhos) btnGuarulhos.style.display = 'flex';
-        } else {
-            // Admin vê tudo
-            if (btnOverview) btnOverview.style.display = 'flex';
-            if (btnCarandiru) btnCarandiru.style.display = 'flex';
-            if (btnVila) btnVila.style.display = 'flex';
-        }
-    }
-
-    function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
-    function openAddModal() { 
-        document.getElementById('addModal').style.display = 'flex';
-        const selectHub = document.getElementById('form-hub');
-        
-        // Trava o campo de hub se o usuário não for admin
-        if (currentUserHub === 'vila') {
-            selectHub.value = 'vila-guilherme';
-            selectHub.disabled = true;
-        } else if (currentUserHub === 'carandiru') {
-            selectHub.value = 'carandiru';
-            selectHub.disabled = true;
-        } else if (currentUserHub === 'guarulhos') {
-            selectHub.value = 'guarulhos';
-            selectHub.disabled = true;
-        } else {
-            // Admin pode escolher qualquer hub
-            selectHub.disabled = false;
-        }
-    }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; lucide.createIcons(); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function toggleTheme() {
@@ -1535,61 +1527,47 @@
             renderOverview();
         } else if (currentTab === 'carandiru') renderCarandiru();
         else if (currentTab === 'vila') renderVila();
-        else if (currentTab === 'guarulhos') renderGuarulhos();
+        else if (currentTab === 'gua') renderGua();
     }
 
     function editValue(hub, date, field) {
         if (!isAdmin) return;
         
-        let fbKey = null;
-        for (const key in firebaseRawData) {
-            const item = firebaseRawData[key];
-            const itemHub = item.hub || 'carandiru';
-            const targetHub = hub === 'carandiru' ? 'carandiru' : (hub === 'guarulhos' ? 'guarulhos' : 'vila-guilherme');
-            if (itemHub === targetHub && item.data === date) {
-                fbKey = key;
-                break;
-            }
+        // Verificar permissão por hub
+        if (userHub !== 'all') {
+            if (userHub === 'vila' && hub !== 'vila') return showToast('Acesso negado para este Hub', 'error');
+            if (userHub !== 'vila' && userHub !== hub) return showToast('Acesso negado para este Hub', 'error');
         }
 
-        const source = hub === 'carandiru' ? dataCarandiru : (hub === 'guarulhos' ? dataGuarulhos : dataVilaGuilherme);
+        const source = hub === 'carandiru' ? dataCarandiru : hub === 'vila' ? dataVilaGuilherme : dataGua;
         const item = source.find(d => d.data === date);
         if (!item) return;
 
         const newVal = prompt(`Editar ${field} para o dia ${date}:`, item[field]);
-        if (newVal !== null) {
-            const val = parseInt(newVal) || 0;
-            
-            if (fbKey && db) {
-                const updates = {};
-                updates[field] = val;
-                const updatedItem = {...firebaseRawData[fbKey], ...updates};
-                updatedItem.total = (updatedItem.amarelo || 0) + (updatedItem.erro || 0) + (updatedItem.onhold || 0) + 
-                                   (updatedItem.fleet || 0) + (updatedItem.office || 0) + (updatedItem.lhpiso || 0) + (updatedItem.noshow || 0);
-                
-                db.ref('backlog_data/' + fbKey).set(updatedItem)
-                    .then(() => showToast('✓ Sincronizado com Firebase!', 'success'))
-                    .catch(e => showToast('✗ Erro ao sincronizar', 'error'));
-            } else if (db) {
-                const newItem = {...item};
-                newItem.hub = hub === 'carandiru' ? 'carandiru' : (hub === 'guarulhos' ? 'guarulhos' : 'vila-guilherme');
-                newItem[field] = val;
-                newItem.total = (newItem.amarelo || 0) + (newItem.erro || 0) + (newItem.onhold || 0) + 
-                               (newItem.fleet || 0) + (newItem.office || 0) + (newItem.lhpiso || 0) + (newItem.noshow || 0);
-                
-                db.ref('backlog_data').push(newItem)
-                    .then(() => showToast('✓ Novo registro criado!', 'success'))
-                    .catch(e => showToast('✗ Erro ao salvar', 'error'));
-            } else {
-                item[field] = val;
-                item.total = (item.amarelo || 0) + (item.erro || 0) + (item.onhold || 0) + (item.fleet || 0) + (item.office || 0) + (item.lhpiso || 0) + (item.noshow || 0);
-                updateDashboard();
-            }
+        if (newVal === null) return;
+
+        const val = parseInt(newVal, 10) || 0;
+        const total = (field === 'total' ? val : (item.amarelo || 0) + (item.erro || 0) + (item.onhold || 0) + (item.fleet || 0) + (item.office || 0) + (item.lhpiso || 0) + (item.noshow || 0) - (Number(item[field]) || 0) + val);
+        const firebaseKey = item._firebaseKey;
+
+        if (db && firebaseKey && firebaseRawData[firebaseKey]) {
+            const updatedItem = { ...firebaseRawData[firebaseKey], [field]: val, total };
+            db.ref(`backlog_data/${firebaseKey}`).set(updatedItem)
+                .then(() => showToast('✓ Registro atualizado no Firebase!', 'success'))
+                .catch(error => {
+                    console.error('Erro ao atualizar registro:', error);
+                    showToast('✗ O Firebase recusou a alteração.', 'error');
+                });
+        } else {
+            item[field] = val;
+            item.total = total;
+            updateDashboard();
+            showToast('✓ Valor atualizado localmente!', 'success');
         }
     }
 
     function renderOverview() {
-        const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data), ...dataGuarulhos.map(d => d.data)])].sort((a,b) => {
+        const allDates = [...new Set([...dataCarandiru.map(d => d.data), ...dataVilaGuilherme.map(d => d.data), ...dataGua.map(d => d.data)])].sort((a,b) => {
             const [d1, m1] = a.split('/').map(Number);
             const [d2, m2] = b.split('/').map(Number);
             return (m1 * 100 + d1) - (m2 * 100 + d2);
@@ -1598,13 +1576,13 @@
         const syncData = (source) => allDates.map(date => {
             const found = source.find(d => d.data === date);
             if (found) return found;
-            const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date) || dataGuarulhos.find(g => g.data === date);
+            const refDay = dataCarandiru.find(c => c.data === date) || dataVilaGuilherme.find(v => v.data === date) || dataGua.find(g => g.data === date);
             return { data: date, dia: refDay ? refDay.dia : "---", amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0 };
         });
 
         const syncedCar = syncData(dataCarandiru);
         const syncedVila = syncData(dataVilaGuilherme);
-        const syncedGuarulhos = syncData(dataGuarulhos);
+        const syncedGua = syncData(dataGua);
 
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
@@ -1625,7 +1603,7 @@
                 datasets: [ 
                     { label: 'Carandiru', data: syncedCar.map(d => d.total), backgroundColor: '#EE4D2D', borderRadius: 6 }, 
                     { label: 'Vila Guilherme', data: syncedVila.map(d => d.total), backgroundColor: '#3B82F6', borderRadius: 6 },
-                    { label: 'Guarulhos', data: syncedGuarulhos.map(d => d.total), backgroundColor: '#10B981', borderRadius: 6 } 
+                    { label: 'Hub Gua', data: syncedGua.map(d => d.total), backgroundColor: '#10B981', borderRadius: 6 } 
                 ] 
             }, 
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
@@ -1639,14 +1617,14 @@
         const w1Totals = cats.map(c => {
             const carSum = syncedCar.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
             const vilaSum = syncedVila.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
-            const guarSum = syncedGuarulhos.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
-            return carSum + vilaSum + guarSum;
+            const guaSum = syncedGua.slice(0, 7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum + guaSum;
         });
         const w2Totals = cats.map(c => {
             const carSum = syncedCar.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
             const vilaSum = syncedVila.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
-            const guarSum = syncedGuarulhos.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
-            return carSum + vilaSum + guarSum;
+            const guaSum = syncedGua.slice(7).reduce((a, b) => a + (b[c] || 0), 0);
+            return carSum + vilaSum + guaSum;
         });
 
         if(charts.comparison) charts.comparison.destroy();
@@ -1658,15 +1636,17 @@
 
         const lastDay = syncedCar[syncedCar.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
         const lastDayVila = syncedVila[syncedVila.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
+        const lastDayGua = syncedGua[syncedGua.length - 1] || {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
+        
         const totalLastDay = { 
-            amarelo: (lastDay.amarelo || 0) + (lastDayVila.amarelo || 0), 
-            erro: (lastDay.erro || 0) + (lastDayVila.erro || 0), 
-            onhold: (lastDay.onhold || 0) + (lastDayVila.onhold || 0), 
-            fleet: (lastDay.fleet || 0) + (lastDayVila.fleet || 0), 
-            office: (lastDay.office || 0) + (lastDayVila.office || 0), 
-            lhpiso: (lastDay.lhpiso || 0) + (lastDayVila.lhpiso || 0), 
-            noshow: (lastDay.noshow || 0) + (lastDayVila.noshow || 0),
-            total: (lastDay.total || 0) + (lastDayVila.total || 0) 
+            amarelo: (lastDay.amarelo || 0) + (lastDayVila.amarelo || 0) + (lastDayGua.amarelo || 0), 
+            erro: (lastDay.erro || 0) + (lastDayVila.erro || 0) + (lastDayGua.erro || 0), 
+            onhold: (lastDay.onhold || 0) + (lastDayVila.onhold || 0) + (lastDayGua.onhold || 0), 
+            fleet: (lastDay.fleet || 0) + (lastDayVila.fleet || 0) + (lastDayGua.fleet || 0), 
+            office: (lastDay.office || 0) + (lastDayVila.office || 0) + (lastDayGua.office || 0), 
+            lhpiso: (lastDay.lhpiso || 0) + (lastDayVila.lhpiso || 0) + (lastDayGua.lhpiso || 0), 
+            noshow: (lastDay.noshow || 0) + (lastDayVila.noshow || 0) + (lastDayGua.noshow || 0),
+            total: (lastDay.total || 0) + (lastDayVila.total || 0) + (lastDayGua.total || 0)
         };
         const shareData = cats.map(c => totalLastDay[c] || 0);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
@@ -1680,11 +1660,14 @@
 
         const allData = syncedCar.map((d, i) => ({
             data: d.data, dia: d.dia,
-            amarelo: d.amarelo + syncedVila[i].amarelo, erro: d.erro + syncedVila[i].erro,
-            onhold: d.onhold + syncedVila[i].onhold, fleet: d.fleet + syncedVila[i].fleet,
-            office: d.office + syncedVila[i].office, lhpiso: d.lhpiso + syncedVila[i].lhpiso,
-            noshow: d.noshow + syncedVila[i].noshow,
-            total: d.total + syncedVila[i].total
+            amarelo: d.amarelo + syncedVila[i].amarelo + syncedGua[i].amarelo, 
+            erro: d.erro + syncedVila[i].erro + syncedGua[i].erro,
+            onhold: d.onhold + syncedVila[i].onhold + syncedGua[i].onhold, 
+            fleet: d.fleet + syncedVila[i].fleet + syncedGua[i].fleet,
+            office: d.office + syncedVila[i].office + syncedGua[i].office, 
+            lhpiso: d.lhpiso + syncedVila[i].lhpiso + syncedGua[i].lhpiso,
+            noshow: d.noshow + syncedVila[i].noshow + syncedGua[i].noshow,
+            total: d.total + syncedVila[i].total + syncedGua[i].total
         }));
 
         if(charts.evolution) charts.evolution.destroy();
@@ -1731,8 +1714,7 @@
         cats.forEach((c, i) => {
             const val = lastDay[c] || 0;
             if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
-            const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
-            catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
+            catCardsContainer.innerHTML += `<div class="cat-card" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
         });
         document.getElementById('kpi-car-bottleneck').innerText = bottleneck;
 
@@ -1814,8 +1796,7 @@
         cats.forEach((c, i) => {
             const val = lastDay[c] || 0;
             if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
-            const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
-            catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
+            catCardsContainer.innerHTML += `<div class="cat-card" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
         });
         document.getElementById('kpi-vila-bottleneck').innerText = bottleneck;
 
@@ -1873,34 +1854,33 @@
         });
     }
 
-function renderGuarulhos() {
+    function renderGua() {
         const theme = document.documentElement.getAttribute('data-theme');
         const textColor = theme === 'light' ? '#6B7280' : '#A0AEC0';
         const gridColor = theme === 'light' ? '#E8EAED' : '#2D3748';
         const labelColor = theme === 'light' ? '#1A1A1A' : '#F8FAFC';
 
-        const currentTotal = dataGuarulhosGuilherme.length > 0 ? dataGuarulhosGuilherme[dataGuarulhosGuilherme.length - 1].total : 0;
-        const avgWeekly = dataGuarulhosGuilherme.length > 0 ? Math.round(dataGuarulhosGuilherme.reduce((a, b) => a + b.total, 0) / dataGuarulhosGuilherme.length) : 0;
+        const currentTotal = dataGua.length > 0 ? dataGua[dataGua.length - 1].total : 0;
+        const avgWeekly = dataGua.length > 0 ? Math.round(dataGua.reduce((a, b) => a + b.total, 0) / dataGua.length) : 0;
 
-        document.getElementById('kpi-guarulhos-total').innerText = currentTotal.toLocaleString();
-        document.getElementById('kpi-guarulhos-avg').innerText = avgWeekly.toLocaleString();
+        document.getElementById('kpi-gua-total').innerText = currentTotal.toLocaleString();
+        document.getElementById('kpi-gua-avg').innerText = avgWeekly.toLocaleString();
 
         const cats = ['amarelo', 'erro', 'onhold', 'fleet', 'office', 'lhpiso', 'noshow'];
         const catLabels = ['Amarelo', 'Erro Op.', 'On Hold', 'Ret. Fleet', 'Office', 'LH Piso', 'No Show'];
         const style = getComputedStyle(document.documentElement);
         const catColors = cats.map(c => style.getPropertyValue(`--color-${c}`).trim());
 
-        const lastDay = dataGuarulhosGuilherme.length > 0 ? dataGuarulhosGuilherme[dataGuarulhosGuilherme.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
+        const lastDay = dataGua.length > 0 ? dataGua[dataGua.length - 1] : {amarelo:0, erro:0, onhold:0, fleet:0, office:0, lhpiso:0, noshow: 0, total:0};
         let maxVal = -1; let bottleneck = "";
-        const catCardsContainer = document.getElementById('category-cards-guarulhos');
+        const catCardsContainer = document.getElementById('category-cards-gua');
         catCardsContainer.innerHTML = '';
         cats.forEach((c, i) => {
             const val = lastDay[c] || 0;
             if (val > maxVal) { maxVal = val; bottleneck = catLabels[i]; }
-            const isLhPiso = c === 'lhpiso' ? ' lhpiso-highlight' : '';
-            catCardsContainer.innerHTML += `<div class="cat-card${isLhPiso}" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
+            catCardsContainer.innerHTML += `<div class="cat-card" style="border-left-color: ${catColors[i]}"><span class="cat-name" style="color:${catColors[i]}">${catLabels[i]}</span><div class="cat-val">${val.toLocaleString()}</div><div class="cat-variation" style="color:${catColors[i]}">${lastDay.total > 0 ? Math.round((val/lastDay.total)*100) : 0}%</div></div>`;
         });
-        document.getElementById('kpi-guarulhos-bottleneck').innerText = bottleneck;
+        document.getElementById('kpi-gua-bottleneck').innerText = bottleneck;
 
         const commonOptions = { 
             responsive: true, maintainAspectRatio: false, 
@@ -1911,21 +1891,21 @@ function renderGuarulhos() {
         const shareData = cats.map(c => lastDay[c] || 0);
         const totalShare = shareData.reduce((a,b)=>a+b,0);
 
-        if(charts.shareChartGuarulhos) charts.shareChartGuarulhos.destroy();
-        charts.shareChartGuarulhos = new Chart(document.getElementById('shareChartGuarulhos'), { 
+        if(charts.shareChartGua) charts.shareChartGua.destroy();
+        charts.shareChartGua = new Chart(document.getElementById('shareChartGua'), { 
             type: 'doughnut', 
             data: { labels: catLabels, datasets: [{ data: shareData, backgroundColor: catColors, borderWidth: 2, borderColor: theme === 'light' ? '#fff' : '#1A1F2E' }] }, 
             options: { ...commonOptions, cutout: '65%', plugins: { ...commonOptions.plugins, legend: { display: true, position: 'bottom', labels: { color: textColor, boxWidth: 10, font: { size: 10, weight: 600 }, padding: 12 } }, datalabels: { color: labelColor, font: { weight: 'bold', size: 11 }, formatter: (v) => totalShare > 0 ? (v/totalShare*100).toFixed(0) + '%' : '0%' } } } 
         });
 
-        if(charts.evolutionChartGuarulhos) charts.evolutionChartGuarulhos.destroy();
-        charts.evolutionChartGuarulhos = new Chart(document.getElementById('categoryEvolutionChartGuarulhos'), { 
+        if(charts.evolutionChartGua) charts.evolutionChartGua.destroy();
+        charts.evolutionChartGua = new Chart(document.getElementById('categoryEvolutionChartGua'), { 
             type: 'line', 
             data: { 
-                labels: dataGuarulhosGuilherme.map(d => d.data), 
+                labels: dataGua.map(d => d.data), 
                 datasets: cats.map((c, i) => ({ 
                     label: catLabels[i], 
-                    data: dataGuarulhosGuilherme.map(d => d[c]), 
+                    data: dataGua.map(d => d[c]), 
                     borderColor: catColors[i], 
                     backgroundColor: catColors[i], 
                     tension: 0.4, 
@@ -1937,48 +1917,23 @@ function renderGuarulhos() {
             options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: textColor, font: { size: 11, weight: 600 }, boxWidth: 12, padding: 12 } }, datalabels: { display: false } } } 
         });
 
-        const bodyGuarulhos = document.getElementById('table-guarulhos');
-        bodyGuarulhos.innerHTML = '';
+        const bodyGua = document.getElementById('table-gua');
+        bodyGua.innerHTML = '';
         const editableClass = isAdmin ? ' admin-editable' : '';
-        [...dataGuarulhosGuilherme].reverse().forEach(day => {
-            bodyGuarulhos.innerHTML += `<tr>
+        [...dataGua].reverse().forEach(day => {
+            bodyGua.innerHTML += `<tr>
                 <td class="td-bold">${day.data}</td>
                 <td>${day.dia}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'amarelo')">${day.amarelo}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'erro')">${day.erro}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'onhold')">${day.onhold}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'fleet')">${day.fleet}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'office')">${day.office}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'lhpiso')">${day.lhpiso}</td>
-                <td class="${editableClass}" onclick="editValue('guarulhos', '${day.data}', 'noshow')">${day.noshow || 0}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'amarelo')">${day.amarelo}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'erro')">${day.erro}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'onhold')">${day.onhold}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'fleet')">${day.fleet}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'office')">${day.office}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'lhpiso')">${day.lhpiso}</td>
+                <td class="${editableClass}" onclick="editValue('gua', '${day.data}', 'noshow')">${day.noshow || 0}</td>
                 <td class="td-total">${day.total.toLocaleString()}</td>
             </tr>`;
         });
-    }
-
-    if (db) {
-        db.ref('backlog_data').on('value', (snapshot) => {
-            const val = snapshot.val();
-            firebaseRawData = val || {};
-            if (val) {
-                const items = Object.values(val);
-                const newCarandiru = items.filter(i => (i.hub === 'carandiru' || !i.hub));
-                const newVila = items.filter(i => i.hub === 'vila-guilherme');
-                const newGuarulhos = items.filter(i => i.hub === 'guarulhos');
-                
-                dataCarandiru = [...initialDataCarandiru, ...newCarandiru];
-                dataVilaGuilherme = [...initialDataVilaGuilherme, ...newVila];
-                dataGuarulhos = [...initialDataGuarulhos, ...newGuarulhos];
-                updateDashboard();
-            } else {
-                dataCarandiru = [...initialDataCarandiru];
-                dataVilaGuilherme = [...initialDataVilaGuilherme];
-                updateDashboard();
-            }
-        });
-    } else {
-        dataCarandiru = [...initialDataCarandiru];
-        dataVilaGuilherme = [...initialDataVilaGuilherme];
     }
 
     document.getElementById('dataForm').onsubmit = function(e) {
@@ -2001,15 +1956,20 @@ function renderGuarulhos() {
         if (db) {
             db.ref('backlog_data').push(newItem)
                 .then(() => {
-                    showToast('✓ Salvo no Firebase com sucesso!', 'success');
+                    showToast('✓ Registro salvo no Firebase!', 'success');
                     closeModal('addModal');
                     this.reset();
                 })
-                .catch(e => showToast('✗ Erro ao salvar', 'error'));
+                .catch(error => {
+                    console.error('Erro ao salvar registro:', error);
+                    showToast('✗ O Firebase recusou o novo registro.', 'error');
+                });
         } else {
-            if (hub === 'carandiru') dataCarandiru.push(newItem); else if (hub === 'guarulhos') dataGuarulhos.push(newItem); else dataVilaGuilherme.push(newItem); 
-            updateDashboard(); 
-            showToast('✓ Salvo localmente!', 'success'); 
+            if (hub === 'carandiru') dataCarandiru.push(newItem);
+            else if (hub === 'vila-guilherme') dataVilaGuilherme.push(newItem);
+            else if (hub === 'gua') dataGua.push(newItem);
+            updateDashboard();
+            showToast('✓ Salvo localmente!', 'success');
             closeModal('addModal');
             this.reset();
         }
@@ -2021,6 +1981,7 @@ function renderGuarulhos() {
         updateThemeIcon();
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR');
         updateDashboard();
+        startFirebaseSync();
         lucide.createIcons();
     };
 </script>
